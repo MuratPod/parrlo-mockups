@@ -1,4 +1,4 @@
-# Parrlo — токены v2
+# Parrlo — токены v2.3
 
 Макет. Источник правды: `tokens.json`; `tokens.css` — переменные `--pl-*`.
 
@@ -53,6 +53,18 @@
 | dark.link | #2BC48A |
 | dark.partnerButtonBg | #BFF2DC |
 | dark.partnerButtonText | #0E1116 |
+| dark.success | #2BC48A |
+| dark.onSuccess | #0E1116 |
+| dark.successBg | #1E3734 |
+| dark.warn | #FFC247 |
+| dark.onWarn | #0E1116 |
+| dark.warnBg | #3C372B |
+| dark.error | #FF6B5E |
+| dark.onError | #0E1116 |
+| dark.errorBg | #3C2A2E |
+| dark.info | #6AA6F5 |
+| dark.onInfo | #0E1116 |
+| dark.infoBg | #273343 |
 | dark.disabledBg | #2A2F36 |
 | dark.disabledText | #9AA4B2 |
 
@@ -66,6 +78,16 @@
 | state.error | #C42B1F |
 | state.errorBg | #FDECEA |
 | state.info | #1D5FBF |
+
+## Состояния в тёмной теме
+Текст/иконка состояния ≥4,5:1 на #12161C, #1C2026, #0E1116 и карточке-стекле (#2E3237); `on*` — цвет текста на заливке состояния; `*Bg` — плашка (цвет состояния 14% на #1C2026), текст состояния на плашке ≥4,5:1. Тёмные токены в CSS: `--pl-success`, `--pl-onSuccess`, `--pl-successBg` и т. п. (внутри `[data-theme="dark"]`).
+
+| Состояние | Текст/иконка | Текст на заливке | Плашка |
+|---|---|---|---|
+| success | #2BC48A | #0E1116 | #1E3734 |
+| warn | #FFC247 | #0E1116 | #3C372B |
+| error | #FF6B5E | #0E1116 | #3C2A2E |
+| info | #6AA6F5 | #0E1116 | #273343 |
 
 ## Радиусы
 - radius.icon: 22.27%

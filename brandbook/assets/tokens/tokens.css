@@ -1,4 +1,4 @@
-/* Parrlo tokens v2 — макет. Светлая тема по умолчанию, тёмная: [data-theme="dark"] */
+/* Parrlo tokens v2.3 — макет. Светлая тема по умолчанию, тёмная: [data-theme="dark"] */
 :root{
   --pl-radius-icon: 22.27%;
   --pl-radius-sheet: 28px;
@@ -74,6 +74,18 @@
   --pl-link: #2BC48A;
   --pl-partnerButtonBg: #BFF2DC;
   --pl-partnerButtonText: #0E1116;
+  --pl-success: #2BC48A;
+  --pl-onSuccess: #0E1116;
+  --pl-successBg: #1E3734;
+  --pl-warn: #FFC247;
+  --pl-onWarn: #0E1116;
+  --pl-warnBg: #3C372B;
+  --pl-error: #FF6B5E;
+  --pl-onError: #0E1116;
+  --pl-errorBg: #3C2A2E;
+  --pl-info: #6AA6F5;
+  --pl-onInfo: #0E1116;
+  --pl-infoBg: #273343;
   --pl-disabledBg: #2A2F36;
   --pl-disabledText: #9AA4B2;
 }

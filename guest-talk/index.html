@@ -160,7 +160,7 @@ svg.f{fill:currentColor;stroke:none}
 .badge b{font:600 22px/1.05 Inter,sans-serif;letter-spacing:-.01em}
 .badge:disabled{background:#242B34;color:#9AA4B2;box-shadow:inset 0 0 0 1px #3A4452;cursor:not-allowed}
 .badge:disabled svg{filter:grayscale(1);opacity:.5}
-.badge:disabled small{color:#C2CAD5;font-weight:700}
+.badge:disabled small{color:#B4BDC9}
 .dim .feed{opacity:.35}
 /* текстовый ввод */
 .comp{display:flex;flex-direction:column;gap:8px}
@@ -236,7 +236,7 @@ ru: {
  offT:'Нет интернета', offP:'Проверьте соединение и попробуйте ещё раз.', retry:'Повторить', unsent:'Не отправлено',
  limT:'Перевод сейчас недоступен', limP:'Обратитесь к тому, кто показал QR.', limBtn:'Проверить ещё раз',
  dlLink:'Скачать Parrlo', dlT:'Скачайте Parrlo', dlP:'Переводчик всегда под рукой — без QR-кода.', dlClose:'Не сейчас',
- dlA1:'Загрузите в', dlG1:'Доступно в', dlSoon:'Скоро', typeLink:'Ввести текст', howLead:'Сайт не может открыть настройки браузера сам. Сделайте так:',
+ dlA1:'Загрузите в', dlG1:'Доступно в', typeLink:'Ввести текст', howLead:'Сайт не может открыть настройки браузера сам. Сделайте так:',
  ph:'Напишите фразу', send:'Отправить', close:'Закрыть',
  // App Clip
  bnT:'Скачать полное приложение', bnBtn:'Загрузить', bnClose:'Скрыть',
@@ -257,7 +257,7 @@ es: {
  offT:'Sin conexión', offP:'Comprueba tu conexión e inténtalo de nuevo.', retry:'Reintentar', unsent:'Sin enviar',
  limT:'La traducción no está disponible ahora', limP:'Habla con la persona que te mostró el QR.', limBtn:'Comprobar de nuevo',
  dlLink:'Descargar Parrlo', dlT:'Descarga Parrlo', dlP:'El traductor siempre a mano, sin código QR.', dlClose:'Ahora no',
- dlA1:'Descárgalo en el', dlG1:'Disponible en', dlSoon:'Próximamente', typeLink:'Escribir texto', howLead:'Un sitio web no puede abrir los ajustes del navegador. Haz esto:',
+ dlA1:'Descárgalo en el', dlG1:'Disponible en', typeLink:'Escribir texto', howLead:'Un sitio web no puede abrir los ajustes del navegador. Haz esto:',
  ph:'Escribe tu frase', send:'Enviar', close:'Cerrar',
  bnT:'Descargar la app completa', bnBtn:'Obtener', bnClose:'Ocultar',
  alT:'«Parrlo» quiere acceder al micrófono', alP:'El micrófono sirve para escuchar tu frase y traducirla.', alNo:'No permitir', alOk:'OK',
@@ -277,7 +277,7 @@ en: {
  offT:'No internet', offP:'Check your connection and try again.', retry:'Retry', unsent:'Not sent',
  limT:'Translation is unavailable right now', limP:'Please ask the person who showed you the QR.', limBtn:'Check again',
  dlLink:'Get Parrlo', dlT:'Get Parrlo', dlP:'Your translator, always at hand — no QR code needed.', dlClose:'Not now',
- dlA1:'Download on the', dlG1:'Get it on', dlSoon:'Coming soon', typeLink:'Enter text', howLead:'A website can’t open your browser settings itself. Do this:',
+ dlA1:'Download on the', dlG1:'Get it on', typeLink:'Enter text', howLead:'A website can’t open your browser settings itself. Do this:',
  ph:'Type your phrase', send:'Send', close:'Close',
  bnT:'Get the full app', bnBtn:'Get', bnClose:'Dismiss',
  alT:'“Parrlo” Would Like to Access the Microphone', alP:'The microphone is used to hear your phrase and translate it.', alNo:'Don’t Allow', alOk:'OK',
@@ -397,7 +397,7 @@ function bannerClip(t) { // SKOverlay-подобный баннер «Скача
 function sheetHTML(t) {
   return `<div class="sheet" role="dialog" aria-label="${t.dlT}"><h2>${t.dlT}</h2><p>${t.dlP}</p>
   <div class="badges"><a class="badge apple" href="#" aria-label="${t.dlA1} App Store">${IC.apple}<span class="bt"><small>${t.dlA1}</small><b>App Store</b></span></a>
-  <button class="badge play" disabled aria-label="Google Play — ${t.dlSoon}">${IC.play}<span class="bt"><small>${t.dlSoon}</small><b>Google Play</b></span></button></div>
+  <button class="badge play" disabled aria-disabled="true" aria-label="Google Play">${IC.play}<span class="bt"><small>${t.dlG1}</small><b>Google Play</b></span></button></div>
   <button class="link" data-act="dlclose" style="color:var(--text)">${t.dlClose}</button></div>`;
 }
 function composer(t) {

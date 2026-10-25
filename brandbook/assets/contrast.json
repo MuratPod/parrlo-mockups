@@ -1,0 +1,458 @@
+[
+ {
+  "group": "Текст · светлая",
+  "role": "Основной текст",
+  "fg": "#0E1116",
+  "bg": "#FFFFFF",
+  "ratio": 18.91,
+  "need": 4.5,
+  "ok": true,
+  "note": ""
+ },
+ {
+  "group": "Текст · светлая",
+  "role": "Основной текст на Mint",
+  "fg": "#0E1116",
+  "bg": "#E8F8F1",
+  "ratio": 17.23,
+  "need": 4.5,
+  "ok": true,
+  "note": ""
+ },
+ {
+  "group": "Текст · светлая",
+  "role": "Вторичный текст",
+  "fg": "#5B6472",
+  "bg": "#FFFFFF",
+  "ratio": 5.98,
+  "need": 4.5,
+  "ok": true,
+  "note": ""
+ },
+ {
+  "group": "Текст · светлая",
+  "role": "Вторичный текст на Mint",
+  "fg": "#5B6472",
+  "bg": "#E8F8F1",
+  "ratio": 5.45,
+  "need": 4.5,
+  "ok": true,
+  "note": ""
+ },
+ {
+  "group": "Текст · светлая",
+  "role": "Ссылка (Deep Green)",
+  "fg": "#00875C",
+  "bg": "#FFFFFF",
+  "ratio": 4.55,
+  "need": 4.5,
+  "ok": true,
+  "note": ""
+ },
+ {
+  "group": "Текст · светлая",
+  "role": "Ссылка на Mint (Deep Green)",
+  "fg": "#00875C",
+  "bg": "#E8F8F1",
+  "ratio": 4.14,
+  "need": 4.5,
+  "ok": false,
+  "note": "Не использовать на Mint. Замена: Pressed #006B48",
+  "rep": {
+   "fg": "#006B48",
+   "bg": "#E8F8F1",
+   "ratio": 5.98,
+   "ok": true
+  }
+ },
+ {
+  "group": "Текст · светлая",
+  "role": "Ссылка на Mint (Pressed)",
+  "fg": "#006B48",
+  "bg": "#E8F8F1",
+  "ratio": 5.98,
+  "need": 4.5,
+  "ok": true,
+  "note": ""
+ },
+ {
+  "group": "Текст · светлая",
+  "role": "Фирменный зелёный как цвет текста",
+  "fg": "#00A86B",
+  "bg": "#FFFFFF",
+  "ratio": 3.08,
+  "need": 4.5,
+  "ok": false,
+  "note": "Только для крупного логотипа и графики; текстом — Deep Green",
+  "rep": {
+   "fg": "#00875C",
+   "bg": "#FFFFFF",
+   "ratio": 4.55,
+   "ok": true
+  }
+ },
+ {
+  "group": "Текст · светлая",
+  "role": "Белый текст на старом #00B37A",
+  "fg": "#FFFFFF",
+  "bg": "#00B37A",
+  "ratio": 2.72,
+  "need": 4.5,
+  "ok": false,
+  "note": "Не использовать. Замена: белый на #00875C или Ink на #00B37A",
+  "rep": {
+   "fg": "#FFFFFF",
+   "bg": "#00875C",
+   "ratio": 4.55,
+   "ok": true
+  }
+ },
+ {
+  "group": "Текст · светлая",
+  "role": "Белый текст на Parrlo Green",
+  "fg": "#FFFFFF",
+  "bg": "#00A86B",
+  "ratio": 3.08,
+  "need": 4.5,
+  "ok": false,
+  "note": "Замена: Ink на Parrlo Green или белый на Deep Green",
+  "rep": {
+   "fg": "#0E1116",
+   "bg": "#00A86B",
+   "ratio": 6.14,
+   "ok": true
+  }
+ },
+ {
+  "group": "Текст · светлая",
+  "role": "Ink на Parrlo Green",
+  "fg": "#0E1116",
+  "bg": "#00A86B",
+  "ratio": 6.14,
+  "need": 4.5,
+  "ok": true,
+  "note": ""
+ },
+ {
+  "group": "Текст · светлая",
+  "role": "Ink на жёлтом (клюв)",
+  "fg": "#0E1116",
+  "bg": "#FFC247",
+  "ratio": 11.76,
+  "need": 4.5,
+  "ok": true,
+  "note": ""
+ },
+ {
+  "group": "Текст · светлая",
+  "role": "Белый на жёлтом",
+  "fg": "#FFFFFF",
+  "bg": "#FFC247",
+  "ratio": 1.61,
+  "need": 4.5,
+  "ok": false,
+  "note": "Не использовать. Замена: Ink на жёлтом",
+  "rep": {
+   "fg": "#0E1116",
+   "bg": "#FFC247",
+   "ratio": 11.76,
+   "ok": true
+  }
+ },
+ {
+  "group": "Кнопки",
+  "role": "Primary: белый на Deep Green",
+  "fg": "#FFFFFF",
+  "bg": "#00875C",
+  "ratio": 4.55,
+  "need": 4.5,
+  "ok": true,
+  "note": ""
+ },
+ {
+  "group": "Кнопки",
+  "role": "Primary (нажата): белый на Pressed",
+  "fg": "#FFFFFF",
+  "bg": "#006B48",
+  "ratio": 6.57,
+  "need": 4.5,
+  "ok": true,
+  "note": ""
+ },
+ {
+  "group": "Кнопки",
+  "role": "Secondary: Pressed-зелёный на Mint",
+  "fg": "#006B48",
+  "bg": "#E8F8F1",
+  "ratio": 5.98,
+  "need": 4.5,
+  "ok": true,
+  "note": "Текст secondary — #006B48, не #00875C"
+ },
+ {
+  "group": "Кнопки",
+  "role": "Secondary (нажата): #006B48 на #CDEBDD",
+  "fg": "#006B48",
+  "bg": "#CDEBDD",
+  "ratio": 5.17,
+  "need": 4.5,
+  "ok": true,
+  "note": ""
+ },
+ {
+  "group": "Кнопки",
+  "role": "Dark primary: Ink на Light Green",
+  "fg": "#0E1116",
+  "bg": "#2BC48A",
+  "ratio": 8.43,
+  "need": 4.5,
+  "ok": true,
+  "note": ""
+ },
+ {
+  "group": "Кнопки",
+  "role": "Disabled: серый на #E5E7EB",
+  "fg": "#5B6472",
+  "bg": "#E5E7EB",
+  "ratio": 4.83,
+  "need": 4.5,
+  "ok": true,
+  "note": "Disabled WCAG не требует, но держим ≥4.5:1"
+ },
+ {
+  "group": "Текст · тёмная",
+  "role": "Основной текст",
+  "fg": "#E8ECF1",
+  "bg": "#12161C",
+  "ratio": 15.29,
+  "need": 4.5,
+  "ok": true,
+  "note": ""
+ },
+ {
+  "group": "Текст · тёмная",
+  "role": "Вторичный текст",
+  "fg": "#9AA4B2",
+  "bg": "#12161C",
+  "ratio": 7.2,
+  "need": 4.5,
+  "ok": true,
+  "note": ""
+ },
+ {
+  "group": "Текст · тёмная",
+  "role": "Акцент/ссылка (Light Green)",
+  "fg": "#2BC48A",
+  "bg": "#12161C",
+  "ratio": 8.09,
+  "need": 4.5,
+  "ok": true,
+  "note": ""
+ },
+ {
+  "group": "Текст · тёмная",
+  "role": "Текст на карточке",
+  "fg": "#E8ECF1",
+  "bg": "#242B34",
+  "ratio": 12.04,
+  "need": 4.5,
+  "ok": true,
+  "note": ""
+ },
+ {
+  "group": "Текст · тёмная",
+  "role": "Вторичный на карточке",
+  "fg": "#9AA4B2",
+  "bg": "#242B34",
+  "ratio": 5.66,
+  "need": 4.5,
+  "ok": true,
+  "note": ""
+ },
+ {
+  "group": "Чат",
+  "role": "Свой пузырь: белый на Deep Green",
+  "fg": "#FFFFFF",
+  "bg": "#00875C",
+  "ratio": 4.55,
+  "need": 4.5,
+  "ok": true,
+  "note": ""
+ },
+ {
+  "group": "Чат",
+  "role": "Чужой пузырь: Ink на Mint",
+  "fg": "#0E1116",
+  "bg": "#E8F8F1",
+  "ratio": 17.23,
+  "need": 4.5,
+  "ok": true,
+  "note": ""
+ },
+ {
+  "group": "Чат",
+  "role": "Подпись «Перевод» в чужом пузыре",
+  "fg": "#5B6472",
+  "bg": "#E8F8F1",
+  "ratio": 5.45,
+  "need": 4.5,
+  "ok": true,
+  "note": ""
+ },
+ {
+  "group": "Состояния",
+  "role": "Success: белый на Success",
+  "fg": "#FFFFFF",
+  "bg": "#00875C",
+  "ratio": 4.55,
+  "need": 4.5,
+  "ok": true,
+  "note": ""
+ },
+ {
+  "group": "Состояния",
+  "role": "Error: белый на Error",
+  "fg": "#FFFFFF",
+  "bg": "#C42B1F",
+  "ratio": 5.66,
+  "need": 4.5,
+  "ok": true,
+  "note": ""
+ },
+ {
+  "group": "Состояния",
+  "role": "Error: текст на плашке",
+  "fg": "#C42B1F",
+  "bg": "#FDECEA",
+  "ratio": 4.95,
+  "need": 4.5,
+  "ok": true,
+  "note": ""
+ },
+ {
+  "group": "Состояния",
+  "role": "Warning: текст на плашке",
+  "fg": "#8A4B00",
+  "bg": "#FFF1CC",
+  "ratio": 6.06,
+  "need": 4.5,
+  "ok": true,
+  "note": ""
+ },
+ {
+  "group": "Состояния",
+  "role": "Info: текст на белом",
+  "fg": "#1D5FBF",
+  "bg": "#FFFFFF",
+  "ratio": 6.1,
+  "need": 4.5,
+  "ok": true,
+  "note": ""
+ },
+ {
+  "group": "Графика ≥3:1",
+  "role": "Цветной знак (светлый край градиента) на белом",
+  "fg": "#12A06C",
+  "bg": "#FFFFFF",
+  "ratio": 3.35,
+  "need": 3,
+  "ok": true,
+  "note": ""
+ },
+ {
+  "group": "Графика ≥3:1",
+  "role": "Цветной знак на Mint",
+  "fg": "#12A06C",
+  "bg": "#E8F8F1",
+  "ratio": 3.05,
+  "need": 3,
+  "ok": true,
+  "note": "Если <3:1 — использовать Deep Green версию знака",
+  "rep": {
+   "fg": "#067A52",
+   "bg": "#E8F8F1",
+   "ratio": 4.89,
+   "ok": true
+  }
+ },
+ {
+  "group": "Графика ≥3:1",
+  "role": "Знак для тёмного фона на #12161C",
+  "fg": "#1DB37A",
+  "bg": "#12161C",
+  "ratio": 6.72,
+  "need": 3,
+  "ok": true,
+  "note": ""
+ },
+ {
+  "group": "Графика ≥3:1",
+  "role": "Белый знак на начале градиента иконки",
+  "fg": "#FFFFFF",
+  "bg": "#067A52",
+  "ratio": 5.37,
+  "need": 3,
+  "ok": true,
+  "note": ""
+ },
+ {
+  "group": "Графика ≥3:1",
+  "role": "Белый знак на конце градиента иконки",
+  "fg": "#FFFFFF",
+  "bg": "#12A06C",
+  "ratio": 3.35,
+  "need": 3,
+  "ok": true,
+  "note": "Минимум по иконке Chat"
+ },
+ {
+  "group": "Графика ≥3:1",
+  "role": "Клюв (#FFC247) на белом",
+  "fg": "#FFC247",
+  "bg": "#FFFFFF",
+  "ratio": 1.61,
+  "need": 3,
+  "ok": false,
+  "note": "ИСКЛЮЧЕНИЕ: в иконке Chat клюв выходит за белую голову на зелёный фон; клюв на белом отдельно не ставить"
+ },
+ {
+  "group": "Графика ≥3:1",
+  "role": "Клюв на зелёной голове (конец градиента)",
+  "fg": "#FFC247",
+  "bg": "#12A06C",
+  "ratio": 2.08,
+  "need": 3,
+  "ok": false,
+  "note": "ИСКЛЮЧЕНИЕ: клюв отличается оттенком, не яркостью; на тёмном краю градиента 3.3:1; знак читается и без клюва (моно-версии)"
+ },
+ {
+  "group": "Графика ≥3:1",
+  "role": "Клюв на тёмном #12161C",
+  "fg": "#FFC247",
+  "bg": "#12161C",
+  "ratio": 11.29,
+  "need": 3,
+  "ok": true,
+  "note": ""
+ },
+ {
+  "group": "Графика ≥3:1",
+  "role": "Wordmark «rr» (#00A86B) на белом",
+  "fg": "#00A86B",
+  "bg": "#FFFFFF",
+  "ratio": 3.08,
+  "need": 3,
+  "ok": true,
+  "note": "Крупный логотип (≥24 px / 18 pt bold)"
+ },
+ {
+  "group": "Графика ≥3:1",
+  "role": "Wordmark «rr» на #0E1116",
+  "fg": "#00A86B",
+  "bg": "#0E1116",
+  "ratio": 6.14,
+  "need": 3,
+  "ok": true,
+  "note": ""
+ }
+]

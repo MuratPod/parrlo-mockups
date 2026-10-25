@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Parrlo Translate · макеты экранов · брендбук v2.2</title>
+<meta name="theme-color" content="#0E1116">
+<style>
+:root{--bg:#0E1116;--surf:#161A21;--hi:#1F252E;--bd:#2F3742;--tx:#E8ECF1;--mu:#9AA4B2;--pr:#2BC48A;--beak:#FFC247}
+*{box-sizing:border-box;margin:0}
+html,body{background:var(--bg);color:var(--tx);font:16px/1.45 Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;-webkit-text-size-adjust:100%}
+body{overflow-x:hidden;min-height:100vh;background:radial-gradient(900px 500px at 70% -10%,rgba(43,196,138,.14),transparent 60%),var(--bg)}
+button{font:inherit;color:inherit;cursor:pointer}
+header{max-width:1080px;margin:0 auto;padding:18px 20px 6px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+header h1{font-size:18px;font-weight:700;letter-spacing:-.01em}
+.tag{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#0E1116;background:var(--beak);padding:3px 9px;border-radius:99px}
+header .sub{color:var(--mu);font-size:14px;flex-basis:100%}
+main{max-width:1080px;margin:0 auto;padding:10px 20px 60px;display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:36px;align-items:start}
+.stage{display:flex;flex-direction:column;align-items:center;gap:14px;position:sticky;top:12px}
+.phone{width:100%;max-width:360px;aspect-ratio:1206/2622;border-radius:50px;padding:9px;background:#1b2027;border:1px solid #39424e;box-shadow:0 30px 80px rgba(0,0,0,.55),inset 0 0 0 2px #0a0d11;position:relative}
+.phone .scr{width:100%;height:100%;border-radius:42px;overflow:hidden;background:#000;position:relative}
+.phone img{display:block;width:100%;height:100%;object-fit:cover;user-select:none;-webkit-user-drag:none}
+.mock{position:absolute;left:50%;transform:translateX(-50%);bottom:-11px;background:var(--beak);color:#0E1116;font-size:11px;font-weight:800;letter-spacing:.08em;padding:3px 10px;border-radius:99px;text-transform:uppercase}
+.ctl{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;width:100%;max-width:360px;margin-top:6px}
+.nav{min-width:48px;min-height:48px;border-radius:14px;border:1px solid var(--bd);background:var(--surf);font-size:20px}
+.nav:hover{background:var(--hi)}
+.nav:focus-visible,.seg button:focus-visible,.chips button:focus-visible{outline:2px solid var(--pr);outline-offset:2px}
+.cnt{min-width:78px;text-align:center;font-variant-numeric:tabular-nums;color:var(--mu);font-size:14px}
+.seg{display:inline-flex;background:var(--surf);border:1px solid var(--bd);border-radius:14px;padding:3px}
+.seg button{min-height:44px;padding:0 18px;border:0;border-radius:11px;background:none;color:var(--mu);font-weight:600}
+.seg button[aria-pressed=true]{background:var(--pr);color:#0E1116}
+.segs{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%}
+.seglab{align-self:center;padding:0 10px 0 12px;color:var(--mu);font-size:14px;font-weight:600}
+.seg.off{opacity:.45}
+.seg button{white-space:nowrap}
+.gl{margin-top:16px;padding:12px 14px;border:1px solid var(--bd);border-radius:14px;background:var(--surf)}
+.gl b{display:block;margin-bottom:4px}
+.gl ul{margin:6px 0 0 18px;padding:0;font-size:14px;color:var(--mu)}
+.gl p{font-size:13px;color:var(--mu);margin-top:6px}
+.info h2{font-size:26px;letter-spacing:-.02em;line-height:1.15;margin-bottom:4px}
+.info .fn{color:var(--mu);font-size:13px;margin-bottom:18px;word-break:break-all}
+.rows{border-top:1px solid var(--bd)}
+.row{padding:12px 0;border-bottom:1px solid var(--bd)}
+.row b{display:block;font-weight:650;margin-bottom:3px}
+.row .w,.row .n{font-size:14px;color:var(--mu)}
+.row .n{color:var(--tx)}
+.row .w::before{content:"было · ";color:#7d8795}
+.row .n::before{content:"стало · ";color:var(--pr)}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:4px 0 10px;margin:22px 0 0;scrollbar-width:thin}
+.chips button{flex:0 0 auto;min-width:44px;min-height:44px;border-radius:12px;border:1px solid var(--bd);background:var(--surf);color:var(--mu);font-variant-numeric:tabular-nums;font-size:14px}
+.chips button[aria-current=true]{background:var(--pr);border-color:var(--pr);color:#0E1116;font-weight:700}
+.icons{margin-top:26px}
+.icons h3{font-size:15px;margin-bottom:10px;color:var(--mu);font-weight:600}
+.ig{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.ig figure{display:grid;gap:6px;justify-items:center}
+.ig img{width:100%;max-width:120px;border-radius:22%;background:#222}
+.ig figcaption{font-size:12px;color:var(--mu)}
+.note{margin-top:22px;color:var(--mu);font-size:13px}
+.spots{position:absolute;inset:0;pointer-events:none;overflow:hidden;container-type:size;-webkit-mask-image:var(--mask);mask-image:var(--mask);-webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat}
+.spots[hidden]{display:none}
+.spots i{position:absolute;display:block;aspect-ratio:1/1;border-radius:50%;will-change:transform;animation:dg-a 34s ease-in-out infinite alternate}
+.spots i:nth-child(2){animation-name:dg-b;animation-duration:41s}.spots i:nth-child(3){animation-name:dg-c;animation-duration:37s}
+.spots::after{content:"";position:absolute;inset:0;opacity:.07;mix-blend-mode:soft-light;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>")}
+@keyframes dg-a{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(3.4%,2.6%,0) scale(1.12)}}
+@keyframes dg-b{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(-3.6%,3.2%,0) scale(.92)}}
+@keyframes dg-c{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(3.8%,-3%,0) scale(1.1)}}
+@media (prefers-reduced-motion:reduce){.spots i{animation:none}}
+@media(max-width:820px){main{grid-template-columns:minmax(0,1fr);gap:20px;padding:6px 16px 48px}.stage{position:static}header{padding:14px 16px 4px}.info h2{font-size:22px}.mock{bottom:-12px}}
+@media(prefers-reduced-motion:no-preference){.phone img{transition:opacity .12s}}
+</style></head>
+<body>
+<header><h1>Parrlo Translate · экраны билда 1503</h1><span class="tag">Макет</span><div class="sub">Новый брендбук v2 (направление 7), версия 2.2: фон почти чёрный, на нём несколько небольших ярких пятен света. Раскладка и тексты не менялись — только знак, иконка, цвета и фон. Тёмная тема, только RU.</div></header>
+<main>
+<section class="stage" aria-label="Экран приложения">
+ <div class="phone"><div class="scr"><img id="img" alt="" width="603" height="1311"><div class="spots" id="spots" aria-hidden="true"></div></div><span class="mock">Макет</span></div>
+ <div class="ctl">
+  <button class="nav" id="prev" aria-label="Предыдущий экран">←</button>
+  <span class="cnt" id="cnt"></span>
+  <button class="nav" id="next" aria-label="Следующий экран">→</button>
+ </div>
+ <div class="segs">
+  <div class="seg" role="group" aria-label="Версия"><button id="bBefore" aria-pressed="false">Было</button><button id="bAfter" aria-pressed="true">Стало</button></div>
+  <div class="seg" id="bgseg" role="group" aria-label="Фон"><span class="seglab">Фон:</span><button id="bCalm" aria-pressed="false">Спокойный</button><button id="bGlow" aria-pressed="true">С пятнами</button></div>
+ </div>
+</section>
+<section class="info">
+ <h2 id="title"></h2><div class="fn" id="fn"></div>
+ <div class="rows" id="rows"></div>
+ <div class="gl" id="gl"></div>
+ <div class="chips" id="chips" role="navigation" aria-label="Экраны"></div>
+ <div class="icons"><h3>Иконка приложения Translate: было → стало</h3>
+  <div class="ig" id="ig"></div></div>
+ <p class="note">Стрелки ←/→ листают экраны, ↑/↓ переключают «было/стало», G — фон «спокойный/с пятнами». Экраны пока перекрашены поверх снимков билда, это макет для согласования, не продакшн-ассеты.</p>
+</section>
+</main>
+<script>
+(async function(){
+ var meta=await (await fetch('s/meta.json')).json(); var i=0, after=true, glow=true;
+ var $=function(id){return document.getElementById(id)};
+ var img=$('img'),chips=$('chips');
+ meta.forEach(function(m,k){var b=document.createElement('button');b.textContent=(m.id.split('-')[0]);b.title=m.title;b.setAttribute('aria-label','Экран '+m.id.split('-')[0]+': '+m.title);b.onclick=function(){go(k)};chips.appendChild(b)});
+ [['light','светлая'],['dark','тёмная'],['tinted','tinted']].forEach(function(t){['old','new'].forEach(function(k){var f=document.createElement('figure');f.innerHTML='<img alt="Иконка '+t[1]+' ('+(k=='old'?'было':'стало')+')" src="s/icon-'+k+'-'+t[0]+'.webp" width="120" height="120"><figcaption>'+t[1]+' · '+(k=='old'?'было':'стало')+'</figcaption>';$('ig').appendChild(f)})});
+ $('ig').style.gridTemplateColumns='repeat(2,minmax(0,1fr))';
+ function esc(s){return s.replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})}
+ function kind(a){return !a?'before':'after'}
+ function rgba(h,a){return 'rgba('+parseInt(h.substr(1,2),16)+','+parseInt(h.substr(3,2),16)+','+parseInt(h.substr(5,2),16)+','+a.toFixed(3)+')'}
+ var ST=[[0,1],[14,.78],[30,.5],[46,.26],[62,.11],[80,.03],[100,0]];
+ function grad(h,A){return 'radial-gradient(circle closest-side,'+ST.map(function(t){return rgba(h,A*t[1])+' '+t[0]+'%'}).join(',')+')'}
+ function render(){
+  var m=meta[i]; img.src='s/'+m.id+'.'+kind(after)+'.webp'; img.alt='Экран '+m.id+' — '+m.title+(after?(glow?' (стало, с пятнами)':' (стало, спокойный фон)'):' (было)');
+  var sp=$('spots'); sp.hidden=!(after&&glow); sp.style.setProperty('--mask','url(s/'+m.id+'.mask.webp)');
+  sp.innerHTML=m.glow.spots.map(function(x){var d=x.d;return '<i style="left:'+(x.x-d/2).toFixed(2)+'%;top:calc('+x.y+'% - '+(d/2).toFixed(2)+'cqw);width:'+d+'%;background:'+grad(x.hex,x.alpha)+'"></i>'}).join('');
+  $('cnt').textContent=(i+1)+' / '+meta.length; $('title').textContent=m.title; $('fn').textContent=m.id+'.png';
+  $('rows').innerHTML=m.rows.map(function(r){return '<div class="row"><b>'+esc(r.el)+'</b><div class="w">'+esc(r.was)+'</div><div class="n">'+esc(r.now)+'</div></div>'}).join('');
+  [].forEach.call(chips.children,function(c,k){if(k==i)c.setAttribute('aria-current','true');else c.removeAttribute('aria-current')});
+  $('bBefore').setAttribute('aria-pressed',!after);$('bAfter').setAttribute('aria-pressed',after);$('bCalm').setAttribute('aria-pressed',!glow);$('bGlow').setAttribute('aria-pressed',glow);$('bgseg').classList.toggle('off',!after);
+  var g=m.glow; $('gl').innerHTML='<b>Фон v2.2 · '+esc(g.group)+'</b><ul>'+g.spots.map(function(x){return '<li>'+esc(x.color)+' · '+esc(x.pos)+' · пик '+Math.round(x.alpha*100)+' %</li>'}).join('')+'</ul><p>Минимальный контраст на фоне рядом с пятном: текст '+(g.text_min?g.text_min.toFixed(2)+':1':'—')+' (норма 4.5:1), графика '+(g.graphic_min?g.graphic_min.toFixed(2)+':1':'—')+' (норма 3:1). Где пятно мешало — приглушено.</p>';
+  var cur=chips.children[i]; if(cur&&chips.scrollTo){chips.scrollTo({left:cur.offsetLeft-chips.clientWidth/2+cur.clientWidth/2})}
+  if(meta[i+1]){(new Image()).src='s/'+meta[i+1].id+'.'+kind(after)+'.webp';(new Image()).src='s/'+meta[i+1].id+'.mask.webp'}
+ }
+ function go(k){i=(k+meta.length)%meta.length;render()}
+ $('prev').onclick=function(){go(i-1)};$('next').onclick=function(){go(i+1)};
+ $('bBefore').onclick=function(){after=false;render()};$('bAfter').onclick=function(){after=true;render()};
+ $('bCalm').onclick=function(){glow=false;after=true;render()};$('bGlow').onclick=function(){glow=true;after=true;render()};
+ document.addEventListener('keydown',function(e){if(e.key=='ArrowRight')go(i+1);else if(e.key=='ArrowLeft')go(i-1);else if(e.key=='ArrowUp'||e.key=='ArrowDown'){after=!after;render();e.preventDefault()}else if(e.key=='g'||e.key=='G'){glow=!glow;after=true;render()}});
+ render();
+})();
+</script>
+</body></html>

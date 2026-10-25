@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024"><defs><linearGradient id="bg"><stop stop-color="#E9F4F7"/><stop offset="1" stop-color="#E9F4F7"/></linearGradient><clipPath id="c"><rect width="1024" height="1024" rx="228"/></clipPath></defs><g clip-path="url(#c)"><rect width="1024" height="1024" fill="url(#bg)"/><g transform="translate(0 -20)">
+<path fill="#0F4C5C" d="M452 700 C 400 790 330 880 262 958 C 250 972 262 988 280 980 C 380 940 470 860 530 770 Z"/>
+<g fill="#0F4C5C"><ellipse cx="545" cy="590" rx="215" ry="290" transform="rotate(24 545 590)"/><circle cx="615" cy="330" r="185"/></g>
+<path fill="#FFC247" d="M770 285 C 856 276 898 332 880 404 C 868 446 836 466 810 444 C 816 404 796 368 754 364 Z"/>
+<circle cx="665" cy="320" r="34" fill="#fff"/><circle cx="676" cy="309" r="11" fill="#0F4C5C"/>
+<g fill="#FFC247"><rect x="385" y="575.0" width="40" height="70" rx="20"/><rect x="448" y="535.0" width="40" height="150" rx="20"/><rect x="511" y="495.0" width="40" height="230" rx="20"/><rect x="574" y="535.0" width="40" height="150" rx="20"/><rect x="637" y="575.0" width="40" height="70" rx="20"/></g></g></g></svg>

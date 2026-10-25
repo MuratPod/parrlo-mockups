@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Макет · Parrlo Translate Web · бренд v2</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg"><link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<meta name="theme-color" content="#0E1116"><meta name="color-scheme" content="dark">
+<style>
+:root{--bg:#0E1116;--s:#1A1F27;--s2:#242B35;--t:#F2F5F8;--m:#9AA5B1;--a:#2BC48A;--ink:#0E1116}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--t);font:15px/1.4 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;overflow-x:hidden}
+button{font:inherit;color:inherit;cursor:pointer}
+header{position:sticky;top:0;z-index:5;background:rgba(14,17,22,.94);backdrop-filter:blur(8px);border-bottom:1px solid #ffffff14;padding:10px 14px;display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center}
+.brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:16px;min-width:0}
+.brand img{width:30px;height:30px;flex:none}
+.badge{background:#FFC247;color:#0E1116;font-weight:800;font-size:12px;letter-spacing:.04em;padding:3px 9px;border-radius:99px;text-transform:uppercase;white-space:nowrap}
+.sp{flex:1 1 0}
+.seg{display:inline-flex;background:var(--s);border-radius:12px;padding:3px;gap:2px}
+.seg button{background:none;border:0;padding:7px 12px;border-radius:9px;color:var(--m);font-weight:600;min-height:36px}
+.seg button[aria-pressed=true]{background:var(--a);color:var(--ink)}
+.seg button:focus-visible,.nav button:focus-visible,#list button:focus-visible,#stage:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+main{display:grid;grid-template-columns:240px 1fr;gap:0;min-height:calc(100vh - 60px)}
+aside{border-right:1px solid #ffffff10;padding:12px 10px;overflow:auto;max-height:calc(100vh - 60px);position:sticky;top:60px;align-self:start}
+aside h3{margin:12px 6px 6px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--m)}
+#list button{display:block;width:100%;text-align:left;background:none;border:0;padding:8px 10px;border-radius:10px;color:var(--t)}
+#list button[aria-current=true]{background:var(--s2);color:var(--a);font-weight:700}
+#list button:hover{background:var(--s)}
+section.v{padding:14px;min-width:0}
+.info{max-width:760px;margin:0 auto 12px;background:var(--s);border-radius:14px;padding:11px 14px}
+.info b{display:block;font-size:16px}.info span{color:var(--m)}
+.nav{display:flex;gap:8px;justify-content:center;align-items:center;margin:0 auto 12px;flex-wrap:wrap}
+.nav button{background:var(--s2);border:0;border-radius:12px;padding:8px 14px;min-height:40px}
+.nav .cnt{color:var(--m);min-width:64px;text-align:center}
+#stage{display:flex;gap:18px;justify-content:center;align-items:flex-start;flex-wrap:wrap;outline:none}
+figure{margin:0;min-width:0;max-width:100%}
+figure:has(>.ph){flex:0 1 402px;width:402px}
+figure:has(>.dk.two){flex:0 1 640px;width:640px}
+figcaption{text-align:center;font-weight:800;margin-bottom:6px;font-size:13px;letter-spacing:.05em}
+figure.b figcaption{color:var(--m)}figure.a figcaption{color:var(--a)}
+.ph{border-radius:34px;padding:8px;background:#000;border:1px solid #ffffff22;width:min(100%,402px)}
+.ph img{display:block;width:100%;height:auto;border-radius:26px;cursor:pointer}
+.dk{width:min(100%,1180px);border-radius:12px;overflow:hidden;border:1px solid #ffffff22}
+.dk.two{width:min(100%,640px)}
+.dk img{display:block;width:100%;height:auto;cursor:pointer}
+.dk .bar{height:22px;background:#242B35;display:flex;gap:6px;align-items:center;padding:0 10px}.dk .bar i{width:9px;height:9px;border-radius:50%;background:#ffffff40}
+.note{max-width:760px;margin:12px auto 0;color:var(--m);font-size:13px;text-align:center}
+.assets{max-width:1000px;margin:0 auto}
+.assets h2{font-size:18px;margin:18px 0 8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+.card{background:var(--s);border-radius:14px;padding:12px;text-align:center;min-width:0}
+.card img{max-width:100%;height:auto;display:block;margin:0 auto 8px;background:#fff1;border-radius:8px}
+.card small{color:var(--m);display:block;word-break:break-all}
+.og{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}.og img{width:100%;height:auto;border-radius:10px;display:block}
+@media(max-width:820px){main{grid-template-columns:1fr}aside{position:static;max-height:none;border-right:0;border-bottom:1px solid #ffffff10;display:none}aside.open{display:block}#menu{display:inline-block}}
+@media(min-width:821px){#menu{display:none}}
+</style></head><body>
+<header>
+ <div class="brand"><img src="mark.svg" alt=""><span>Parrlo Translate · веб</span><span class="badge">Макет</span></div>
+ <span class="sp"></span>
+ <button id="menu" class="seg" style="padding:7px 12px;border:0;color:var(--t);min-height:36px;border-radius:12px;background:var(--s)" aria-expanded="false">Экраны ☰</button>
+ <div class="seg" role="group" aria-label="Вкладка"><button data-tab="proto">Макет</button><button data-tab="cmp">Приложение vs Веб</button></div>
+ <div class="seg" role="group" aria-label="Устройство" id="devseg"><button data-dev="mobile">Телефон</button><button data-dev="desktop">Десктоп</button></div>
+ <div class="seg" role="group" aria-label="Язык"><button data-lang="ru">RU</button><button data-lang="es">ES</button><button data-lang="en">EN</button></div>
+ <div class="seg" role="group" aria-label="Версия" id="vseg"><button data-v="before">Было</button><button data-v="after">Стало</button><button data-v="both">Рядом</button></div>
+</header>
+<main>
+<aside id="aside"><div id="list"></div></aside>
+<section class="v">
+ <div id="head"></div>
+ <div class="nav"><button id="prev">← Назад</button><span class="cnt" id="cnt"></span><button id="next">Далее →</button></div>
+ <div id="stage" tabindex="0" aria-live="polite"></div>
+ <p class="note" id="note"></p>
+</section>
+</main>
+<script>
+const D=[{"id": "start", "m": "start", "app": "01b-start-NEW-palette", "b": null, "g": "Онбординг", "t": "Старт: языки и роль", "note": "Те же панель «Я говорю / Собеседник говорит / Собеседник», сегменты языков, выбор «Он / Она», строки «История» и «Настройки», CTA «Начать разговор». Верхней статус-строки iOS в вебе нет."}, {"id": "onb1", "m": "onb1", "app": "03-welcome", "b": "01-onboarding-1", "g": "Онбординг", "t": "Онбординг 1/4 — приветствие", "note": "Знак, слово Parrlo, заголовок, подпись, точки шага, «Начать». Фон с яркими пятнами как в приложении."}, {"id": "onb2", "m": "onb2", "app": "04-about", "b": "02-onboarding-2", "g": "Онбординг", "t": "Онбординг 2/4 — как к вам обращаться", "note": "Значок-человек, две карточки «Мужчина / Женщина», «Далее» и «Пропустить»."}, {"id": "onb3", "m": "onb3", "app": "05-micperm", "b": "03-onboarding-3", "g": "Онбординг", "t": "Онбординг 3/4 — микрофон", "note": "Значок микрофона, «Разрешить микрофон». В вебе нажатие вызывает системный запрос браузера."}, {"id": "prep", "m": "prep", "app": "06-prep", "b": null, "g": "Онбординг", "t": "Подготовка (кольцо 64 %)", "note": "Кольцо прогресса и чек-лист. В вебе вместо загрузки моделей: «Браузер готов / Распознавание на сервере / Проверяем перевод» (моделей на устройстве в вебе нет)."}, {"id": "idle", "m": "idle", "app": "07-idle", "b": "04-main-empty", "g": "Разговор", "t": "Главный: пусто", "note": "Верхняя панель (стоп, пилюля RU⇄ES, клавиатура, «⋯»), знак и слоган, чипы «Вы · Русский / Собеседник · Español», две большие кнопки «Я говорю» / «Yo hablo» со свечением."}, {"id": "rec", "m": "rec", "app": "08-speaking", "b": "12-recording", "g": "Разговор", "t": "Запись («Я говорю»)", "note": "Живая реплика в плашке с тремя точками, зелёная кнопка «Готово» с ореолом. Ореол и волна те же, что в приложении."}, {"id": "proc", "m": "proc", "app": "09-processing", "b": null, "g": "Разговор", "t": "Обработка", "note": "Карточка «Распознано / Перевожу…», спиннер, кнопки в состоянии «занято»."}, {"id": "tr", "m": "tr", "app": "10-translating", "b": null, "g": "Разговор", "t": "Перевод идёт", "note": "Исходная фраза, зелёный пузырь с курсором, подпись языка. Кнопки приглушены."}, {"id": "done", "m": "done", "app": "11-done", "b": "05-result", "g": "Разговор", "t": "Перевод готов", "note": "Пузырь исходной фразы, зелёный пузырь перевода, динамик, подпись «Español · в облаке» (в приложении «на телефоне»)."}, {"id": "play", "m": "play", "app": "12-playing", "b": null, "g": "Разговор", "t": "Озвучивание (кольцо)", "note": "Белое кольцо вокруг пузыря, эквалайзер в подписи, значок волны. Кольцо белое по PNG приложения (в BRAND-SPOTS-APP.md указан #FFC247 — устарело)."}, {"id": "dir1", "m": "dir1", "app": "13-dirRuen", "b": null, "g": "Разговор", "t": "Направление RU→ES", "note": "Партнёр говорит по-испански: пузырь собеседника и перевод на русский, кнопки в нужном порядке."}, {"id": "dir2", "m": "dir2", "app": "14-dirEnes", "b": null, "g": "Разговор", "t": "Направление EN→ES", "note": "То же для пары EN⇄ES."}, {"id": "partner", "m": "partner", "app": "15-partner", "b": null, "g": "Разговор", "t": "Реплика собеседника", "note": "Исходная реплика, перевод в тёмном пузыре, значок динамика, подпись языка."}, {"id": "text", "m": "text", "app": "16-textPasted", "b": null, "g": "Разговор", "t": "Вставка текста", "note": "Поле ввода с «×» и «отправить», та же панель, что в приложении."}, {"id": "qr", "m": "qr", "app": "17b-qr-NEW", "b": "09-qr-host-sheet", "g": "QR-разговор", "t": "Гость по QR", "note": "Лист «Гость по QR», QR с логотипом, «Ждём гостя…», ссылка, «Скопировать ссылку». Ссылка парро-веба вместо приложения."}, {"id": "qrjoined", "m": "qrjoined", "app": null, "b": "G:13-qr-host-connected", "g": "QR-разговор", "t": "Гость по QR: подключился", "note": "Тот же лист, чип «Гость подключился» (экрана в приложении нет, собран из компонентов 17b)."}, {"id": "settings", "m": "settings", "app": "18b-settings-NEW", "b": "06-settings", "g": "Настройки и данные", "t": "Настройки", "note": "Заголовок, карточка «parrlo», секции «О вас / Перевод…», строки с иконками, сегмент «Мужчина / Женщина», переключатели. Блок «Версия веб» вместо номера сборки."}, {"id": "models", "m": "models", "app": "19-models", "b": null, "g": "Настройки и данные", "t": "Офлайн-переводчик", "note": "Тот же экран с переключателем «Только облачный перевод» (в вебе всегда включён). Загрузка моделей невозможна на платформе, поясняющая сноска."}, {"id": "data", "m": "data", "app": "20-data", "b": null, "g": "Настройки и данные", "t": "Данные и приватность", "note": "«Хранить историю», срок, «Отметки неточно», красные «Очистить / Удалить все данные», «Звук никогда не сохраняется». «В этом браузере» вместо «на этом телефоне»."}, {"id": "hist", "m": "hist", "app": "21-history", "b": null, "g": "История", "t": "История", "note": "Поиск, группы по дням, карточки с временем и счётчиками реплик, «неточно»."}, {"id": "hdet", "m": "hdet", "app": "22-historyDetail", "b": null, "g": "История", "t": "Деталь истории", "note": "Заголовок «Сегодня, 14:32», пузыри обеих сторон, «Скопировать всё» и «Удалить»."}, {"id": "quota", "m": "quota", "app": "23-quota", "b": "07-limit-sheet", "g": "Лимит и ошибки", "t": "Лимит: карточка", "note": "Карточка «Бесплатные облачные фразы на сегодня закончились» + «Понятно». Совета «скачать модели» в вебе нет: вместо него описание лимита и приложения. StoreKit-paywall в вебе невозможен."}, {"id": "quotaline", "m": "quotaline", "app": "24-quotaLine", "b": null, "g": "Лимит и ошибки", "t": "Лимит: строка", "note": "Строка-подпись под пузырём «…продолжим завтра»."}, {"id": "errmic", "m": "errmic", "app": "26-errMic", "b": "08-mic-error", "g": "Лимит и ошибки", "t": "Нет доступа к микрофону", "note": "Тот же экран: значок, заголовок, пояснение, кнопка, «Ввести текст». Вместо «Открыть настройки» — «Как разрешить» (браузер не открывает настройки)."}, {"id": "errnet", "m": "errnet", "app": "27-errNet", "b": null, "g": "Лимит и ошибки", "t": "Нет интернета", "note": "Плашка «Нет интернета» с «Повторить», кнопки приглушены. Совета про офлайн-модели в вебе нет."}, {"id": "g_noroom", "m": "g_noroom", "app": null, "b": "G:10-noroom", "g": "Гость /t/", "t": "Гость: нет комнаты", "note": "Экрана в приложении нет. Собран из компонентов приложения: знак, заголовок, подпись, белая кнопка «Открыть Parrlo в браузере», пилюля RU⇄ES."}, {"id": "g_invite", "m": "g_invite", "app": null, "b": "G:20-invite-waiting", "g": "Гость /t/", "t": "Гость: приглашение", "note": "Знак, заголовок, «Соединяем…», приглушённая кнопка «Говорю»."}, {"id": "g_ready", "m": "g_ready", "app": null, "b": "G:12-guest-connected", "g": "Гость /t/", "t": "Гость: подключён", "note": "Подсказка и зелёная кнопка «Говорю» с ореолом."}, {"id": "g_rec", "m": "g_rec", "app": null, "b": "G:14-guest-recording", "g": "Гость /t/", "t": "Гость: запись", "note": "Живая реплика, кнопка «Готово» (как в приложении)."}, {"id": "g_reply", "m": "g_reply", "app": null, "b": "G:18-guest-got-reply", "g": "Гость /t/", "t": "Гость: ответ получен", "note": "Пузыри как на экране перевода, «Говорю»."}, {"id": "g_end", "m": "g_end", "app": null, "b": "G:16-guest-ended", "g": "Гость /t/", "t": "Гость: разговор завершён", "note": "Итог и кнопка «Установить Parrlo»."}, {"id": "install", "m": "install", "app": null, "b": null, "g": "Установка", "t": "Установка на экран «Домой» (PWA)", "note": "Лист на компонентах 17b: иконка, три шага, «Понятно»."}];const GR=["Онбординг", "Разговор", "QR-разговор", "Настройки и данные", "История", "Лимит и ошибки", "Гость /t/", "Установка"];
+const S={dev:"mobile",lang:"ru",v:"after",i:0,tab:"proto"};
+const $=s=>document.querySelector(s);
+const groups=GR.concat([]);
+function screens(){const o=[];groups.forEach(g=>D.filter(x=>x.g===g).forEach(x=>o.push(x)));
+ if(S.tab==="proto")o.push({id:"assets",t:"Иконки и превью",g:"Установка",b:null,app:null,note:"Набор для установки: favicon 32/48 + .ico, apple-touch 180, PWA 192/512 + maskable, manifest, og 1200×630 ru/es/en."});return o}
+function src(x,v){
+ if(v==="app")return x.app?`img/app/${x.app}.webp`:null;
+ if(v==="before"){if(!x.b)return null;const g=x.b.startsWith("G:"),f=x.b.replace("G:","");let l=S.lang;if(g&&S.dev==="desktop")l="es";return `img/before/${S.dev}/${g?"guest-":""}${l}-${f}.webp`}
+ return `img/after/${S.dev}/${S.lang}-${x.id}.webp`}
+function parse(){const h=new URLSearchParams(location.hash.slice(1));
+ if(h.get("d"))S.dev=h.get("d");if(h.get("t"))S.tab=h.get("t");if(h.get("l"))S.lang=h.get("l");if(h.get("v"))S.v=h.get("v");S.start=h.get("s")}
+function save(cur){const h=new URLSearchParams({t:S.tab,d:S.dev,l:S.lang,v:S.v,s:cur.id});history.replaceState(null,"","#"+h)}
+function render(){const L=screens();
+ if(S.start){const k=L.findIndex(x=>x.id===S.start);if(k>=0)S.i=k;S.start=null}
+ if(S.i>=L.length)S.i=L.length-1;if(S.i<0)S.i=0;const x=L[S.i];save(x);
+ document.querySelectorAll("[data-tab]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.tab===S.tab));$("#devseg").style.display=$("#vseg").style.display=S.tab==="cmp"?"none":"";
+ document.querySelectorAll("[data-dev]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.dev===S.dev));
+ document.querySelectorAll("[data-lang]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.lang===S.lang));
+ document.querySelectorAll("[data-v]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===S.v));
+ let lh="";groups.forEach(g=>{const it=L.filter(y=>y.g===g);if(!it.length)return;lh+=`<h3>${g}</h3>`;it.forEach(y=>{lh+=`<button data-id="${y.id}" ${y.id===x.id?'aria-current="true"':''}>${y.t}</button>`})});
+ $("#list").innerHTML=lh;
+ $("#head").innerHTML=`<div class="info"><b>${x.t}</b><span>${x.note}</span>${S.tab==="cmp"&&x.app?`<span style="display:block;margin-top:4px">Экран приложения: ${x.app}</span>`:""}</div>`;
+ $("#cnt").textContent=`${S.i+1} / ${L.length}`;
+ const st=$("#stage");
+ if(x.id==="assets"){st.innerHTML=`<div class="assets">
+  <h2>Иконки</h2><div class="grid">${[["mark.svg","знак (цвет)"],["mark-mono.svg","знак моно (QR-табличка)"],["favicon.svg","favicon.svg"],["favicon-16.png","favicon 16"],["favicon-32.png","favicon 32"],["favicon-48.png","favicon 48"],["favicon.ico",".ico"],["apple-touch-icon.png","apple-touch 180"],["pwa-192.png","PWA 192"],["pwa-512.png","PWA 512"],["pwa-maskable-512.png","PWA maskable 512"]].map(a=>`<div class="card"><img src="assets/${a[0]}" alt="${a[1]}" width="96" height="96" style="width:96px;height:96px;object-fit:contain${a[0]==="mark-mono.svg"?";background:#fff;padding:8px":""}"><small>${a[1]}</small></div>`).join("")}</div>
+  <h2>Превью для ссылок (og 1200×630)</h2><div class="og">${["ru","es","en"].map(l=>`<div class="card"><img src="assets/og/og-${l}.png" alt="og ${l}" loading="lazy"><small>og-${l}.png</small></div>`).join("")}</div>
+  <h2>Манифест</h2><p><a style="color:var(--a)" href="assets/manifest.webmanifest">manifest.webmanifest</a></p></div>`;
+  $("#note").textContent="";return}
+ const ph=(msg)=>`<div class="ph"><div style="aspect-ratio:1170/2532;display:grid;place-items:center;text-align:center;padding:24px;color:var(--m);background:#0E1116;border-radius:26px">${msg}</div></div>`;
+ const frame=(v,dev)=>{const s=src(x,v);const alt=`${x.t} — ${v}`;const im=s?`<img src="${s}" alt="${alt}" decoding="async" onerror="this.alt='нет кадра'">`:null;
+  if(!im)return ph(v==="app"?"Экрана в приложении нет. Макет собран из компонентов приложения.":"В старом вебе этого экрана не было.");
+  return dev==="mobile"?`<div class="ph">${im}</div>`:`<div class="dk ${S.v==="both"?"two":""}"><div class="bar"><i></i><i></i><i></i></div>${im}</div>`};
+ const fig=(v,cap,dev)=>`<figure class="${v==="before"?"b":"a"}">${cap?`<figcaption>${cap}</figcaption>`:""}${frame(v,dev)}</figure>`;
+ if(S.tab==="cmp"){const sv=S.dev;S.dev="mobile";st.innerHTML=fig("app","ПРИЛОЖЕНИЕ (RU)","mobile")+fig("after","ВЕБ · "+S.lang.toUpperCase(),"mobile");S.dev=sv;
+  $("#note").textContent="Слева экран мобильного приложения (бренд v2, только RU, как одобрено), справа веб-макет на том же языке. Клик по кадру или → — следующий экран. Тексты переводов — заглушки.";return}
+ st.innerHTML=S.v==="both"?fig("before","БЫЛО",S.dev)+fig("after","СТАЛО",S.dev):fig(S.v,"",S.dev);
+ let n="Клик по кадру или → — следующий экран, ← — предыдущий.";
+ if(S.dev==="desktop"&&x.b&&x.b.startsWith("G:"))n+=" «Было» у гостя на десктопе снято только на ES.";
+ n+=" Тексты переводов в кадрах — тестовые заглушки.";$("#note").textContent=n}
+function go(d){S.i+=d;render();window.scrollTo({top:0})}
+document.addEventListener("click",e=>{const t=e.target;
+ if(t.dataset&&t.dataset.dev){S.dev=t.dataset.dev;render()}
+ else if(t.dataset&&t.dataset.tab){S.tab=t.dataset.tab;S.i=Math.min(S.i,screens().length-1);render()}
+ else if(t.dataset&&t.dataset.lang){S.lang=t.dataset.lang;render()}
+ else if(t.dataset&&t.dataset.v){S.v=t.dataset.v;render()}
+ else if(t.dataset&&t.dataset.id){const L=screens();S.i=L.findIndex(x=>x.id===t.dataset.id);$("#aside").classList.remove("open");render()}
+ else if(t.closest("#stage img"))go(1);
+ else if(t.id==="prev")go(-1);else if(t.id==="next")go(1);
+ else if(t.id==="menu"){const a=$("#aside");const o=a.classList.toggle("open");t.setAttribute("aria-expanded",o)}});
+document.addEventListener("keydown",e=>{if(e.key==="ArrowRight")go(1);else if(e.key==="ArrowLeft")go(-1)});
+parse();render();
+</script></body></html>

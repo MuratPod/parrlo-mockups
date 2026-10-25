@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Parrlo Translate · демо-макет (локальный, без внешних ссылок)</title>
+<style>
+@font-face{font-family:Nunito;font-weight:200 1000;src:url(fonts/Nunito-Variable.woff2) format("woff2")}
+@font-face{font-family:Inter;font-weight:100 900;src:url(fonts/Inter-Variable.woff2) format("woff2")}
+/* Токены: iOS AETokens.swift / Fi.swift (dark) = брендбук v2.3. Размеры — pt iOS = px. */
+:root{--bg:#12161C;--surface:#1C2026;--raised:#242B34;--ink:#E8ECF1;--sec:#9AA4B2;--line:#2F3742;
+ --mint:#2BC48A;--mintDeep:#00875C;--green:#00A86B;--partner:#BFF2DC;--onBtn:#0E1116;--beak:#FFC247;--err:#FF6B5E;
+ --bubMe:rgba(0,168,107,.16);--fill:rgba(255,255,255,.10);--glassTint:rgba(232,236,241,.075);--glassEdge:rgba(47,55,66,.6)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);color:var(--ink);font:400 17px/1.34 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0}
+body{width:390px;height:844px;overflow:hidden;position:relative;margin:0 auto}
+/* фон Glass.Background: три пятна #00A86B */
+.bg{position:absolute;inset:0;background:
+ radial-gradient(circle at -8% 30%,rgba(0,168,107,.22),transparent 351px),
+ radial-gradient(circle at 108% 2%,rgba(0,168,107,.12),transparent 331px),
+ radial-gradient(circle at 106% 72%,rgba(0,168,107,.0864),transparent 351px),var(--bg)}
+.app{position:absolute;inset:0;display:flex;flex-direction:column}
+.glass{background:var(--glassTint);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:inset 0 0 0 1px var(--glassEdge)}
+/* шапка: только знак + wordmark и пара языков (AEPairSwitch 44pt) */
+.top{display:flex;align-items:center;gap:8px;padding:12px 16px 0;min-height:56px}
+.brand{display:flex;align-items:center;gap:8px;flex:1}
+.brand img{height:32px;width:auto;aspect-ratio:735/840}
+.wt{font:900 22px/1 Nunito,sans-serif;letter-spacing:-.01em}.wt i{font-style:normal;color:var(--green)}
+.pair{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 16px;border-radius:999px;font:800 17px/1 Nunito,sans-serif}
+.pair b{width:8px;height:8px;border-radius:50%;display:block}.pair svg{width:12px;height:12px;stroke:var(--sec);stroke-width:2.4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.feed{flex:1;display:flex;flex-direction:column;padding:0 16px;overflow:hidden}
+.feed.conv{justify-content:flex-end;gap:0;padding-bottom:6px}
+/* пустой главный: знак 92, hintTitle 28/800, hintText 15, чипы */
+.idle{margin:auto;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center;padding:0 8px 30px}
+.idle img{width:92px;height:auto;aspect-ratio:735/840}
+.idle h1{font:800 28px/1.12 Inter,sans-serif;letter-spacing:-.015em}
+.idle p{font:400 15px/1.45 Inter,sans-serif;color:var(--sec);max-width:30ch;text-wrap:balance}
+.chips{display:flex;gap:8px}.chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:var(--fill);font:700 12px/1.34 Inter,sans-serif;color:var(--sec);white-space:nowrap}.chip i{width:9px;height:9px;border-radius:50%}
+/* док: две капсулы 62, gap 8, side 16 (FiFeed.swift:473 micButton) */
+.dock{padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:10px;position:relative}
+.dock::before{content:"";position:absolute;left:0;right:0;top:-34px;height:34px;background:linear-gradient(transparent,var(--bg));pointer-events:none}
+.mics{display:flex;gap:8px}
+.mic{flex:1 1 0;min-width:0;height:62px;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:8px;padding:0 10px;position:relative;font:700 20px/1 Inter,sans-serif;color:var(--onBtn);white-space:nowrap}
+.mic svg{width:22px;height:22px;flex:none;fill:currentColor}
+.mic .stopsq{width:11px;height:11px;border-radius:2.5px;background:currentColor;margin:0 5.5px}
+.mic.me{background:var(--mint)}
+.mic.partner{background:var(--partner);box-shadow:0 12px 26px rgba(191,242,220,.35)}
+.mic::after{content:"";position:absolute;inset:0;border-radius:999px;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.32),rgba(255,255,255,0) 48%);
+ -webkit-mask:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.55)}
+.mic.off{opacity:.3}.mic.busy{opacity:.5}
+.mic.rec{box-shadow:0 0 0 6px rgba(43,196,138,.38)}
+/* облачка: радиус 18, хвост 6 (FiBubbleShape), отступы 10/15/11/15 и 13/18/14/18 */
+.turn{display:flex;flex-direction:column;gap:5px;margin-top:18px}.turn.me{align-items:flex-end}.turn.them{align-items:flex-start}
+.src{padding:10px 15px 11px;border-radius:18px;font:500 17px/1.34 Inter,sans-serif;max-width:100%;background:var(--bubMe)}
+.me .src{border-bottom-right-radius:6px;max-width:346px}.them .src{background:var(--raised);border-bottom-left-radius:6px;max-width:84%}
+.tr{display:flex;align-items:flex-end;gap:6px;padding:13px 18px 14px;border-radius:18px;background:var(--mintDeep);color:#fff;font:700 22px/29px Nunito,sans-serif;letter-spacing:-.005em;max-width:100%}
+.tr.cyr{font-family:Inter,sans-serif}
+.me .tr{border-top-right-radius:6px;width:100%}.them .tr{background:var(--raised);color:var(--ink);border-top-left-radius:6px;max-width:90%}
+.tr .sp{margin-left:auto;flex:none;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.12);display:grid;place-items:center;margin-bottom:-2px}
+.tr .sp svg{width:17px;height:17px;fill:currentColor}
+.meta{display:flex;align-items:center;gap:6px;padding:0 6px;font:400 12px/1.34 Inter,sans-serif;color:var(--sec)}.meta i{width:7px;height:7px;border-radius:50%}
+/* живое облачко: три точки, волна 0,9 с, сдвиг 0,15 с (FiDotsRenderer) */
+.live .src{color:rgba(232,236,241,.55)}
+.live .d{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--mint);margin-left:3px;vertical-align:2px;animation:dot .9s ease-in-out infinite}
+.live .d:nth-child(2){animation-delay:.15s}.live .d:nth-child(3){animation-delay:.3s}
+@keyframes dot{0%,100%{opacity:.25;transform:none}50%{opacity:1;transform:translateY(-2px)}}
+/* окно фразы (FiWindow): радиус 28, поля 12/16/14/16 */
+.win{border-radius:28px;background:rgba(28,32,38,.7);padding:12px 16px 14px;box-shadow:inset 0 0 0 1px var(--glassEdge),0 14px 20px rgba(0,0,0,.25);display:flex;flex-direction:column;gap:8px}
+.win .h{display:flex;align-items:center;gap:8px;min-height:32px}.win .h .l{display:flex;align-items:center;gap:7px;flex:1;font:700 13px/1.2 Inter,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:var(--sec)}.win .h .l i{width:9px;height:9px;border-radius:50%;background:var(--mint)}
+.win .ok{min-height:36px;padding:0 16px;border-radius:999px;background:var(--mint);color:var(--onBtn);font:700 13px/36px Inter,sans-serif}
+.win .raw{font:400 15px/1.4 Inter,sans-serif;color:var(--sec)}.win .raw b{font-weight:600}
+.win .clean{font:800 20px/1.25 Inter,sans-serif;letter-spacing:-.005em}
+.win .f{font:400 12px/1.34 Inter,sans-serif;color:var(--sec);display:flex;gap:8px}
+/* полноэкранные состояния: лимит → регистрация, скачайте приложение (стиль онбординга iOS 22/23) */
+.page{position:absolute;inset:0;display:flex;flex-direction:column;padding:20px 24px 18px}
+.page .mid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center}
+.page .mid img{width:92px;height:auto;aspect-ratio:735/840}
+.page h1{font:800 28px/1.12 Inter,sans-serif;letter-spacing:-.015em;text-wrap:balance}
+.page p{font:400 15px/1.45 Inter,sans-serif;color:var(--sec);max-width:30ch;text-wrap:balance}
+.cta{display:flex;flex-direction:column;gap:10px;padding-bottom:calc(8px + env(safe-area-inset-bottom,0px))}
+.big{min-height:52px;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:9px;padding:0 20px;font:700 17px/1.2 Inter,sans-serif;width:100%}
+.big svg{width:20px;height:20px}
+.big.ink{background:var(--ink);color:var(--bg)}.big.light{background:var(--surface);box-shadow:inset 0 0 0 1px var(--line)}
+.big.mint{background:var(--mint);color:var(--onBtn);min-height:56px}
+.note{font:400 12px/1.34 Inter,sans-serif;color:var(--sec);text-align:center}
+.dim .mic{opacity:.5}
+.screen{display:none}[data-s=idle] #idle,[data-s=rec] #rec,[data-s=proc] #proc,[data-s=done] #done,[data-s=limit] #limit,[data-s=app] #app2{display:contents}
+.hide{display:none}
+
+/* «Волна и искры» (FiMorph): порт 1:1 по таймингам FiMorphT: sweep .7, settle .9, height .3; блик 100°, искры, буквы, желе */
+.mo{position:relative;padding:10px 15px 11px;border-radius:18px;border-bottom-right-radius:6px;background:var(--bubMe);font:500 17px/1.34 Inter,sans-serif;max-width:346px;overflow:visible;transform-origin:100% 100%}
+.mo .box{display:grid;overflow:hidden}.mo .box>div{grid-area:1/1}.mo .old{color:var(--ink)}.mo .new{color:var(--ink)}
+.mo canvas{position:absolute;left:-20px;top:-20px;pointer-events:none}
+.mo .sheen{position:absolute;inset:0;border-radius:inherit;pointer-events:none;mix-blend-mode:screen;opacity:.0}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="mic" viewBox="0 0 24 24"><path d="M12 15.5a3.5 3.5 0 0 0 3.5-3.5V6.5a3.5 3.5 0 0 0-7 0V12a3.5 3.5 0 0 0 3.5 3.5Zm6-3.5a6 6 0 0 1-5 5.9V21h-2v-3.1A6 6 0 0 1 6 12h2a4 4 0 0 0 8 0h2Z"/></symbol>
+<symbol id="spk" viewBox="0 0 24 24"><path d="M3 9.5v5h4l5 4v-13l-5 4H3Zm13.5 2.5a4 4 0 0 0-2-3.5v7a4 4 0 0 0 2-3.5Zm-2-7.9v2.1a7 7 0 0 1 0 11.6v2.1a9 9 0 0 0 0-15.8Z"/></symbol>
+<symbol id="arr" viewBox="0 0 24 24"><path d="M7 7h12M16 4l3 3-3 3M17 17H5M8 14l-3 3 3 3"/></symbol>
+<symbol id="apple" viewBox="0 0 24 24"><path fill="currentColor" d="M16.4 12.7c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9s-1.8-.8-3-.8c-1.5 0-3 .9-3.800 2.300-1.600 2.800-.4 7 1.200 9.300.8 1.100 1.700 2.400 2.900 2.300 1.200 0 1.600-.7 3-.7s1.800.7 3 .7 2-1.100 2.800-2.200c.9-1.300 1.200-2.500 1.300-2.600 0 0-2.500-1-2.500-3.900ZM14.100 5.800c.6-.8 1.100-1.900.9-3-.9 0-2.100.6-2.700 1.400-.6.700-1.100 1.800-1 2.900 1.100.1 2.200-.5 2.800-1.300Z"/></symbol>
+<symbol id="g" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.5 12.2c0-.8-.1-1.500-.2-2.200H12v4.200h5.900a5 5 0 0 1-2.200 3.300v2.700h3.500c2.100-1.900 3.300-4.700 3.300-8Z"/><path fill="#34A853" d="M12 23c3 0 5.400-1 7.200-2.700l-3.500-2.700c-1 .7-2.200 1-3.700 1-2.800 0-5.200-1.900-6-4.500H2.400v2.800A11 11 0 0 0 12 23Z"/><path fill="#FBBC05" d="M6 14.100a6.600 6.600 0 0 1 0-4.200V7.100H2.400a11 11 0 0 0 0 9.800L6 14.100Z"/><path fill="#EA4335" d="M12 5.400c1.600 0 3 .6 4.200 1.600l3.100-3.100A11 11 0 0 0 2.400 7.100L6 9.900c.8-2.600 3.200-4.500 6-4.500Z"/></symbol>
+<symbol id="play" viewBox="0 0 24 24"><path fill="#34A853" d="M3.600 2.600 13.200 12l-9.600 9.400c-.4-.3-.6-.8-.6-1.400V4c0-.6.200-1.100.6-1.400Z"/><path fill="#FBBC05" d="m16.400 8.800-3.200 3.200 3.200 3.200 3.800-2.200c1-.6 1-1.600 0-2.200l-3.800-2Z"/><path fill="#4285F4" d="M3.600 2.600c.4-.3 1-.3 1.700.100L16.400 8.800 13.200 12 3.600 2.600Z"/><path fill="#EA4335" d="M13.200 12l3.200 3.200L5.300 21.300c-.7.400-1.300.4-1.700.100L13.200 12Z"/></symbol>
+</defs></svg>
+
+<!-- 1. ГЛАВНЫЙ (iOS 01) -->
+<div class="app" id="root">
+  <header class="top">
+    <div class="brand"><img src="mark.svg" alt=""><span class="wt">Pa<i>rr</i>lo</span></div>
+    <button class="pair glass" aria-label="Пара языков"><b style="background:var(--mint)"></b>RU <svg><use href="#arr"/></svg> ES<b style="background:var(--mint)"></b></button>
+  </header>
+
+  <main class="feed" id="feed"></main>
+
+  <footer class="dock" id="dock">
+    <div class="mics">
+      <button class="mic me" id="mic-me"><svg><use href="#mic"/></svg><span>Я говорю</span></button>
+      <button class="mic partner" id="mic-partner"><svg><use href="#mic"/></svg><span>Yo hablo</span></button>
+    </div>
+  </footer>
+</div>
+
+<script>
+const q = new URLSearchParams(location.search), s = q.get("s") || "idle";
+document.body.dataset.s = s;
+const $ = (id) => document.getElementById(id), feed = $("feed"), root = $("root");
+if (s !== "idle" && s !== "limit" && s !== "app") document.querySelector(".pair b").style.background = "var(--beak)";
+const spk = '<span class="sp"><svg><use href="#spk"/></svg></span>';
+const ME = $("mic-me"), PA = $("mic-partner");
+if (s === "idle") {
+  feed.innerHTML = `<div class="idle"><img src="mark.svg" alt="">
+  <h1>Скажите, как можете&nbsp;—<br>прозвучите безупречно</h1>
+  <p>Нажмите «Я говорю» и говорите. Собеседник отвечает своей кнопкой.</p>
+  <div class="chips"><span class="chip"><i style="background:var(--mint)"></i>Вы · Русский</span><span class="chip"><i style="background:#fff"></i>Собеседник · Español</span></div></div>`;
+}
+if (s === "rec") {
+  feed.className = "feed conv";
+  feed.innerHTML = `<div class="turn me live"><div class="src">э-э скажите а можно можно счёт и ещё бутылку воды без газа ну <span class="d"></span><span class="d"></span><span class="d"></span></div></div>`;
+  ME.classList.add("rec"); ME.innerHTML = '<span class="stopsq"></span><span>Готово</span>'; PA.classList.add("off");
+}
+if (s === "proc") {
+  feed.className = "feed conv";
+  feed.innerHTML = `<div class="win"><div class="h"><span class="l"><i></i>Литературно</span><span class="ok">Готово</span></div>
+  <div class="raw">Распознано: Э-э... скажите, а можно... можно счёт, и ещё бутылку воды без газа, ну, с собой</div>
+  <div class="clean">Можно счёт и бутылку воды без газа с собой?</div>
+  <div class="f"><span>Можно исправить касанием</span></div></div>`;
+  ME.classList.add("busy"); PA.classList.add("busy");
+}
+if (s === "done") {
+  feed.className = "feed conv";
+  feed.innerHTML = `<div class="turn me"><div class="src">Можно счёт и бутылку воды без газа с собой?</div>
+  <div class="meta"><i style="background:var(--mint)"></i>Вы · литературно</div></div>
+  <div class="turn me" style="margin-top:5px;gap:5px"><div class="tr">¿Me trae la cuenta y una botella de agua sin gas para llevar?${spk}</div>
+  <div class="meta">Español · в облаке</div></div>`;
+}
+
+if (s === "morph") {
+  feed.className = "feed conv";
+  feed.innerHTML = '<div class="turn me"><div class="mo" id="mo"><div class="box"><div class="old" id="mo-old"></div><div class="new" id="mo-new"></div></div><canvas id="mo-cv"></canvas><div class="sheen" id="mo-sh"></div></div></div>';
+  ME.classList.add("busy"); PA.classList.add("busy");
+  const OLD = "э-э скажите а можно можно счёт и ещё бутылку воды без газа ну", NEW = "Можно счёт и бутылку воды без газа с собой?";
+  const mk = (el, t) => { el.innerHTML = [...t].map((c) => '<span style="display:inline-block;white-space:pre">' + c + "</span>").join("").replace(/(<span[^>]*> <\/span>)/g, "$1"); };
+  const mo = $("mo"), oEl = $("mo-old"), nEl = $("mo-new"), cv = $("mo-cv"), sh = $("mo-sh"), ctx = cv.getContext("2d");
+  const wrap = (el, t) => { el.innerHTML = t.split(" ").map((w) => '<span class="w" style="display:inline-block;white-space:nowrap">' + [...w].map((c) => "<i style='font-style:normal;display:inline-block'>" + c + "</i>").join("") + "</span>").join(" "); };
+  wrap(oEl, OLD); wrap(nEl, NEW);
+  const SW = 0.7, SET = 0.9, HT = 0.3, rect = mo.getBoundingClientRect();
+  const W = rect.width, pad = 20; cv.width = (W + pad * 2) * 2; cv.height = (rect.height + pad * 2 + 10) * 2; cv.style.width = W + pad * 2 + "px"; cv.style.height = rect.height + pad * 2 + 10 + "px"; ctx.scale(2, 2);
+  const bez = (x) => { let u = x; const p1x = .3, p1y = .7, p2x = .3, p2y = 1; for (let i = 0; i < 8; i++) { const bx = 3*(1-u)*(1-u)*u*p1x + 3*(1-u)*u*u*p2x + u*u*u, d = 3*(1-u)*(1-u)*p1x + 6*(1-u)*u*(p2x-p1x) + 3*u*u*(1-p2x); if (Math.abs(d) < 1e-6) break; u = Math.min(1, Math.max(0, u - (bx - x) / d)); } return 3*(1-u)*(1-u)*u*p1y + 3*(1-u)*u*u*p2y + u*u*u; };
+  const pos = (t) => -22 + 144 * (1 - Math.cos(Math.PI * Math.min(Math.max(t / SW, 0), 1))) / 2;
+  const touch = (k) => { const e = Math.min(Math.max((k + 22) / 144, 0), 1); return SW * Math.acos(1 - 2 * e) / Math.PI; };
+  const jelly = (t) => { const u = t / 0.82; if (u <= 0 || u >= 1) return 1; const sg = (a, b, u0, u1) => a + (b - a) * bez((u - u0) / (u1 - u0)); return u < .3 ? sg(1, 1.01, 0, .3) : u < .65 ? sg(1.01, .998, .3, .65) : sg(.998, 1, .65, 1); };
+  const rnd = (i, j, k) => { const v = Math.sin((i * 131 + j * 17 + k * 7) * 12.9898) * 43758.5453; return v - Math.floor(v); };
+  const box = mo.querySelector(".box"), bw = box.getBoundingClientRect(), bx0 = bw.left, by0 = bw.top;
+  const lets = (el, withSpark) => [...el.querySelectorAll("i")].map((e, n) => { const r = e.getBoundingClientRect(), cx = r.left - bx0 + r.width / 2, cy = r.top - by0 + r.height / 2; return { e, n, cx, cy, k: (cx + .18 * cy) / bw.width * 100 }; });
+  const LO = lets(oEl), LN = lets(nEl);
+  const hOld = oEl.getBoundingClientRect().height, hNew = nEl.getBoundingClientRect().height; box.style.height = hOld + "px";
+  const pal = ["#2BC48A", "#6FDDB4", "#C9F3E2", "#00875C"];
+  const frame = (t) => {
+    LO.forEach((l) => { const tt = touch(l.k); l.e.style.opacity = t < tt ? 1 : t < tt + .09 ? 1 - (t - tt) / .09 : 0; });
+    LN.forEach((l) => { const tt = touch(l.k + 8), p = Math.min(1, Math.max(0, (t - tt) / .3)); l.e.style.opacity = p; l.e.style.filter = p < 1 ? "blur(" + 6 * (1 - p) + "px)" : "none"; l.e.style.transform = "translateY(" + 2 * (1 - p) + "px)"; });
+    oEl.style.visibility = t >= SET ? "hidden" : "visible";
+    const hp = t < SET ? 0 : bez(Math.min(1, (t - SET) / HT)); box.style.height = hOld + (hNew - hOld) * hp + "px";
+    mo.style.transform = "scale(" + jelly(t) + ")";
+    const p = pos(t); sh.style.opacity = t < SW + .05 ? 1 : 0; sh.style.background = "linear-gradient(100deg,transparent " + (p - 14) + "%,rgba(201,243,226,.30) " + p + "%,transparent " + (p + 14) + "%)";
+    ctx.clearRect(0, 0, W + pad * 2, 400);
+    LO.forEach((l) => { const tt = touch(l.k); for (let j = 0; j < 3; j++) { const age = t - tt, life = .56 + rnd(l.n, j, 1) * .26 * .3; if (age < 0 || age > life) continue; const f = age / life, r = .8 + rnd(l.n, j, 2) * 1.2; ctx.globalAlpha = (1 - f) * .95; ctx.fillStyle = pal[Math.floor(rnd(l.n, j, 3) * 4)]; ctx.beginPath(); ctx.arc(pad + l.cx + 15 + f * (10 + rnd(l.n, j, 4) * 14), pad + 10 + l.cy - f * (8 + rnd(l.n, j, 5) * 12), r, 0, 7); ctx.fill(); } });
+    ctx.globalAlpha = 1;
+  };
+  const fz = q.get("t");
+  if (fz !== null) frame(parseFloat(fz));
+  else { const t0 = performance.now(); const loop = () => { const t = ((performance.now() - t0) / 1000) % 3.2; frame(Math.min(t, 1.3) * (t < 1.3 ? 1 : 1)); requestAnimationFrame(loop); }; loop(); }
+}
+function page(inner, cta) {
+  root.innerHTML = `<div class="page"><div class="mid">${inner}</div><div class="cta">${cta}</div></div>`;
+}
+if (s === "limit") {
+  page(`<img src="mark.svg" alt=""><h1>Бесплатные фразы<br>на сегодня закончились</h1><p>Зарегистрируйтесь, чтобы продолжить перевод.</p>`,
+   `<button class="big ink"><svg><use href="#apple"/></svg>Войти с Apple</button>
+    <button class="big light"><svg><use href="#g"/></svg>Войти с Google</button>
+    <div class="note">Завтра фразы обновятся</div>`);
+}
+if (s === "app") {
+  page(`<img src="mark.svg" alt=""><h1>Скачайте приложение</h1><p>В приложении перевод без дневного лимита веба.</p>`,
+   `<button class="big mint"><svg style="width:22px;height:22px"><use href="#apple"/></svg>Скачать в App Store</button>
+    <button class="big light"><svg><use href="#play"/></svg>Скачать в Google Play</button>`);
+}
+</script>
+</body>
+</html>

@@ -138,12 +138,11 @@ svg.f{fill:currentColor;stroke:none}
 .errmid h1{font:800 26px/1.15 Inter,sans-serif;letter-spacing:-.015em;text-wrap:balance}
 .errmid p{font:400 15px/1.45 Inter,sans-serif;color:var(--sec2);max-width:30ch;text-wrap:balance}
 .errmid .btn{max-width:300px}
-.how{width:100%;max-width:320px;text-align:left}
-.how summary{list-style:none;display:flex;align-items:center;justify-content:center;gap:6px;min-height:44px;font:600 15px/1.2 Inter,sans-serif;color:var(--mint);cursor:pointer}
+.how{width:100%;max-width:320px;text-align:left;display:flex;flex-direction:column;align-items:center}
+.how summary{list-style:none;cursor:pointer;margin-top:2px}
 .how summary::-webkit-details-marker{display:none}
-.how summary::after{content:"";width:8px;height:8px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;rotate:45deg;margin-top:-4px;transition:rotate .2s}
-.how[open] summary::after{rotate:225deg;margin-top:3px}
-.how div{font:400 14px/1.45 Inter,sans-serif;color:var(--sec2);padding:2px 4px 0}.how div p+p{margin-top:6px}
+.how>div{margin-top:8px;padding:12px 14px;border-radius:16px;background:var(--fill);font:400 14px/1.45 Inter,sans-serif;color:var(--sec2)}
+.how>div p+p{margin-top:8px}.how .lead{color:var(--text);font-weight:600}
 .how b{color:var(--text);font-weight:600}
 .banner{display:flex;gap:12px;align-items:center;margin:8px 16px 0;position:relative;z-index:3}
 .banner .x{flex:1;min-width:0}
@@ -151,10 +150,17 @@ svg.f{fill:currentColor;stroke:none}
 .sheet{margin:0 12px;border-radius:28px;padding:18px 16px 8px;background:rgba(28,32,38,.94);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);box-shadow:inset 0 0 0 1px var(--glassEdge),0 -10px 40px rgba(0,0,0,.4);display:flex;flex-direction:column;gap:10px;text-align:center;align-items:center}
 .sheet h2{font:800 22px/1.2 Inter,sans-serif;letter-spacing:-.01em}
 .sheet p{font:400 15px/1.45 Inter,sans-serif;color:var(--sec2);margin-top:-4px;margin-bottom:4px}
-.store{width:100%;min-height:56px;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:10px;padding:0 20px;font:700 17px/1.2 Inter,sans-serif}
-.store svg{width:24px;height:24px}
-.store.apple{background:#F5F7FA;color:#0E1116}
-.store.play{background:var(--raised);color:var(--text);box-shadow:inset 0 0 0 1px #3A4452}
+/* МАКЕТНЫЕ бейджи: в релизе заменить официальными ассетами Apple / Google (пропорции 3:1 и ≈3,4:1, высота 56, отступ логотипа 1/4 высоты) */
+.badges{display:flex;flex-direction:column;align-items:center;gap:12px;margin:2px 0 4px}
+.badge{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:56px;padding:0 14px;border-radius:10px;background:#000;color:#fff;box-shadow:inset 0 0 0 1px #A6A6A6;text-align:left;white-space:nowrap}
+.badge.apple{min-width:168px}.badge.play{min-width:189px}
+.badge svg{width:28px;height:28px;flex:none}
+.badge .bt{display:flex;flex-direction:column;gap:1px}
+.badge small{font:500 11px/1.1 Inter,sans-serif;letter-spacing:.01em}
+.badge b{font:600 22px/1.05 Inter,sans-serif;letter-spacing:-.01em}
+.badge:disabled{background:#242B34;color:#9AA4B2;box-shadow:inset 0 0 0 1px #3A4452;cursor:not-allowed}
+.badge:disabled svg{filter:grayscale(1);opacity:.5}
+.badge:disabled small{color:#C2CAD5;font-weight:700}
 .dim .feed{opacity:.35}
 /* текстовый ввод */
 .comp{display:flex;flex-direction:column;gap:8px}
@@ -175,6 +181,10 @@ textarea{outline:0}
 .png-mode .stage[data-frame] .guest{border-radius:0;box-shadow:none}
 .turn .meta{align-self:flex-end}
 .stage{overflow:hidden}
+
+.src.host{background:var(--raised);border-bottom-left-radius:6px;border-bottom-right-radius:18px;align-self:flex-start;max-width:84%}
+.tr.host{background:var(--raised);color:var(--text);border-top-left-radius:6px;border-top-right-radius:18px;width:auto;align-self:flex-start;max-width:90%}
+.turn.them .meta{align-self:flex-start}
 /* ---------- панель макета (не часть страницы; скрыта при ?clean=1 / ?png=1) ---------- */
 .mockpanel{position:relative;z-index:50;flex:none;font:500 13px/1.35 Inter,sans-serif;color:#C7CED8}
 .mockpanel .pt{display:flex;width:100%;min-height:44px;background:#0B0E12;border-bottom:1px solid #2A2F36;color:#C7CED8;font:600 13px Inter,sans-serif;padding:0 14px;align-items:center;justify-content:space-between}
@@ -240,12 +250,12 @@ textarea{outline:0}
 </div></div>
 <script>
 const MODE="clip", ROOT="../", HOME="idle", DEFAULT_FRAME="390", PANEL_TITLE="Parrlo App Clip";
-const STATES=[["card", "1 · Карточка App Clip"], ["idle", "2 · Главный экран"], ["perm", "3 · Запрос микрофона (iOS)"], ["rec", "4 · Идёт запись"], ["proc", "5 · Обработка"], ["morph", "6 · Фраза → перевод (искры)"], ["done", "7 · Перевод готов + баннер"], ["text", "8 · Текстовый ввод"], ["err-mic", "9 · Нет микрофона"], ["offline", "10 · Нет сети"], ["limit", "11 · Лимит исчерпан"]];
+const STATES=[["card", "1 · Карточка App Clip"], ["idle", "2 · Главный экран"], ["perm", "3 · Запрос микрофона (iOS)"], ["rec", "4 · Идёт запись"], ["proc", "5 · Обработка"], ["morph", "6 · Фраза → перевод (искры)"], ["done", "7 · Перевод готов + баннер"], ["reply", "8 · Ответ хозяина"], ["text", "9 · Текстовый ввод"], ["err-mic", "10 · Нет микрофона"], ["offline", "11 · Нет сети"], ["limit", "12 · Лимит исчерпан"]];
 const cardScene=(t)=>`<div class="cardscene"><div class="ccard"><img src="card-1800x1200.jpg" width="1800" height="1200" alt=""><div class="row"><div class="tt"><b>${t.cardT}</b><span>${t.cardS}</span></div><a class="open" href="#" data-act="noop">${t.cardOpen}</a></div></div></div>`;
 const panelNote=()=>{const t=T[lang];return S==='card'?`<b>Лимиты карточки Apple</b><br>Заголовок: ${[...t.cardT].length}/30 · подзаголовок: ${[...t.cardS].length}/56 · картинка 1800×1200 (card-1800x1200.jpg, без текста)`:''};
 const T = {
 ru: {
- name:'Русский', partner:'Español', partnerCyr:false, you:'Вы', other:'Собеседник',
+ name:'Русский', you:'Вы', other:'Собеседник',
  tagline:'Скажите, как можете — прозвучите безупречно',
  welcomeP:'Нажмите кнопку и говорите на своём языке. Перевод появится на экране.',
  mic:'Я говорю', done:'Готово',
@@ -253,21 +263,20 @@ ru: {
  listening:'Слушаю…', lit:'Литературно', heard:'Распознано:', preparing:'Готовлю перевод…', youLit:'Вы · литературно',
  speak:'Произнести', kbd:'Написать текстом',
  noMicT:'Нет доступа к микрофону', noMicP:'Разрешите микрофон в настройках браузера — или просто напишите фразу.', noMicBtn:'Написать текстом',
- how:'Как разрешить микрофон', howIos:'<b>iPhone (Safari):</b> кнопка «аА» в адресной строке › Настройки веб-сайта › Микрофон › Разрешить.', howAnd:'<b>Android (Chrome):</b> значок слева от адреса › Разрешения › Микрофон.',
+ how:'Открыть настройки', howIos:'<b>iPhone (Safari):</b> кнопка «аА» в адресной строке › Настройки веб-сайта › Микрофон › Разрешить.', howAnd:'<b>Android (Chrome):</b> значок слева от адреса › Разрешения › Микрофон.',
  offT:'Нет интернета', offP:'Проверьте соединение и попробуйте ещё раз.', retry:'Повторить', unsent:'Не отправлено',
  limT:'Перевод сейчас недоступен', limP:'Обратитесь к тому, кто показал QR.', limBtn:'Проверить ещё раз',
- dlLink:'Скачать Parrlo', dlT:'Скачайте Parrlo', dlP:'Переводчик всегда под рукой — без QR-кода.', dlApple:'Загрузите в App Store', dlPlay:'Доступно в Google Play', dlClose:'Не сейчас',
+ dlLink:'Скачать Parrlo', dlT:'Скачайте Parrlo', dlP:'Переводчик всегда под рукой — без QR-кода.', dlClose:'Не сейчас',
+ dlA1:'Загрузите в', dlG1:'Доступно в', dlSoon:'Скоро', typeLink:'Ввести текст', howLead:'Сайт не может открыть настройки браузера сам. Сделайте так:',
  ph:'Напишите фразу', send:'Отправить', close:'Закрыть',
  // App Clip
  bnT:'Скачать полное приложение', bnBtn:'Загрузить', bnClose:'Скрыть',
  alT:'«Parrlo» запрашивает доступ к микрофону', alP:'Микрофон нужен, чтобы услышать вашу фразу и перевести её.', alNo:'Не разрешать', alOk:'OK',
- noMicClipP:'Разрешите микрофон: Настройки › Parrlo › Микрофон. Или напишите фразу.', openSet:'Открыть Настройки',
- cardT:'Переводчик Parrlo', cardS:'Скажите фразу — получите перевод. Без регистрации', cardOpen:'Открыть',
- demo:{raw:'э-э скажите а можно можно счёт и ещё бутылку воды без газа ну', heard:'Э-э… скажите, а можно… можно счёт, и ещё бутылку воды без газа, ну, с собой', clean:'Можно счёт и бутылку воды без газа с собой?', tr:'¿Me trae la cuenta y una botella de agua sin gas para llevar?',
-  typed:'Здравствуйте! Подскажите, пожалуйста, где ближайшая аптека?', typedTr:'Hola, ¿podría decirme dónde está la farmacia más cercana?'}
+ noMicClipP:'Разрешите микрофон: Настройки iPhone › Parrlo › Микрофон.', openSet:'Открыть Настройки',
+ cardT:'Переводчик Parrlo', cardS:'Скажите фразу — получите перевод. Без регистрации', cardOpen:'Открыть'
 },
 es: {
- name:'Español', partner:'Русский', partnerCyr:true, you:'Tú', other:'Interlocutor',
+ name:'Español', you:'Tú', other:'Interlocutor',
  tagline:'Habla como puedas, suena impecable.',
  welcomeP:'Pulsa el botón y habla en tu idioma. La traducción aparecerá en la pantalla.',
  mic:'Yo hablo', done:'Listo',
@@ -275,20 +284,19 @@ es: {
  listening:'Escuchando…', lit:'Literario', heard:'Entendido:', preparing:'Preparando la traducción…', youLit:'Tú · literario',
  speak:'Escuchar', kbd:'Escribir',
  noMicT:'Sin acceso al micrófono', noMicP:'Permite el micrófono en los ajustes del navegador o escribe tu frase.', noMicBtn:'Escribir',
- how:'Cómo permitir el micrófono', howIos:'<b>iPhone (Safari):</b> botón «aA» junto a la dirección › Ajustes del sitio web › Micrófono › Permitir.', howAnd:'<b>Android (Chrome):</b> icono a la izquierda de la dirección › Permisos › Micrófono.',
+ how:'Abrir ajustes', howIos:'<b>iPhone (Safari):</b> botón «aA» junto a la dirección › Ajustes del sitio web › Micrófono › Permitir.', howAnd:'<b>Android (Chrome):</b> icono a la izquierda de la dirección › Permisos › Micrófono.',
  offT:'Sin conexión', offP:'Comprueba tu conexión e inténtalo de nuevo.', retry:'Reintentar', unsent:'Sin enviar',
  limT:'La traducción no está disponible ahora', limP:'Habla con la persona que te mostró el QR.', limBtn:'Comprobar de nuevo',
- dlLink:'Descargar Parrlo', dlT:'Descarga Parrlo', dlP:'El traductor siempre a mano, sin código QR.', dlApple:'Descárgalo en el App Store', dlPlay:'Disponible en Google Play', dlClose:'Ahora no',
+ dlLink:'Descargar Parrlo', dlT:'Descarga Parrlo', dlP:'El traductor siempre a mano, sin código QR.', dlClose:'Ahora no',
+ dlA1:'Descárgalo en el', dlG1:'Disponible en', dlSoon:'Próximamente', typeLink:'Escribir texto', howLead:'Un sitio web no puede abrir los ajustes del navegador. Haz esto:',
  ph:'Escribe tu frase', send:'Enviar', close:'Cerrar',
  bnT:'Descargar la app completa', bnBtn:'Obtener', bnClose:'Ocultar',
  alT:'«Parrlo» quiere acceder al micrófono', alP:'El micrófono sirve para escuchar tu frase y traducirla.', alNo:'No permitir', alOk:'OK',
- noMicClipP:'Permite el micrófono: Ajustes › Parrlo › Micrófono. O escribe tu frase.', openSet:'Abrir Ajustes',
- cardT:'Traductor Parrlo', cardS:'Di una frase y recibe la traducción. Sin registro', cardOpen:'Abrir',
- demo:{raw:'eh oye perdona dónde está eh la farmacia más cercana', heard:'Eh… oye, perdona, ¿dónde está… eh… la farmacia más cercana?', clean:'Disculpa, ¿dónde está la farmacia más cercana?', tr:'Извините, где ближайшая аптека?',
-  typed:'Hola, ¿me puedes decir dónde está la farmacia más cercana?', typedTr:'Здравствуйте, подскажите, где ближайшая аптека?'}
+ noMicClipP:'Permite el micrófono: Ajustes del iPhone › Parrlo › Micrófono.', openSet:'Abrir Ajustes',
+ cardT:'Traductor Parrlo', cardS:'Di una frase y recibe la traducción. Sin registro', cardOpen:'Abrir'
 },
 en: {
- name:'English', partner:'Español', partnerCyr:false, you:'You', other:'Other person',
+ name:'English', you:'You', other:'Other person',
  tagline:'Say it however you can — sound flawless.',
  welcomeP:'Tap the button and speak your language. The translation will appear on the screen.',
  mic:'I speak', done:'Done',
@@ -296,19 +304,25 @@ en: {
  listening:'Listening…', lit:'Polished', heard:'Heard:', preparing:'Preparing the translation…', youLit:'You · polished',
  speak:'Play', kbd:'Type instead',
  noMicT:'No microphone access', noMicP:'Allow the microphone in your browser settings, or just type your phrase.', noMicBtn:'Type instead',
- how:'How to allow the microphone', howIos:'<b>iPhone (Safari):</b> “aA” button next to the address › Website Settings › Microphone › Allow.', howAnd:'<b>Android (Chrome):</b> icon left of the address › Permissions › Microphone.',
+ how:'Open settings', howIos:'<b>iPhone (Safari):</b> “aA” button next to the address › Website Settings › Microphone › Allow.', howAnd:'<b>Android (Chrome):</b> icon left of the address › Permissions › Microphone.',
  offT:'No internet', offP:'Check your connection and try again.', retry:'Retry', unsent:'Not sent',
  limT:'Translation is unavailable right now', limP:'Please ask the person who showed you the QR.', limBtn:'Check again',
- dlLink:'Get Parrlo', dlT:'Get Parrlo', dlP:'Your translator, always at hand — no QR code needed.', dlApple:'Download on the App Store', dlPlay:'Get it on Google Play', dlClose:'Not now',
+ dlLink:'Get Parrlo', dlT:'Get Parrlo', dlP:'Your translator, always at hand — no QR code needed.', dlClose:'Not now',
+ dlA1:'Download on the', dlG1:'Get it on', dlSoon:'Coming soon', typeLink:'Enter text', howLead:'A website can’t open your browser settings itself. Do this:',
  ph:'Type your phrase', send:'Send', close:'Close',
  bnT:'Get the full app', bnBtn:'Get', bnClose:'Dismiss',
  alT:'“Parrlo” Would Like to Access the Microphone', alP:'The microphone is used to hear your phrase and translate it.', alNo:'Don’t Allow', alOk:'OK',
- noMicClipP:'Allow the microphone: Settings › Parrlo › Microphone. Or type your phrase.', openSet:'Open Settings',
- cardT:'Parrlo Translate', cardS:'Say a phrase, get the translation. No sign-up', cardOpen:'Open',
- demo:{raw:'um so can I like get the check and uh a bottle of still water to go', heard:'Um, so… can I, like, get the check and, uh, a bottle of still water to go?', clean:'Could I have the check and a bottle of still water to go?', tr:'¿Me trae la cuenta y una botella de agua sin gas para llevar?',
-  typed:'Hi, could you tell me where the nearest pharmacy is?', typedTr:'Hola, ¿podría decirme dónde está la farmacia más cercana?'}
+ noMicClipP:'Allow the microphone: iPhone Settings › Parrlo › Microphone.', openSet:'Open Settings',
+ cardT:'Parrlo Translate', cardS:'Say a phrase, get the translation. No sign-up', cardOpen:'Open'
 }};
-const CODE = {ru:['RU','ES'], es:['ES','RU'], en:['EN','ES']};
+const DEFTO = {ru:'es', es:'ru', en:'es'};
+const FULL = {ru:'Русский', es:'Español', en:'English'};
+const DM = { // демо-фразы по языкам; перевод = фраза на языке хозяина
+ ru:{raw:'э-э скажите а можно можно счёт и ещё бутылку воды без газа ну', heard:'Э-э… скажите, а можно… можно счёт, и ещё бутылку воды без газа, ну, с собой', clean:'Можно счёт и бутылку воды без газа с собой?', typed:'Здравствуйте! Подскажите, пожалуйста, где ближайшая аптека?', reply:'Конечно. Холодную или комнатной температуры?'},
+ es:{raw:'eh oye perdona me trae la cuenta y eh una botella de agua sin gas para llevar', heard:'Eh… oye, perdona, ¿me trae la cuenta y… eh… una botella de agua sin gas para llevar?', clean:'¿Me trae la cuenta y una botella de agua sin gas para llevar?', typed:'Hola, ¿me puedes decir dónde está la farmacia más cercana?', reply:'Claro. ¿La quiere fría o del tiempo?'},
+ en:{raw:'um so can I like get the check and uh a bottle of still water to go', heard:'Um, so… can I, like, get the check and, uh, a bottle of still water to go?', clean:'Could I have the check and a bottle of still water to go?', typed:'Hi, could you tell me where the nearest pharmacy is?', reply:'Of course. Cold or room temperature?'}
+};
+const TYPED_TR = {ru:'Здравствуйте, подскажите, где ближайшая аптека?', es:'Hola, ¿podría decirme dónde está la farmacia más cercana?', en:'Hi, could you tell me where the nearest pharmacy is?'};
 
 /* ===== иконки ===== */
 const IC = {
@@ -333,14 +347,15 @@ const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
 if (PNG) document.documentElement.classList.add('png-mode');
 if (CLEAN) document.documentElement.classList.add('clean');
 const detect = () => { for (const l of navigator.languages || [navigator.language || 'en']) { const c = String(l).slice(0, 2).toLowerCase(); if (T[c]) return c; } return 'en'; };
-let lang = T[q.get('lang')] ? q.get('lang') : detect();
+let lang = T[q.get('from')] ? q.get('from') : (T[q.get('lang')] ? q.get('lang') : detect());
+let to = T[q.get('to')] && q.get('to') !== lang ? q.get('to') : DEFTO[lang];
 let S = STATES.find(s => s[0] === q.get('s')) ? q.get('s') : STATES[0][0];
 let frame = q.get('w') || DEFAULT_FRAME;
 let ctx = { text: false, permAsked: false, bnHidden: false };
 let timers = [], raf = 0, gen = 0;
 const later = (fn, ms) => { const t = setTimeout(fn, ms); timers.push(t); return t; };
 const g = $('g'), stage = $('stage');
-const cap = (s) => s;
+const PN = () => FULL[to], PCYR = () => to === 'ru';
 
 function setFrame(w) {
   frame = w;
@@ -391,14 +406,15 @@ function morph(host, OLD, NEW, staticT) {
 }
 
 /* ===== сборка экранов ===== */
-const dem = () => T[lang].demo;
-const trCls = () => T[lang].partnerCyr ? 'tr cyr' : 'tr';
-const trHTML = (txt, extra = '') => `<div class="${trCls()} ${extra}"><span class="t" lang="${T[lang].partnerCyr ? 'ru' : 'es'}">${txt}</span><button class="sp" data-act="speak" aria-label="${T[lang].speak}"><span>${IC.spk}</span></button></div><div class="meta">${T[lang].partner}</div>`;
+const dem = () => { const m = DM[lang]; return { raw: m.raw, heard: m.heard, clean: m.clean, tr: DM[to].clean, typed: m.typed, typedTr: TYPED_TR[to], hostSay: DM[to].reply, hostTr: DM[lang].reply }; };
+const trCls = () => PCYR() ? 'tr cyr' : 'tr';
+const trHTML = (txt, extra = '') => `<div class="${trCls()} ${extra}"><span class="t" lang="${to}">${txt}</span><button class="sp" data-act="speak" aria-label="${T[lang].speak}"><span>${IC.spk}</span></button></div><div class="meta">${PN()}</div>`;
 const srcMeta = (t) => `<div class="meta"><i></i>${t.youLit}</div>`;
-const chipHTML = (t) => `<div class="chips"><span class="chip"><i style="background:var(--mint)"></i>${t.you} · ${t.name}</span><span class="chip"><i style="background:#fff"></i>${t.other} · ${t.partner}</span></div>`;
+const chipHTML = (t) => `<div class="chips"><span class="chip"><i style="background:var(--mint)"></i>${t.you} · ${t.name}</span><span class="chip"><i style="background:#fff"></i>${t.other} · ${PN()}</span></div>`;
 const idleHTML = (t, chips = true) => `<div class="idle"><img class="mk" src="${MARK}" alt=""><h1>${t.tagline.replace(' — ', '&nbsp;— ')}</h1><p>${t.welcomeP}</p>${chips ? chipHTML(t) : ''}</div>`;
 const doneFeed = (t, d, typed) => `<div class="turn"><div class="src">${typed ? d.typed : d.clean}</div>${srcMeta(t)}</div><div class="turn" style="margin-top:5px;align-items:stretch">${trHTML(typed ? d.typedTr : d.tr)}</div>`;
 
+const hostTurn = (t, d) => `<div class="turn them" style="margin-top:18px"><div class="src host" lang="${to}">${d.hostSay}</div><div class="meta"><i style="background:#fff"></i>${t.other} · ${PN()}</div></div><div class="turn them" style="margin-top:5px;align-items:stretch"><div class="tr host ${lang === 'ru' ? 'cyr' : ''}"><span class="t" lang="${lang}">${d.hostTr}</span><button class="sp" data-act="speak" aria-label="${t.speak}"><span>${IC.spk}</span></button></div><div class="meta" style="align-self:flex-start">${FULL[lang]}</div></div>`;
 function micBtn(t, mode) {
   if (mode === 'rec') return `<button class="mic rec" data-act="stop"><span class="sq"></span><span>${t.done}</span></button>`;
   if (mode === 'busy') return `<button class="mic busy" disabled>${IC.mic}<span>${t.mic}</span></button>`;
@@ -411,12 +427,12 @@ function bannerClip(t) { // SKOverlay-подобный баннер «Скача
 }
 function sheetHTML(t) {
   return `<div class="sheet" role="dialog" aria-label="${t.dlT}"><h2>${t.dlT}</h2><p>${t.dlP}</p>
-  <a class="store apple" href="#">${IC.apple}${t.dlApple}</a><a class="store play" href="#">${IC.play}${t.dlPlay}</a>
+  <div class="badges"><a class="badge apple" href="#" aria-label="${t.dlA1} App Store">${IC.apple}<span class="bt"><small>${t.dlA1}</small><b>App Store</b></span></a>
+  <button class="badge play" disabled aria-label="Google Play — ${t.dlSoon}">${IC.play}<span class="bt"><small>${t.dlSoon}</small><b>Google Play</b></span></button></div>
   <button class="link" data-act="dlclose" style="color:var(--text)">${t.dlClose}</button></div>`;
 }
 function composer(t) {
-  const [a, b] = CODE[lang];
-  const full = lang === 'ru' ? ['Русский', 'Español'] : lang === 'es' ? ['Español', 'Русский'] : ['English', 'Español'];
+  const full = [FULL[lang], FULL[to]];
   return `<div class="comp"><div class="dir"><b></b>${full[0]}${IC.arr}${full[1]}<b class="g"></b></div>
   <div class="row"><button class="rbtn x" data-act="tclose" aria-label="${t.close}">${IC.x}</button><div class="field"><textarea id="tx" placeholder="${t.ph}" aria-label="${t.ph}" lang="${lang}">${dem().typed}</textarea></div><button class="rbtn go" data-act="send" aria-label="${t.send}">${IC.up}</button></div></div>`;
 }
@@ -428,7 +444,7 @@ function render(opts = {}) {
   g.dataset.s = S; g.classList.remove('dim');
   const warn = S === 'offline';
   const dis = ['rec', 'proc', 'morph', 'limit', 'text'].includes(S);
-  const [c0, c1] = CODE[lang];
+  const [c0, c1] = [lang.toUpperCase(), to.toUpperCase()];
   $('top').innerHTML = `<div class="brand"><img src="${MARK}" alt=""><span class="wt" aria-label="Parrlo">Pa<i>rr</i>lo</span></div>
    <div class="pair glass${warn ? ' warn' : ''}" role="img" aria-label="${c0} → ${c1}"><b></b>${c0}${IC.arr}${c1}<b style="background:var(--mint)"></b></div>
    <button class="kbd glass" data-act="text" aria-label="${t.kbd}" ${dis ? 'aria-disabled="true"' : ''}>${IC.kbd}</button>`;
@@ -465,17 +481,20 @@ function render(opts = {}) {
         later(() => { S = 'done'; g.dataset.s = 'done'; ctxDone(); }, 450);
       });
       (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => requestAnimationFrame(run)); break; }
-    case 'done': case 'download': {
-      feed.className = 'feed conv'; feed.innerHTML = doneFeed(t, d, ctx.text);
-      if (MODE === 'web' && S === 'done') feed.insertAdjacentHTML('beforeend', `<div class="endrow"><button class="link" data-act="dl">${IC.dl}${t.dlLink}</button></div>`);
+    case 'done': case 'reply': case 'download': {
+      feed.className = 'feed conv'; feed.innerHTML = doneFeed(t, d, ctx.text) + (S === 'reply' ? hostTurn(t, d) : '');
+      if (MODE === 'web' && (S === 'done' || S === 'reply')) feed.insertAdjacentHTML('beforeend', `<div class="endrow"><button class="link" data-act="dl">${IC.dl}${t.dlLink}</button></div>`);
       if (S === 'download') { g.classList.add('dim'); dockHTML = sheetHTML(t); clipBanner = false; }
       if (opts.flow && S === 'done') {} break; }
     case 'text':
       feed.innerHTML = idleHTML(t, false); dockHTML = composer(t); clipBanner = false; break;
-    case 'err-mic':
-      feed.innerHTML = `<div class="errmid"><div class="ic err big">${IC.micoff}</div><h1>${t.noMicT}</h1><p>${MODE === 'clip' ? t.noMicClipP : t.noMicP}</p><button class="btn mint" data-act="text">${IC.kbd.replace('class="i"', 'class="i" style="width:22px;height:22px"')}${t.noMicBtn}</button>` +
-        (MODE === 'clip' ? `<button class="btn ghost sm" data-act="noop">${t.openSet}</button>` : `<details class="how"><summary>${t.how}</summary><div><p>${t.howIos}</p><p>${t.howAnd}</p></div></details>`) + '</div>';
-      dockHTML = micBtn(t, 'offmute'); break;
+    case 'err-mic': case 'err-mic-help': {
+      const clip = MODE === 'clip', open = S === 'err-mic-help';
+      const tIc = IC.kbd.replace('class="i"', 'class="i" style="width:22px;height:22px"');
+      feed.innerHTML = `<div class="errmid"><div class="ic err big">${IC.micoff}</div><h1>${t.noMicT}</h1><p>${clip ? t.noMicClipP : t.noMicP}</p>` +
+        (clip ? `<button class="btn mint" data-act="noop">${t.openSet}</button><button class="link" data-act="text">${t.typeLink}</button>`
+              : `<button class="btn mint" data-act="text">${tIc}${t.noMicBtn}</button><details class="how" ${open ? 'open' : ''}><summary class="btn ghost sm">${t.how}</summary><div><p class="lead">${t.howLead}</p><p>${t.howIos}</p><p>${t.howAnd}</p></div></details>`) + '</div>';
+      dockHTML = micBtn(t, 'offmute'); break; }
     case 'offline':
       bn.innerHTML = `<div class="card banner" role="alert"><div class="ic warn">${IC.wifioff}</div><div class="x"><h2>${t.offT}</h2><p>${t.offP}</p></div><button class="btn ghost sm" data-act="retry">${t.retry}</button></div>`;
       feed.className = 'feed conv';
@@ -488,7 +507,7 @@ function render(opts = {}) {
   dock.innerHTML = dockHTML + (clipBanner ? bannerClip(t) : '');
   dock.style.display = S === 'card' ? 'none' : '';
   if (typeof syncPanel === 'function') syncPanel();
-  if (!PNG && !opts.noUrl) { const u = new URL(location.href); u.searchParams.set('s', S); u.searchParams.set('lang', lang); history.replaceState(null, '', u); }
+  if (!PNG && !opts.noUrl) { const u = new URL(location.href); u.searchParams.set('s', S); u.searchParams.set('from', lang); u.searchParams.set('to', to); u.searchParams.delete('lang'); history.replaceState(null, '', u); }
 }
 function ctxDone() { const t = T[lang]; const feed = $('feed'); const k = document.querySelector('.kbd'); if (k) k.removeAttribute('aria-disabled'); if (MODE === 'web') feed.insertAdjacentHTML('beforeend', `<div class="endrow pop"><button class="link" data-act="dl">${IC.dl}${t.dlLink}</button></div>`); $('dock').innerHTML = micBtn(t) + (MODE === 'clip' && !ctx.bnHidden ? bannerClip(t) : ''); if (typeof syncPanel === 'function') syncPanel(); }
 function go(s, o) { S = s; render(o); }
@@ -519,19 +538,21 @@ function buildPanel() {
   P.innerHTML = `<button class="pt" id="pt"><span>Макет · <b id="pcur"></b></span><span>▾</span></button><div class="pb">
    <h2>${PANEL_TITLE}</h2><div style="color:#8E99A8">Состояния и языки — только для просмотра макета.</div>
    <h3>Состояние</h3><div class="pg" id="pst"></div>
-   <h3>Язык страницы</h3><div class="pg" id="pln"></div>
+   <h3>Гость говорит (from)</h3><div class="pg" id="pln"></div>
+   <h3>Хозяин говорит (to)</h3><div class="pg" id="pto"></div>
    <h3>Рамка</h3><div class="pg" id="pfr"></div><div class="pn" id="pnote"></div></div>`;
   $('pst').innerHTML = STATES.map(([id, n]) => `<button data-p="s:${id}">${n}</button>`).join('');
   $('pln').innerHTML = ['ru', 'es', 'en'].map(l => `<button data-p="l:${l}">${l.toUpperCase()}</button>`).join('');
+  $('pto').innerHTML = ['ru', 'es', 'en'].map(l => `<button data-p="t:${l}">${l.toUpperCase()}</button>`).join('');
   $('pfr').innerHTML = [['auto', 'По окну'], ['360', '360'], ['390', '390'], ['430', '430']].map(([w, n]) => `<button data-p="w:${w}">${n}</button>`).join('');
   $('pt').onclick = () => P.classList.toggle('open');
   P.onclick = (e) => { const b = e.target.closest('[data-p]'); if (!b) return; const [k, v] = b.dataset.p.split(':');
-    if (k === 's') { ctx.text = false; go(v); P.classList.remove('open'); } else if (k === 'l') { lang = v; render(); } else if (k === 'w') { setFrame(v); render({ noUrl: false }); } };
+    if (k === 's') { ctx.text = false; go(v); P.classList.remove('open'); } else if (k === 'l') { lang = v; if (to === lang) to = DEFTO[lang]; render(); } else if (k === 't') { if (v !== lang) { to = v; render(); } } else if (k === 'w') { setFrame(v); render({ noUrl: false }); } };
 }
 function syncPanel() {
   const P = $('panel'); if (!P) return;
-  P.querySelectorAll('[data-p]').forEach(b => { const [k, v] = b.dataset.p.split(':'); b.classList.toggle('on', (k === 's' && v === S) || (k === 'l' && v === lang) || (k === 'w' && v === frame)); });
-  $('pcur').textContent = (STATES.find(s => s[0] === S) || [])[1] + ' · ' + lang.toUpperCase();
+  P.querySelectorAll('[data-p]').forEach(b => { const [k, v] = b.dataset.p.split(':'); b.classList.toggle('on', (k === 's' && v === S) || (k === 'l' && v === lang) || (k === 't' && v === to) || (k === 'w' && v === frame)); });
+  $('pcur').textContent = (STATES.find(s => s[0] === S) || [])[1] + ' · ' + lang.toUpperCase() + '→' + to.toUpperCase();
   $('pnote').innerHTML = typeof panelNote === 'function' ? panelNote() : '';
 }
 

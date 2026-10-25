@@ -51,6 +51,8 @@
 | dark.bubbleOther | #242B34 |
 | dark.onBubbleOther | #E8ECF1 |
 | dark.link | #2BC48A |
+| dark.partnerButtonBg | #BFF2DC |
+| dark.partnerButtonText | #0E1116 |
 | dark.disabledBg | #2A2F36 |
 | dark.disabledText | #9AA4B2 |
 

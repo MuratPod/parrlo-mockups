@@ -89,6 +89,7 @@ tr:last-child td{border-bottom:0}
 .ui[data-theme=dark] .btn.s{color:var(--pl-text);background:var(--pl-surfaceHigh)}
 .btn.s.pr{background:#CDEBDD}
 .ui[data-theme=dark] .btn.s.pr{background:#2F3742}
+.btn.q{background:var(--pl-partnerButtonBg);color:var(--pl-partnerButtonText);box-shadow:0 0 22px rgba(191,242,220,.35)}
 .btn.t{background:transparent;color:var(--pl-link)}
 .btn.x{background:var(--pl-disabledBg);color:var(--pl-disabledText);cursor:not-allowed}
 .btn svg{width:20px;height:20px}

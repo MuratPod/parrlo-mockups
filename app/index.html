@@ -2,7 +2,7 @@
 <html lang="ru"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex">
-<title>Parrlo Translate · макеты экранов · брендбук v2.2</title>
+<title>Parrlo Translate · макеты экранов · брендбук v2.3</title>
 <meta name="theme-color" content="#0E1116">
 <style>
 :root{--bg:#0E1116;--surf:#161A21;--hi:#1F252E;--bd:#2F3742;--tx:#E8ECF1;--mu:#9AA4B2;--pr:#2BC48A;--beak:#FFC247}
@@ -113,7 +113,7 @@ main{max-width:1080px;margin:0 auto;padding:10px 20px 60px;display:grid;grid-tem
   $('rows').innerHTML=m.rows.map(function(r){return '<div class="row"><b>'+esc(r.el)+'</b><div class="w">'+esc(r.was)+'</div><div class="n">'+esc(r.now)+'</div></div>'}).join('');
   [].forEach.call(chips.children,function(c,k){if(k==i)c.setAttribute('aria-current','true');else c.removeAttribute('aria-current')});
   $('bBefore').setAttribute('aria-pressed',!after);$('bAfter').setAttribute('aria-pressed',after);$('bCalm').setAttribute('aria-pressed',!glow);$('bGlow').setAttribute('aria-pressed',glow);$('bgseg').classList.toggle('off',!after);
-  var g=m.glow; $('gl').innerHTML='<b>Фон v2.2 · '+esc(g.group)+'</b><ul>'+g.spots.map(function(x){return '<li>'+esc(x.color)+' · '+esc(x.pos)+' · пик '+Math.round(x.alpha*100)+' %</li>'}).join('')+'</ul><p>Минимальный контраст на фоне рядом с пятном: текст '+(g.text_min?g.text_min.toFixed(2)+':1':'—')+' (норма 4.5:1), графика '+(g.graphic_min?g.graphic_min.toFixed(2)+':1':'—')+' (норма 3:1). Где пятно мешало — приглушено.</p>';
+  var g=m.glow; $('gl').innerHTML='<b>Фон v2.3 · '+esc(g.group)+'</b><ul>'+g.spots.map(function(x){return '<li>'+esc(x.color)+' · '+esc(x.pos)+' · пик '+Math.round(x.alpha*100)+' %</li>'}).join('')+'</ul><p>Минимальный контраст на фоне рядом с пятном: текст '+(g.text_min?g.text_min.toFixed(2)+':1':'—')+' (норма 4.5:1), графика '+(g.graphic_min?g.graphic_min.toFixed(2)+':1':'—')+' (норма 3:1). Где пятно мешало — приглушено.</p>';
   var cur=chips.children[i]; if(cur&&chips.scrollTo){chips.scrollTo({left:cur.offsetLeft-chips.clientWidth/2+cur.clientWidth/2})}
   if(meta[i+1]){(new Image()).src='s/'+meta[i+1].id+'.'+kind(after)+'.webp';(new Image()).src='s/'+meta[i+1].id+'.mask.webp'}
  }

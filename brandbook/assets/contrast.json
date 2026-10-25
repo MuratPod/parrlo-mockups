@@ -211,6 +211,26 @@
  },
  {
   "group": "Кнопки",
+  "role": "Dark · кнопка собеседника (partnerButtonText на partnerButtonBg)",
+  "fg": "#0E1116",
+  "bg": "#BFF2DC",
+  "ratio": 15.26,
+  "need": 4.5,
+  "ok": true,
+  "note": "v2.3: Light mint, решение Murat; в приложении — «Yo hablo»"
+ },
+ {
+  "group": "Кнопки",
+  "role": "Dark · кнопка собеседника к фону (графика)",
+  "fg": "#BFF2DC",
+  "bg": "#12161C",
+  "ratio": 14.65,
+  "need": 3.0,
+  "ok": true,
+  "note": "v2.3: граница кнопки к фону, свечение в тон; на макетах ≥3.1:1 с пятнами"
+ },
+ {
+  "group": "Кнопки",
   "role": "Disabled: серый на #E5E7EB",
   "fg": "#5B6472",
   "bg": "#E5E7EB",

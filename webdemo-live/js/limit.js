@@ -67,3 +67,10 @@ export function gateScreen({ remaining, gateOn, signed }) {
 /** Коды 429, после которых показывается «скачайте» (потолок по IP) или нейтральное «попробуйте позже» (web_budget). */
 export const isIpLimit = (code) => code === "web_ip_day";
 export const isBudgetLimit = (code) => code === "web_budget";
+
+/** До какого момента держать экран «скачайте» после web_ip_day: resets_at/Retry-After сервера, иначе ближайшая 00:00 UTC (сутки сервера — UTC). */
+export function ipLimitUntil(now, resetsAtMs) {
+  if (Number.isFinite(resetsAtMs) && resetsAtMs > now) return resetsAtMs;
+  const d = new Date(now);
+  return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() + 1);
+}

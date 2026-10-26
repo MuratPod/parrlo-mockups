@@ -1,4 +1,4 @@
-# webdemo-live — рабочая копия веб-демо из PR #185 (MuratPod/milo-app, ветка task/parrlo-web-demo-1, голова e7998372)
+# webdemo-live — рабочая копия веб-демо из PR #185 (MuratPod/milo-app, ветка task/parrlo-web-demo-1, голова 805fea5f)
 
 Статика `web/public` без изменений логики. Отличия только этой копии для GitHub Pages:
 - `mock-api.js` — МОК сервера: Turnstile, `/v1/*` и STT-WebSocket подменены в браузере (заготовленные фразы RU↔ES, лимит 5 фраз за загрузку страницы, озвучка — тишина);

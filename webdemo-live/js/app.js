@@ -2,7 +2,7 @@
 // Только ядро: пара RU⇄ES, две капсулы, лента из облачков, лимит (регистрация за флагом → «скачайте приложение»). Чистая логика — в соседних модулях под тестами.
 import { t, uiLangFrom, NATIVE, LANG_ARIA, BTN_WORD, BTN_DONE, PLAY_NOTE } from "./i18n.js";
 import { readTranslateStream } from "./sse.js";
-import { createLimitStore, isPhraseQuota, signupGateOn, gateScreen, isIpLimit, isBudgetLimit } from "./limit.js";
+import { createLimitStore, isPhraseQuota, signupGateOn, gateScreen, ipLimitUntil, isIpLimit, isBudgetLimit } from "./limit.js";
 import { createApi, errorKey, retryToken } from "./api.js";
 import { hasLocalVoice, play, speakLocal, startRecording, stopPlayback, unlockAudio } from "./audio.js";
 import { createTurnstile } from "./turnstile.js";
@@ -42,7 +42,7 @@ let dockPainting = false;     // идёт перерисовка дока: уд�
 document.addEventListener("focusin", (e) => { if (!dockPainting && e.target !== document.body && !e.target.closest?.("#dock")) dockFocus = ""; });
 let dismissed = false;       // экран лимита закрыт кнопкой «Закрыть»: лента видна, док остановлен
 let signedNotice = false;    // после успешного входа: «Вход выполнен»
-let playingId = null, activeMorph = null, ipLimited = false, signing = false, maxSttSec = 60, configLoaded = false;
+let playingId = null, activeMorph = null, ipLimitedUntil = 0, signing = false, maxSttSec = 60, configLoaded = false;
 
 const auth = createAuth({ cfg: CFG.firebase });
 const AUTH_FLAG = "parrlo.auth.v1";   // «в этом браузере входили»: только тогда при запуске грузим SDK Firebase
@@ -54,13 +54,14 @@ const api = createApi({ base: CFG.api || "", turnstileToken: (signal) => turnsti
 if (auth.available && store.getItem(AUTH_FLAG) === "1") api.markSigned();
 
 /** Экран лимита по ответам сервера: null — обычный. После resets_at limit.get() даёт null и экраны сбрасываются. */
-const rawScreen = () => (ipLimited ? "download" : gateScreen({ remaining: limit.get()?.remaining, gateOn: GATE, signed: api.signed }));
+const ipLimited = () => { if (ipLimitedUntil && Date.now() >= ipLimitedUntil) ipLimitedUntil = 0; return ipLimitedUntil > 0; };   // срок вышел — сервер решит заново
+const rawScreen = () => (ipLimited() ? "download" : gateScreen({ remaining: limit.get()?.remaining, gateOn: GATE, signed: api.signed }));
 const screen = () => (signedNotice ? "signed" : rawScreen() && !dismissed ? rawScreen() : null);
 const locked = () => !!rawScreen() && dismissed;   // «Закрыть» нажато, лимит всё ещё исчерпан
 function scheduleReset() {
   clearTimeout(resetTimer);
-  const at = limit.get()?.resetAt;
-  if (at) resetTimer = setTimeout(() => { ipLimited = false; if (!rec && !busy) render(); }, Math.min(Math.max(at - Date.now() + 500, 1000), 2 ** 31 - 1));
+  const ats = [limit.get()?.resetAt, ipLimitedUntil || null].filter(Boolean);
+  if (ats.length) resetTimer = setTimeout(() => { ipLimited(); scheduleReset(); if (!rec && !busy) render(); }, Math.min(Math.max(Math.min(...ats) - Date.now() + 500, 1000), 2 ** 31 - 1));
 }
 
 // Озвучивание состояния для скринридеров: «Слушаю… / Перевожу… / Готово / ошибка» (aria-live polite)
@@ -335,7 +336,7 @@ async function stopRec() {
 /** Ошибка лимита → экран (signup/download) или нейтральное «попробуйте позже». true — обработано. */
 function limitFail(e) {
   if (isPhraseQuota(e?.code)) { limit.exhausted({ limit: e.limit?.limit ?? null, remaining: 0, resetAt: e.limit?.resetAt ?? null }); return true; }
-  if (isIpLimit(e?.code)) { ipLimited = true; return true; }
+  if (isIpLimit(e?.code)) { ipLimitedUntil = ipLimitUntil(Date.now(), e?.limit?.resetAt ?? e?.retryAt); scheduleReset(); return true; }
   return false;
 }
 const dropTurn = (x) => { const i = turns.indexOf(x); if (i >= 0) turns.splice(i, 1); };   // x может быть ещё не вставлен: indexOf = −1 удалил бы последнюю завершённую фразу

@@ -36,7 +36,7 @@ export async function retryToken(api, ms = 8000) {
 export function createApi({ base, turnstileToken, idToken = async () => null, fetchImpl = (...a) => fetch(...a), now = Date.now, online = () => (typeof navigator === "undefined" ? true : navigator.onLine), onLimit = () => {} }) {
   let session = null, pending = null, ctl = null, loginCtl = null, epoch = 0, outEpoch = 0, signed = false;   // signed: пользователь вошёл — новая сессия сразу входит заново по свежему ID-токену
   const abortAll = () => { try { ctl?.abort(); } catch {} try { loginCtl?.abort(); } catch {} ctl = loginCtl = null; };
-  const err = (code, status, limit) => Object.assign(new Error(code), { code, status, ...(limit ? { limit } : {}) });
+  const err = (code, status, limit, retryAtMs) => Object.assign(new Error(code), { code, status, ...(limit ? { limit } : {}), ...(retryAtMs ? { retryAt: retryAtMs } : {}) });
 
   // поколение запроса: reset() увеличивает epoch и отменяет запрос; поздний ответ устаревшего запроса сессию не трогает
   const untilAbort = (p, signal) => {
@@ -114,7 +114,7 @@ export function createApi({ base, turnstileToken, idToken = async () => null, fe
     if (!r.ok) {
       const j = await r.json().catch(() => ({}));
       const l = parseLimit(j), at = retryAt(r.headers?.get?.("retry-after"), now());   // Retry-After — запасной срок сброса, если в теле resets_at нет
-      throw err(j.error || "upstream", r.status, l && !l.resetAt && at ? { ...l, resetAt: at } : l);
+      throw err(j.error || "upstream", r.status, l && !l.resetAt && at ? { ...l, resetAt: at } : l, at);
     }
     return r;
   }

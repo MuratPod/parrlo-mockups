@@ -1,0 +1,36 @@
+{
+ "items": [
+  {
+   "id": "nunito",
+   "title": "Nunito",
+   "author": "The Nunito Project Authors",
+   "license": "SIL Open Font License 1.1",
+   "kind": "font",
+   "text": "/fonts/OFL-Nunito.txt"
+  },
+  {
+   "id": "inter",
+   "title": "Inter",
+   "author": "The Inter Project Authors",
+   "license": "SIL Open Font License 1.1",
+   "kind": "font",
+   "text": "/fonts/OFL-Inter.txt"
+  },
+  {
+   "id": "qrcode-generator",
+   "title": "qrcode-generator",
+   "author": "Kazuhiko Arase",
+   "license": "MIT License",
+   "kind": "lib",
+   "text": "/licenses/MIT-qrcode-generator.txt"
+  },
+  {
+   "id": "firebase-js",
+   "title": "Firebase JS SDK",
+   "author": "Google LLC",
+   "license": "Apache License 2.0",
+   "kind": "sdk",
+   "text": "/licenses/Apache-2.0.txt"
+  }
+ ]
+}

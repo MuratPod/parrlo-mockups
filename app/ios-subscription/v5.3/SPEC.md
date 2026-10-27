@@ -1,5 +1,5 @@
 # Parrlo Translate · iOS 2.0 эталон · v5.3 SPEC (макеты, не прод-код)
-Дата: 27.10.2026. Основа — v5.2 (не менялась). Подробности и тексты — ELEMENTS-FOR-APP.md (во внутренней папке дизайна) §18–§21.
+Дата: 27.10.2026. Основа — v5.2 (не менялась). Подробности и тексты — ELEMENTS-FOR-APP.md (во внутренней папке дизайна) §18–§23.
 
 ## Состав
 - `index.html` — v5.3: новые кадры (RU/ES/EN, переключатели SE/Pro, Normal/XL/AX5, «Вся длина экрана»).
@@ -7,7 +7,7 @@
 - `src/` (во внутренней папке) — `build.py` (хелперы v5.2 + новые кадры), `style.css` (v5.2 + блок v5.3), `dt.py`, `shoot.mjs`, `shoot-dt.mjs`, `contrast.py`, `contrast-dt.py`, `checks.py`, `ids.json`.
 
 ## ids.json (v5.3)
-52-plans3-month · 52a-plans3-month-bottom · 52b-plans3-year · 52c-plans3-year-bottom · 53-plans3-current-molchun · 54-plans3-current-boltun-year · 55-plans3-selected-year · 56-plans3-purchase-error · 57-plans3-prices-unavailable · 51a-text-consent-fits · (DT-only) 51b-text-consent-scroll-required · 51c-text-consent-scrolled-end · 41n-sub-install-limit (max_binds) · 41m-sub-install-limit-installs (max_installs) · 66-device-disconnected · 65-active-devices-row · 58-devices-list · 58a-devices-list-full · 59-devices-revoke-confirm · 60-devices-revoked · 61-devices-revoke-limit · 62-devices-error · 62a-devices-offline · 62b-devices-too-many · 63-devices-empty-free · 64-devices-loading.
+52-plans3-month · 52a-plans3-month-bottom · 52b-plans3-year · 52c-plans3-year-bottom · 53-plans3-current-molchun · 54-plans3-current-boltun-year · 55-plans3-selected-year · 56-plans3-purchase-error · 57-plans3-prices-unavailable · 51a-text-consent-fits · (DT-only) 51b-text-consent-scroll-required · 51c-text-consent-scrolled-end · 41n-sub-install-limit (max_binds) · 41m-sub-install-limit-installs (max_installs) · 66-device-disconnected · 65-active-devices-row · 58-devices-list · 58a-devices-list-full · 59-devices-revoke-confirm · 60-devices-revoked · 61-devices-revoke-limit · 62-devices-error · 62a-devices-offline · 62b-devices-too-many · 63-devices-empty-free · 64-devices-loading · 26b-v53-consent-scroll-required · 26c-v53-consent-scrolled-end (DT-only) · 67-cloud-switch-voice-text · 67a-cloud-switch-text-only · 67b-cloud-switch-off · 68-cloud-empty-permission · 69-cloud-revoked.
 
 ## Что вставлено дословно из юр. отчётов
 - юр. отчёт, А.2 «51» (Путь 1): заголовок и текст RU/ES/EN, кнопка основная («Разрешить перевод текстом» / «Permitir traducir texto» / “Allow text translation”).
@@ -24,11 +24,13 @@
 7. Family Sharing «участник работает как Free» — в v5.2 нет, по коду не подтверждено (общие лимиты семьи?). Кадр 40 v5.2 не менялся.
 8. «≈ 2,50 €/мес» / «≈ 3,33 €/мес» (вместо «в месяц» в v5.2) — по поручению менеджера.
 
-9. Экран «Устройства» (кадры 58–66, 65): заголовки/кнопки «Устройства», «Отозвать устройство?», «Устройство отозвано», 7 дней хранения записи об отзыве, «Лимит отзывов исчерпан…», тексты ошибок и 429, «Устройств пока нет…», «Последнее использование»/«Первое использование», «Это устройство» — тексты дизайна по контракту App; 7 дней и «до 3 отзывов за 30 дней» на экранах как числа не показываются (кроме правила «3 устройства»).
+9. Экран «Устройства» (кадры 58–66, 65): заголовки/кнопки «Устройства», «Отозвать устройство?», «Устройство отозвано», 7 дней хранения записи об отзыве, «Лимит отзывов исчерпан…», тексты ошибок и 429, «Устройств пока нет…», «Последнее использование»/«Первое использование», «Это устройство» — тексты дизайна по контракту App; «7 дней» показано только в кадре 60 (формулировка не утверждена); «до 3 отзывов за 30 дней» числом на экранах не показывается (кроме правила «3 устройства»).
 10. «Это устройство отключено от подписки» (кадр 66) и тексты кадра 41m (max_installs) — формулировка дизайна.
 11. Кадр 41n: заголовок «Достигнут лимит устройств для этой подписки» — решение Manager (не из юр. отчёта); ES/EN заголовка — перевод дизайна. Тело 41n — дословно юр. А.2 «41» + «Или напишите нам: hello@parrlo.com.».
 12. Строка «до 3 устройств» остаётся «не утверждено» до ответа юриста по Apple 3.1.2(a).
 13. Кадр 40 v5.2 (Family Sharing: «участник работает как Free») — Family Sharing выключен на сервере (family_shared отказ); в v5.3 заменить/убрать при финальной сборке. В v5.3 про семью не пишем.
+
+18. Экран 26 v5.3 (26b/26c-v53) и состояния Г/Д/Е (67–69): **дословно** — все тексты и кнопки «Разрешить» / «Не сейчас» / «Понятно» / «Подробнее» из юр. отчёта «iOS 2.0» §1.3 А/Г/Д/Е. **Не утверждено:** подсказка «Прокрутите до конца…», точки шагов, иконки, вид строки Г (значение + шеврон), строки «Конфиденциальность / Условия» и «Откроется на parrlo.com». Состояние «текст помещается» не рисовалось (полный текст не помещается).
 
 ## Не вошло (нет в v5.2 / не просили)
 Скелетон загрузки цен; «Недоступно на этом iPhone» на трёх планах; бейджи с процентами (только `../alt/` v5.2); полоски использования на листе планов.

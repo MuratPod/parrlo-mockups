@@ -190,3 +190,12 @@
 - **Диалог пропуска** `.pc-alert` (как удаление памяти, 5.11): «Пропустить настройку?» / «Вернуться к настройке».
 - Кадры: [вход](png/ru/ob-signin/pro-n.png) · [ожидание](png/ru/ob-signin-wait/pro-n.png) · [отмена](png/ru/ob-signin-cancel/pro-n.png) · [нет сети](png/ru/ob-signin-offline/pro-n.png) · [настройка](png/ru/ob-parrlo-setup/pro-n.png) · [ошибка](png/ru/ob-parrlo-setup-error/pro-n.png) · [пропуск](png/ru/ob-parrlo-setup-skip/pro-n.png).
 
+### 5.15 Пустые состояния, ошибки, преемник группы (пакет 3.2)
+- **Пустое состояние** `.pc-es` (`role="status"`): иконка 72 pt в круге `--surface` (растёт с `--ts-i`), заголовок 17–19, одна-две строки `--muted` (≤ 32 знака в строке), при необходимости одна кнопка. Иконки: `users`, `bubble`, `list`, `spark`, `search`, `wifioff`.
+- **Баннер «нет сети»** `.pc-banner--off`: тёплый фон `--warn-bg`, иконка `wifioff`, заголовок + пояснение, `role="status"`; стоит над списком чатов.
+- **Метка ошибки отправки** `.pc-failrow` (`role="alert"`): контур `--err` вокруг пузыря, «Не отправлено» со значком, две текстовые кнопки «Повторить» / «Удалить» (тап ≥ 44), строка-пояснение под ними.
+- **Поле поиска с запросом** `.pc-search.pc-searchfield`: в фокусе, запрос слева, кнопка очистки справа (≥ 44).
+- **Выбор преемника** `group-successor`: радио-строки `.pc-radio` с аватаром участника; «Выбрать автоматически» — последняя строка с плашкой «не утверждено»; «Назначить и выйти» — основная кнопка.
+- **Диалоги** (`group-successor-confirm`, `reminder-consent`) — `.pc-alert` (5.11); в `reminder-consent` внутри диалога радио-список вариантов времени и две равные по весу кнопки.
+- Кадры: [преемник](png/ru/group-successor/pro-n.png) · [подтверждение](png/ru/group-successor-confirm/pro-n.png) · [ошибка](png/ru/group-successor-error/pro-n.png) · [удаление](png/ru/group-successor-delete/pro-n.png) · [нет сети: баннер](png/ru/err-offline-banner/pro-n.png) · [нет сети: экран](png/ru/err-offline-full/pro-n.png) · [ошибка отправки](png/ru/err-send/pro-n.png) · [контакты](png/ru/empty-contacts/pro-n.png) · [группа](png/ru/empty-group/pro-n.png) · [протокол](png/ru/empty-protocol/pro-n.png) · [память](png/ru/empty-memory/pro-n.png) · [поиск](png/ru/empty-search/pro-n.png) · [напомнить позже](png/ru/reminder-consent/pro-n.png).
+

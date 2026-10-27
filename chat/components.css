@@ -507,3 +507,27 @@ svg.ic{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:2;stroke-
 
 .pc-frame.full .pc-app[data-view=detail] .pc-pane--detail{flex:1 1 0;width:100%;min-width:0}
 .pc-frame.full .pc-app[data-view=detail] .pc-split{display:flex}
+
+/* ---- правки 27.10.2026: решения менеджера ---- */
+/* плашка «не утверждено» — мелкая, но читаемая: ≥13 px, контраст ≥ 4.5:1 (beak на тёмных фонах ≈ 9–11) */
+.pc-tbd{display:inline-block;vertical-align:baseline;padding:1px 8px;border-radius:var(--r-pill);border:1px dashed var(--beak);color:var(--beak);background:rgba(255,194,71,.08);font:var(--fw-med) var(--t-small)/1.35 var(--font);white-space:normal}
+/* лимит по группам: подпись + полоска, без цифр */
+.pc-lrows{display:flex;flex-direction:column;gap:12px}
+.pc-lrow{display:flex;flex-direction:column;gap:6px}
+.pc-lrow .n{font:var(--fw-med) var(--t-preview)/1.2 var(--font)}
+.pc-lrow .pc-meter i{border-radius:var(--r-pill)}
+.pc-ucard .rs{flex:1 1 220px;justify-content:flex-start;align-items:flex-start}
+.pc-ucard .rs .ic{flex:none;margin-top:2px}
+/* лимит исчерпан в группе / звонке */
+.pc-lcard{margin:0 var(--gutter) 8px;padding:12px 14px;border-radius:var(--r-lg);background:var(--err-bg);display:flex;flex-direction:column;gap:8px;flex:none;box-shadow:inset 0 0 0 1px rgba(255,107,94,.45)}
+.pc-lcard b{font:var(--fw-semi) var(--t-small)/1.25 var(--font)}
+.pc-lcard .rs{display:flex;align-items:flex-start;gap:6px;font:var(--fw-reg) var(--t-small)/1.35 var(--font)}.pc-lcard .rs .ic{flex:none;margin-top:2px}
+.pc-lcard .s{font:var(--fw-reg) var(--t-caption)/1.35 var(--font);color:#D5DDE6}
+.pc-lcard .pc-btn{align-self:stretch}
+.pc-videoarea .pc-lcard{margin:0 8px 8px}
+.pc-plan .pr{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:baseline;color:var(--ink)}.pc-plan .pr b{font-weight:var(--fw-semi)}
+.pc-plan p{display:block}
+.pc-msgs .pc-lcard{margin:0;align-self:stretch}
+.pc-frame[data-ts=xl] .pc-lcard .s,.pc-frame[data-ts=ax5] .pc-lcard .s{display:none}
+.pc-frame[data-ts=ax5] .pc-videoarea:has(.pc-lcard) :is(.vid,.pc-tiles,.pc-self){display:none}
+.pc-frame[data-ts=ax5] .pc-videoarea:has(.pc-lcard){justify-content:flex-end}

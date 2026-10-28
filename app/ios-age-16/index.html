@@ -75,7 +75,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 </style>
 </head>
 <body>
-<div class="banner" role="note">Черновик макета · тексты — черновик юриста (RG 28.10), не утверждено · ES/EN — проверить носителем</div>
+<div class="banner" role="note">Черновик макета · тексты — черновик юриста (RG 28.10), не утверждено · ES/EN вычитаны RG 28.10</div>
 <main class="page">
 <header>
  <div>
@@ -95,7 +95,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   <div class="dev"><div class="scr gate" data-scr="gate"></div></div>
   <figcaption>
    <b>1 · Возраст: «Вам есть 16 лет?»</b>
-   <span class="draft">тексты — черновик RG 28.10 (reports-rg/legal-age-gate-16-translate-ios-2026-10-28.md), вставлены дословно</span>
+   <span class="draft">тексты — черновик RG 28.10 (reports-rg/legal-age-gate-16-translate-ios-2026-10-28.md), вставлены дословно; ES/EN — с правками вычитки RG 28.10 (G-1…G-4, proofread-es-en-rg-drafts-2026-10-28.md)</span>
    <ul>
     <li><b style="display:inline">Место:</b> ПЕРВЫЙ экран при первом запуске — до экрана согласия 26 и до любого запроса микрофона / экрана с микрофоном. Показывается один раз.</li>
     <li>Обе кнопки одинакового визуального веса: один и тот же стиль (Surface #1C2026, рамка 1px rgba(255,255,255,.16), белый текст, полная ширина, одна высота 54pt), ни одна не выбрана заранее, нет зелёной «главной» — без подталкивания к «да».</li>
@@ -109,7 +109,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   <div class="dev"><div class="scr refuse" data-scr="refuse"></div></div>
   <figcaption>
    <b>2 · Отказ (после «Мне меньше 16»)</b>
-   <span class="draft">тексты — черновик RG 28.10</span>
+   <span class="draft">тексты — черновик RG 28.10; ES/EN — с вычиткой RG (G-1, G-2, G-4)</span>
    <ul>
     <li>Нет кнопки «назад» и никаких других действий: вернуться к выбору нельзя; повторный вопрос — только после переустановки.</li>
     <li>Внизу только две ссылки: «Условия использования» и «Политика конфиденциальности».</li>
@@ -142,10 +142,10 @@ const T={
   rtitle:"Parrlo пока не для вас",rbody:"Извините, Parrlo доступен только с 16 лет.",terms:"Условия использования",privacy:"Политика конфиденциальности"},
  es:{title:"¿Tienes 16 años o más?",body:"Parrlo es para personas de 16 años o más. Confirma tu edad para continuar.",yes:"Tengo 16 o más",no:"Tengo menos de 16",
   foot:'Más información en los <a href="#" onclick="return false">Términos de uso</a> y la <a href="#" onclick="return false">Política de privacidad</a>.',
-  rtitle:"Parrlo aún no está disponible para ti",rbody:"Lo sentimos, Parrlo solo está disponible para personas de 16 años o más.",terms:"Términos de uso",privacy:"Política de privacidad"},
- en:{title:"Are you 16 or older?",body:"Parrlo is for people aged 16 and over. Confirm your age to continue.",yes:"I'm 16 or older",no:"I'm under 16",
+  rtitle:"Parrlo todavía no es para ti",rbody:"Lo sentimos, Parrlo solo está disponible para personas de 16 años o más.",terms:"Términos de uso",privacy:"Política de privacidad"},
+ en:{title:"Are you 16 or older?",body:"Parrlo is for people aged 16 or older. Please confirm your age to continue.",yes:"I’m 16 or older",no:"I’m under 16",
   foot:'Learn more in our <a href="#" onclick="return false">Terms of Use</a> and <a href="#" onclick="return false">Privacy Policy</a>.',
-  rtitle:"Parrlo isn't available to you yet",rbody:"Sorry, Parrlo is only available to people aged 16 and over.",terms:"Terms of Use",privacy:"Privacy Policy"}};
+  rtitle:"Parrlo isn’t for you yet",rbody:"Sorry, Parrlo is only available to people aged 16 or older.",terms:"Terms of Use",privacy:"Privacy Policy"}};
 let lang="ru";
 const tpl=id=>document.getElementById(id).innerHTML;
 function render(el,kind){el.className="scr "+kind;el.dataset.scr=kind;el.innerHTML=tpl("t-status")+tpl("t-"+kind);el.lang=lang;

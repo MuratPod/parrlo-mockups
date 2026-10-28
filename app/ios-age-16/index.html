@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Parrlo Translate iOS · экран «мне есть 16» — черновик макета</title>
+<style>
+@font-face{font-family:Inter;font-weight:100 900;font-display:swap;src:url(../ios-subscription/v5.3/fonts/Inter-Variable.woff2) format("woff2")}
+@font-face{font-family:Nunito;font-weight:200 1000;font-display:swap;src:url(../ios-subscription/v5.3/fonts/Nunito-Variable.woff2) format("woff2")}
+/* Токены Parrlo v2.3, тёмная тема */
+:root{--bg:#12161C;--ink:#FFFFFF;--sec:rgba(255,255,255,.7);--surface:#1C2026;--onAcc:#0E1116;--acc:#2BC48A;--green:#00A86B;--beak:#FFC247;--fs:1}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0A0C0F;color:#E8ECF1;font:400 15px/1.4 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.banner{background:#3C372B;color:#FFC247;font:700 14px/1.4 Inter;text-align:center;padding:10px 16px;border-bottom:1px solid rgba(255,194,71,.35)}
+.page{max-width:1400px;margin:0 auto;padding:28px 32px 60px}
+.page>header{display:flex;flex-wrap:wrap;gap:16px 32px;align-items:flex-end;margin-bottom:28px}
+.page h1{font:900 30px/1.1 Nunito,sans-serif}
+.page h1 i{font-style:normal;color:var(--acc)}
+.lead{color:#9AA4B2;max-width:70ch;font-size:14px;margin-top:6px}
+.tools{margin-left:auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.tools button{padding:8px 14px;border-radius:999px;background:#1C2026;box-shadow:inset 0 0 0 1px #2F3742;font:600 13px Inter;color:#E8ECF1}
+.tools button[aria-pressed=true]{background:var(--acc);color:var(--onAcc)}
+.sec-h{font:800 18px Inter;margin:34px 0 14px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.sec-h span{font:400 13px Inter;color:#9AA4B2}
+.grid{display:flex;flex-wrap:wrap;gap:36px 40px;align-items:flex-start}
+.fr{width:390px}
+.fr figcaption{margin-top:12px;font-size:13px;color:#9AA4B2;line-height:1.45}
+.fr figcaption b{display:block;color:#E8ECF1;font:700 14px Inter;margin-bottom:4px}
+.fr figcaption ul{margin:6px 0 0 18px}
+.fr figcaption li{margin-bottom:4px}
+.draft{display:inline-block;margin:0 0 6px;padding:1px 8px;border-radius:999px;background:#1E3A2E;color:#7FE0B8;font:700 11px/1.5 Inter}
+.dev{padding:10px;border-radius:58px;background:#000;box-shadow:0 0 0 1px #2a2f36,0 20px 50px rgba(0,0,0,.5);width:410px;margin-left:-10px}
+.dev .scr{border-radius:48px}
+
+/* ---------- экран 390×844 ---------- */
+.scr{width:390px;height:844px;position:relative;overflow:hidden;background:var(--bg);color:var(--ink);font:400 17px/1.34 Inter,system-ui,sans-serif;display:flex;flex-direction:column}
+.fx{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.blob{position:absolute;width:160px;height:160px;border-radius:50%;filter:blur(28px);opacity:.7;background:conic-gradient(from 30deg,#00A86B,#7FD9B4,#2BC48A,#0B8F5E,#BFF2DC,#00A86B);animation:spin 26s linear infinite}
+.blob.b2{width:130px;height:130px;opacity:.5;background:conic-gradient(from 200deg,#2BC48A,#00A86B,#FFC247 18%,#2BC48A 30%,#7FD9B4,#2BC48A);animation-duration:34s}
+.blob.b3{width:110px;height:110px;opacity:.55;background:conic-gradient(from 90deg,#00A86B,#BFF2DC,#6AA6F5 20%,#00A86B 38%,#2BC48A,#00A86B);animation-duration:30s}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.blob{animation:none}}
+.still .blob{animation:none}
+.status{flex:none;height:54px;display:flex;align-items:center;justify-content:space-between;padding:12px 30px 0 36px;position:relative;z-index:3;font:600 17px/1 Inter}
+.status .sb{display:flex;gap:7px;align-items:center}
+.status .sb svg{height:13px;width:auto;fill:#fff}
+.home{position:absolute;left:50%;bottom:8px;width:134px;height:5px;margin-left:-67px;border-radius:3px;background:rgba(255,255,255,.7);z-index:4}
+/* прокручиваемое тело + закреплённый низ (кнопки всегда видны) */
+.obody{flex:1;min-height:0;overflow-y:auto;position:relative;z-index:1;padding:calc(36px*var(--fs)) 24px 16px;scrollbar-width:thin}
+.ofoot{flex:none;position:relative;z-index:2;padding:16px 24px 42px;background:linear-gradient(to bottom,rgba(18,22,28,0),rgba(18,22,28,.94) 16px)}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:calc(40px*var(--fs))}
+.brand img{height:calc(34px*var(--fs));width:auto}
+.wm{font:900 calc(26px*var(--fs))/1 Nunito,sans-serif;letter-spacing:-.01em;color:#fff}
+.scr .oh{font:800 calc(34px*var(--fs))/1.12 Inter;letter-spacing:-.02em;margin-bottom:14px}
+.scr .op{font:400 calc(17px*var(--fs))/1.4 Inter;color:var(--sec)}
+/* обе кнопки — ОДИН класс, один стиль: равный вес, ничего не выбрано */
+.choice{display:flex;flex-direction:column;gap:12px}
+.cb{display:flex;align-items:center;justify-content:center;width:100%;min-height:calc(54px*var(--fs));padding:10px 20px;border-radius:999px;background:#1C2026;border:1px solid rgba(255,255,255,.16);color:#FFFFFF;font:600 calc(17px*var(--fs))/1.2 Inter;text-align:center;-webkit-tap-highlight-color:transparent}
+.cb:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.legal{margin-top:16px;font:400 calc(13px*var(--fs))/1.45 Inter;color:var(--sec);text-align:center}
+.legal a,.lk a{color:var(--acc);font-weight:600;text-decoration:none}
+.lk{display:flex;flex-wrap:wrap;justify-content:center;gap:0 22px}
+.lk a{display:flex;align-items:center;justify-content:center;text-align:center;min-height:44px;font-size:calc(15px*var(--fs))}
+.refuse .obody{padding-top:calc(36px*var(--fs))}
+/* пометки дизайнера (не часть интерфейса) */
+.annbox{position:absolute;z-index:6;left:24px;right:24px;top:64px;font:700 13px/1.3 Inter;color:var(--beak);border:1px dashed var(--beak);border-radius:10px;padding:8px 10px;background:rgba(18,22,28,.95);display:none}
+.annbox.on{display:block}
+.demo-ctl{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+.demo-ctl button{padding:6px 12px;border-radius:999px;background:#1C2026;box-shadow:inset 0 0 0 1px #2F3742;font:600 12px Inter;color:#E8ECF1}
+.lt .scr{--fs:1.6}
+@media (max-width:900px){.page{padding:20px 0 40px}.page>header,.sec-h,.fr figcaption,.demo-ctl{padding:0 16px}.tools{margin-left:0}.grid{flex-direction:column;align-items:center}}
+@media (max-width:430px){.fr{width:100%}.dev{padding:0;border-radius:0;width:390px;margin:0 auto;box-shadow:none;background:none}.dev .scr{border-radius:0;margin:0 auto}}
+</style>
+</head>
+<body>
+<div class="banner" role="note">Черновик макета · тексты — черновик юриста (RG 28.10), не утверждено · ES/EN — проверить носителем</div>
+<main class="page">
+<header>
+ <div>
+  <h1><i>Parrlo</i> Translate iOS · экран «мне есть 16» + отказ</h1>
+  <p class="lead">Решение Мурата 28.10.2026 09:59. Первый экран при первом запуске. Тема — только тёмная (бренд v2.3), шрифты Inter / Nunito Black (только wordmark). Кадры 390×844 pt.</p>
+ </div>
+ <div class="tools">
+  <span style="font:600 12px Inter;color:#9AA4B2">Язык экранов:</span>
+  <button data-lang="ru" aria-pressed="true">RU</button><button data-lang="es" aria-pressed="false">ES</button><button data-lang="en" aria-pressed="false">EN</button>
+  <button id="lt" aria-pressed="false">Крупный шрифт</button>
+ </div>
+</header>
+
+<h2 class="sec-h">Кадры <span>статичные состояния</span></h2>
+<div class="grid">
+ <figure class="fr" id="f-gate">
+  <div class="dev"><div class="scr gate" data-scr="gate"></div></div>
+  <figcaption>
+   <b>1 · Возраст: «Вам есть 16 лет?»</b>
+   <span class="draft">тексты — черновик RG 28.10 (reports-rg/legal-age-gate-16-translate-ios-2026-10-28.md), вставлены дословно</span>
+   <ul>
+    <li><b style="display:inline">Место:</b> ПЕРВЫЙ экран при первом запуске — до экрана согласия 26 и до любого запроса микрофона / экрана с микрофоном. Показывается один раз.</li>
+    <li>Обе кнопки одинакового визуального веса: один и тот же стиль (Surface #1C2026, рамка 1px rgba(255,255,255,.16), белый текст, полная ширина, одна высота 54pt), ни одна не выбрана заранее, нет зелёной «главной» — без подталкивания к «да».</li>
+    <li>Дату рождения не спрашиваем и не храним: только локальный флаг «16+ подтверждено». До ответа ничего не уходит на сервер (распознавание, перевод, аналитика).</li>
+    <li>«Мой голос» — отдельное согласие 18+ (PR #269); этот экран его не заменяет. Галочка «Мне 18 лет или больше» в «Мой голос» остаётся отдельной и не заполняется заранее.</li>
+    <li>«Условия использования» и «Политика конфиденциальности» — ссылки (в макете никуда не ведут).</li>
+   </ul>
+  </figcaption>
+ </figure>
+ <figure class="fr" id="f-refuse">
+  <div class="dev"><div class="scr refuse" data-scr="refuse"></div></div>
+  <figcaption>
+   <b>2 · Отказ (после «Мне меньше 16»)</b>
+   <span class="draft">тексты — черновик RG 28.10</span>
+   <ul>
+    <li>Нет кнопки «назад» и никаких других действий: вернуться к выбору нельзя; повторный вопрос — только после переустановки.</li>
+    <li>Внизу только две ссылки: «Условия использования» и «Политика конфиденциальности».</li>
+    <li>До 16 — приложение недоступно полностью, в том числе офлайн-режим.</li>
+    <li>Фразу «мы не сохранили ваших данных» не добавляем (пока не проверено в коде).</li>
+   </ul>
+  </figcaption>
+ </figure>
+</div>
+
+<h2 class="sec-h">Живое демо <span>нажмите кнопку в кадре; кнопки в кадре 1 выше тоже управляют демо</span></h2>
+<div class="grid">
+ <figure class="fr" id="f-demo">
+  <div class="dev"><div class="scr gate" data-scr="gate" id="demo"></div></div>
+  <div class="demo-ctl"><button id="reset">↺ Сбросить демо (в приложении — только переустановка)</button></div>
+ </figure>
+</div>
+</main>
+
+<template id="t-status"><div class="fx"><i class="blob" style="left:245px;top:-105px"></i><i class="blob b2" style="left:-125px;top:380px"></i><i class="blob b3" style="left:300px;top:640px"></i></div><div class="status"><span>9:41</span><span class="sb"><svg viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".35"/></svg><svg viewBox="0 0 17 12"><path d="M8.5 2.2c2.3 0 4.4.9 6 2.4l1-1.1A10.3 10.3 0 0 0 8.5.7 10.3 10.3 0 0 0 1.5 3.5l1 1.1a8.8 8.8 0 0 1 6-2.4Zm0 3.6c1.3 0 2.5.5 3.4 1.3l1-1.1a7.4 7.4 0 0 0-8.8 0l1 1.1c.9-.8 2.1-1.3 3.4-1.3Zm0 3.5c.6 0 1.2.2 1.6.6L8.5 11.5 6.9 9.9c.4-.4 1-.6 1.6-.6Z"/></svg><svg viewBox="0 0 27 13"><rect x=".5" y=".5" width="22" height="12" rx="3.5" fill="none" stroke="#fff" opacity=".4"/><rect x="2" y="2" width="19" height="9" rx="2"/><rect x="24" y="4.5" width="2" height="4" rx="1" opacity=".5"/></svg></span></div></template>
+
+<template id="t-gate"><div class="obody"><div class="brand"><img src="../ios-subscription/v5.3/mark.svg" alt=""><span class="wm">Parrlo</span></div><h1 class="oh" data-k="title">Вам есть 16 лет?</h1><p class="op" data-k="body">Parrlo можно пользоваться с 16 лет. Подтвердите возраст, чтобы продолжить.</p></div><div class="ofoot"><div class="choice" role="group"><button class="cb" type="button" data-act="yes" data-k="yes">Мне есть 16</button><button class="cb" type="button" data-act="no" data-k="no">Мне меньше 16</button></div><p class="legal" data-k="foot" data-html="1">Подробнее — в <a href="#" onclick="return false">Условиях использования</a> и <a href="#" onclick="return false">Политике конфиденциальности</a>.</p></div><div class="annbox">далее — экран согласия 26</div><div class="home"></div></template>
+
+<template id="t-refuse"><div class="obody"><div class="brand"><img src="../ios-subscription/v5.3/mark.svg" alt=""><span class="wm">Parrlo</span></div><h1 class="oh" data-k="rtitle">Parrlo пока не для вас</h1><p class="op" data-k="rbody">Извините, Parrlo доступен только с 16 лет.</p></div><div class="ofoot"><nav class="lk"><a href="#" onclick="return false" data-k="terms">Условия использования</a><a href="#" onclick="return false" data-k="privacy">Политика конфиденциальности</a></nav></div><div class="home"></div></template>
+
+<script>
+const T={
+ ru:{title:"Вам есть 16 лет?",body:"Parrlo можно пользоваться с 16 лет. Подтвердите возраст, чтобы продолжить.",yes:"Мне есть 16",no:"Мне меньше 16",
+  foot:'Подробнее — в <a href="#" onclick="return false">Условиях использования</a> и <a href="#" onclick="return false">Политике конфиденциальности</a>.',
+  rtitle:"Parrlo пока не для вас",rbody:"Извините, Parrlo доступен только с 16 лет.",terms:"Условия использования",privacy:"Политика конфиденциальности"},
+ es:{title:"¿Tienes 16 años o más?",body:"Parrlo es para personas de 16 años o más. Confirma tu edad para continuar.",yes:"Tengo 16 o más",no:"Tengo menos de 16",
+  foot:'Más información en los <a href="#" onclick="return false">Términos de uso</a> y la <a href="#" onclick="return false">Política de privacidad</a>.',
+  rtitle:"Parrlo aún no está disponible para ti",rbody:"Lo sentimos, Parrlo solo está disponible para personas de 16 años o más.",terms:"Términos de uso",privacy:"Política de privacidad"},
+ en:{title:"Are you 16 or older?",body:"Parrlo is for people aged 16 and over. Confirm your age to continue.",yes:"I'm 16 or older",no:"I'm under 16",
+  foot:'Learn more in our <a href="#" onclick="return false">Terms of Use</a> and <a href="#" onclick="return false">Privacy Policy</a>.',
+  rtitle:"Parrlo isn't available to you yet",rbody:"Sorry, Parrlo is only available to people aged 16 and over.",terms:"Terms of Use",privacy:"Privacy Policy"}};
+let lang="ru";
+const tpl=id=>document.getElementById(id).innerHTML;
+function render(el,kind){el.className="scr "+kind;el.dataset.scr=kind;el.innerHTML=tpl("t-status")+tpl("t-"+kind);el.lang=lang;
+ el.querySelectorAll("[data-k]").forEach(n=>{const v=T[lang][n.dataset.k];if(n.dataset.html)n.innerHTML=v;else n.textContent=v});}
+const demo=document.getElementById("demo");
+function all(){render(document.querySelector("#f-gate .scr"),"gate");render(document.querySelector("#f-refuse .scr"),"refuse");render(demo,demo.dataset.scr||"gate")}
+document.addEventListener("click",e=>{const b=e.target.closest(".cb");if(!b)return;
+ const inDemo=b.closest("#demo");
+ if(b.dataset.act==="no"){render(demo,"refuse");if(!inDemo)demo.scrollIntoView({behavior:"smooth",block:"center"});}
+ else{if(demo.dataset.scr!=="gate")render(demo,"gate");const a=demo.querySelector(".annbox");a.classList.add("on");if(!inDemo)demo.scrollIntoView({behavior:"smooth",block:"center"});}});
+document.getElementById("reset").onclick=()=>render(demo,"gate");
+document.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>{lang=b.dataset.lang;document.querySelectorAll("[data-lang]").forEach(x=>x.setAttribute("aria-pressed",x===b));all()});
+document.getElementById("lt").onclick=function(){const on=document.body.classList.toggle("lt");this.setAttribute("aria-pressed",on)};
+const q=new URLSearchParams(location.search);if(T[q.get("lang")]){lang=q.get("lang");document.querySelectorAll("[data-lang]").forEach(x=>x.setAttribute("aria-pressed",x.dataset.lang===lang))}
+if(q.has("big")){document.body.classList.add("lt");document.getElementById("lt").setAttribute("aria-pressed",true)}
+if(q.has("still"))document.body.classList.add("still");
+all();
+</script>
+</body>
+</html>

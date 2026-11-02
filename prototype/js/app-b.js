@@ -13,7 +13,7 @@ function turnHTML(t){
   if (t.status==='working') bub=`<div class="bub working"><span class="spark"><i></i><i></i><i></i></span></div>`;
   else if (t.status==='failed') bub=`<button class="bub failed" ${PP.attr('turnTap',t.id)} data-long="turnMenu" data-lv="${t.id}">${esc(t.err)}</button>`;
   else bub=`<button class="bub ${T.playing==='t'+t.id?'playing':''}" ${PP.attr('turnTap',t.id)} data-long="turnMenu" data-lv="${t.id}" lang="${t.outLang}">${esc(t.out)}${t.flag?`<div class="flag">⚑ ${esc(L('Неточно','Inexacto','Inaccurate'))}</div>`:''}</button>`;
-  return `<div class="turn ${t.side}" data-turn="${t.id}"><span class="lab">${esc(lab)}</span><span class="src" lang="${t.srcLang}">${esc(t.showRaw && t.raw ? t.raw : (t.src||t.raw))}</span>${bub}${t.note?`<span class="src" style="color:var(--warn)">${esc(t.note)}</span>`:''}</div>`;
+  return `<div class="turn ${t.side}" data-turn="${t.id}"${t.status==='working'?'':` data-long="turnMenu" data-lv="${t.id}"`}><span class="lab">${esc(lab)}</span><span class="src" lang="${t.srcLang}">${esc(t.showRaw && t.raw ? t.raw : (t.src||t.raw))}</span>${bub}${t.note?`<span class="src" style="color:var(--warn)">${esc(t.note)}</span>`:''}</div>`;
 }
 R['app/conv'] = () => {
   const s=S(), c=T.conv||{turns:[]}, p=s.pair;

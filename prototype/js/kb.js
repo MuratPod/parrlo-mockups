@@ -11,8 +11,8 @@ R['kb'] = () => { const s=S(); const tokenOk = tokenState()==='ok';
   return `${nav(L('Клавиатура','Teclado','Keyboard'), '#/', L('Старт','Inicio','Start'))}<div class="scroll">
   <div class="center" style="margin:8px 0 14px">${PP.parrot()}<h1 class="t">ParrloKeyboard</h1><p class="sec">${esc(L('Переводит прямо в любом чате: напишите по-русски — вставьте по-испански.','Traduce en cualquier chat: escribe en español e inserta en ruso.','Translates right in any chat: type in your language, insert in theirs.'))}</p></div>
   ${step(1, s.kb.added, L('Добавьте клавиатуру','Añade el teclado','Add the Keyboard'), L('Настройки → Основные → Клавиатура → Клавиатуры → Новая клавиатура → Parrlo','Ajustes > General > Teclado > Teclados > Añadir teclado > Parrlo','Settings > General > Keyboard > Keyboards > Add New Keyboard > Parrlo'), '#/kb/ios/settings')}
-  ${step(2, s.kb.full, L('Разрешите полный доступ','Permite el acceso total','Allow Full Access'), K('nofull.short'), '#/kb/full')}
-  ${step(3, tokenOk, K('token.missing'), K('token.missing.detail'), null, 'kbOpenApp')}
+  ${step(2, s.kb.added && s.kb.full, L('Разрешите полный доступ','Permite el acceso total','Allow Full Access'), K('nofull.short'), '#/kb/full')}
+  ${step(3, s.kb.added && s.kb.full && tokenOk, K('token.missing'), K('token.missing.detail'), null, 'kbOpenApp')}
   ${step(4, false, L('Попробуйте в чате','Pruébalo en un chat','Try It in a Chat'), L('Нейтральный мессенджер-схема с клавиатурой Parrlo','Mensajería neutra de ejemplo con el teclado Parrlo','A neutral sample messenger with the Parrlo keyboard'), '#/kb/chat')}
   <p class="ter xs mt">${esc(PP.C(CP.KB['keyboard.privacy']))}</p></div>`; };
 A.kbOpenApp = () => { PP.A.openApp(); PP.toast(L('Parrlo открыт — клавиатура подключится к переводу','Parrlo abierto: el teclado se conectará a la traducción','Parrlo opened — the keyboard will connect to translation')); return false; };
@@ -83,7 +83,7 @@ function keyRows(k){ const rows = k.num?LAY.num:LAY[k.layout]; const up=(c)=>k.s
    <div class="r"><button class="k fn" ${PP.attr('kbShift')} aria-label="${esc(L('Заглавные','Mayúsculas','Shift'))}" style="${k.shift?'background:#E8ECF1;color:#0E1116':''}">${I.shift}</button>${[...rows[2]].map(key).join('')}<button class="k fn" ${PP.attr('kbDel')} aria-label="${esc(L('Удалить','Borrar','Delete'))}">${I.del}</button></div>
    <div class="r"><button class="k fn" ${PP.attr('kbNum')}>${k.num?'АБВ':'123'}</button><button class="k fn" ${PP.attr('kbGlobe')} aria-label="${esc(L('Следующая клавиатура','Siguiente teclado','Next Keyboard'))}">${I.globe}</button><button class="k lang fn" ${PP.attr('kbLang')}>${k.layout.toUpperCase()}</button><button class="k sp" id="kbSpace" ${PP.attr('kbKey',' ')}>${esc(LNAME[k.layout])}</button><button class="k fn" ${PP.attr('kbRet')} aria-label="${esc(L('Ввод','Intro','Return'))}">${I.ret}</button></div></div>`; }
 function stripHtml(k){ const s=S(); const tgt=k.target||tgtDefault(); const tone=k.tone;
-  const label = !k.text.trim() && T.kbCopied ? K('translateCopied') : k.sel ? K('translateSelected') : K('translate');
+  const label = k.text.trim() ? (k.sel ? K('translateSelected') : K('translate')) : K('translateCopied'); // as in KeyboardViewController.goTitleKey
   return `<div class="strip"><button class="ib" ${PP.attr('kbParrot')} aria-label="Parrlo">${PP.parrot('sm').replace('class="','style="width:30px;height:30px" class="')}</button>
    <button class="sbtn g" ${PP.attr('kbTarget')}>→ ${esc(tgt.toUpperCase())}</button>
    <button class="sbtn" ${PP.attr('kbTone')} style="${tone?'background:#24423A;color:#BFF2DC':''}">${esc(tone==='polite'?K('tone.polite'):K('tone.friend'))}</button>

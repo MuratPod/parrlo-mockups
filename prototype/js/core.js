@@ -89,7 +89,7 @@ PP.closeOv = () => { UI.sheet=null; UI.sheetPrev=null; UI.dialog=null; UI.alert=
 PP.sheet = (name, arg) => { UI.menu=null; UI.sheet={name,arg}; };
 PP.dialog = (d) => { UI.menu=null; UI.dialog=d; };
 PP.sysAlert = (d) => { UI.alert=d; };
-PP.menu = (m) => { UI.menu=m; };
+PP.menu = (m) => { if (UI.nextAnchor) m.anchor = UI.nextAnchor; UI.menu=m; };
 let toastT;
 PP.toast = (msg) => { UI.toast=msg; UI.toastAt=Date.now(); clearTimeout(toastT); toastT=setTimeout(()=>{UI.toast=null; renderOv();}, 2200); renderOv(); };
 function renderOv(){
@@ -101,7 +101,35 @@ function renderOv(){
   if (UI.alert){ const d=UI.alert; h+=`<div class="scrim top" style="background:rgba(0,0,0,.35)"></div><div class="sysalert" role="alertdialog"><div class="b"><h4>${esc(d.title)}</h4><p>${esc(d.msg)}</p></div><div class="bt">${d.buttons.map(b=>`<button data-dlg="1" ${PP.attr(b.a,b.v)}>${esc(b.t)}</button>`).join('')}</div></div>`; }
   if (UI.toast) h+=`<div class="toast" role="status">${esc(UI.toast)}</div>`;
   ov.innerHTML = h;
+  layoutOv(); if (UI.toast){ clearTimeout(PP._toastRelayT); PP._toastRelayT=setTimeout(layoutOv, 280); }
 }
+
+/* overlay geometry (device coordinates, works with the desktop scale) */
+const INTERACTIVE = '#scr [data-a],#scr [data-go],#scr [data-long],#scr button,#scr input,#scr textarea,#ov .sheet [data-a],#ov .sheet [data-go],#ov .sheet button,#ov .sheet input,#ov .dialog button,#ov .sysalert button,#ov .menu button,#ov .demo button,#ov .demo [data-go],#demoBtn,#home';
+function visRect(el){ // visible part of el, clipped by scrolling ancestors; final position for sliding sheets
+  let r = PP.devRect(el); if (r.right-r.left<1 || r.bottom-r.top<1) return null;
+  const sh = el.closest('.sheet'); if (sh){ const sr=PP.devRect(sh); const dev=document.getElementById('device'); const finalTop = dev.offsetHeight - sh.offsetHeight; const dy = finalTop - sr.top; r={top:r.top+dy,bottom:r.bottom+dy,left:r.left,right:r.right}; }
+  for (let p=el.parentElement; p && p.id!=='device'; p=p.parentElement){ const cs=getComputedStyle(p); if (/(auto|scroll|hidden)/.test(cs.overflowY+cs.overflowX)){ let c=PP.devRect(p); if (sh && sh.contains(p)){ const sr=PP.devRect(sh); const dev=document.getElementById('device'); const dy=(dev.offsetHeight - sh.offsetHeight) - sr.top; c={top:c.top+dy,bottom:c.bottom+dy,left:c.left,right:c.right}; } r={top:Math.max(r.top,c.top),bottom:Math.min(r.bottom,c.bottom),left:Math.max(r.left,c.left),right:Math.min(r.right,c.right)}; if (r.bottom-r.top<1||r.right-r.left<1) return null; } }
+  if (getComputedStyle(el).visibility==='hidden') return null;
+  return r; }
+PP.interactiveRects = () => { const out=[]; document.querySelectorAll(INTERACTIVE).forEach(el=>{ if (el.classList.contains('scrim') || el.closest('.toast')) return; if (el.id==='demoBtn' && document.body.classList.contains('toasting')) return; const r=visRect(el); if (r) out.push(r); }); return out; };
+function layoutOv(){
+  const dev=document.getElementById('device'); const H=dev.offsetHeight, W=dev.offsetWidth;
+  const m=document.querySelector('#ov .menu');
+  if (m && UI.menu && UI.menu.anchor){ const a=UI.menu.anchor, h=m.offsetHeight; let maxB=H-40; const dock=document.querySelector('#scr .dock,#scr .mics,#scr .inp,#scr .composer'); if (dock){ const d=PP.devRect(dock); maxB=Math.min(maxB, d.top-8); } const minT=56;
+    let top = a.bottom+8; if (top+h>maxB) top = a.top-8-h; if (top<minT) top = Math.max(minT, Math.min(a.bottom+8, maxB-h));
+    m.style.top=top+'px'; m.style.bottom='auto'; }
+  const t=document.querySelector('#ov .toast'); document.body.classList.toggle('toasting', false);
+  if (!t) return;
+  t.classList.remove('sbz'); t.style.top='0px'; t.style.bottom='auto'; t.style.visibility='hidden';
+  const w=t.offsetWidth, h=t.offsetHeight, left=(W-w)/2, right=left+w; const rects=PP.interactiveRects(); const pad=6;
+  const free = (y) => rects.every(r=> r.right<=left-pad || r.left>=right+pad || r.bottom<=y-pad || r.top>=y+h+pad);
+  let y=null; for (let yy=54; yy<=H-28-h; yy+=4){ if (free(yy)){ y=yy; break; } }
+  if (y===null){ t.classList.add('sbz'); document.body.classList.add('toasting'); t.style.top='4px'; }
+  else t.style.top=y+'px';
+  t.style.visibility='visible'; }
+PP.layoutOv = layoutOv;
+
 PP.renderOv = renderOv;
 
 /* router */
@@ -136,20 +164,27 @@ PP.cur = () => cur;
 
 /* events */
 function findAct(el){ while(el && el!==document.body){ if(el.dataset && (el.dataset.a||el.dataset.go)) return el; el=el.parentElement; } return null; }
-let longT=null, longFired=false, longEl=null;
+/* long-press: fires after 520 ms; the menu stays open after release.
+   A guard swallows the click/pointerup that follows the long-press (mouse, touch, iOS pointercancel). */
+let longT=null, lp=null, guardUntil=0;
+const releaseGuard = () => { clearTimeout(longT); if (lp && lp.fired && guardUntil===Infinity) guardUntil = Date.now()+450; };
+PP.devRect = (el) => { const dev=document.getElementById('device'); const d=dev.getBoundingClientRect(); const sc=d.width/dev.offsetWidth||1; const r=el.getBoundingClientRect(); return {top:(r.top-d.top)/sc, bottom:(r.bottom-d.top)/sc, left:(r.left-d.left)/sc, right:(r.right-d.left)/sc}; };
+function fireLong(el){ lp.fired=true; guardUntil=Infinity; setTimeout(()=>{ if (guardUntil===Infinity) guardUntil=0; }, 8000);
+  UI.nextAnchor = PP.devRect(el); run(el.dataset.long, el.dataset.lv ?? el.dataset.v, el); UI.nextAnchor=null; }
 document.addEventListener('pointerdown', e => {
-  longFired=false;
+  clearTimeout(longT); lp={x:e.clientX, y:e.clientY, fired:false, el:null};
+  if (Date.now() < guardUntil) return;
   const el = e.target.closest('[data-long]'); if(!el) return;
-  longFired=false; longEl=el; clearTimeout(longT);
-  longT=setTimeout(()=>{ longFired=true; run(el.dataset.long, el.dataset.lv ?? el.dataset.v, el); }, 520);
-});
-let lpX=0, lpY=0;
-document.addEventListener('pointerdown', e => { lpX=e.clientX; lpY=e.clientY; }, true);
-document.addEventListener('pointermove', e => { if (Math.abs(e.clientX-lpX)>10 || Math.abs(e.clientY-lpY)>10) clearTimeout(longT); });
-['pointerup','pointerleave'].forEach(t=>document.addEventListener(t, ()=>clearTimeout(longT)));
-document.addEventListener('contextmenu', e => { const el=e.target.closest('[data-long]'); if(el){ e.preventDefault(); clearTimeout(longT); if (longEl!==el || !longFired) run(el.dataset.long, el.dataset.lv ?? el.dataset.v, el); } });
+  lp.el=el; longT=setTimeout(()=>fireLong(el), 520);
+}, true);
+document.addEventListener('pointermove', e => { if (lp && !lp.fired && (Math.abs(e.clientX-lp.x)>10 || Math.abs(e.clientY-lp.y)>10)) clearTimeout(longT); }, true);
+['pointerup','pointercancel','touchend','touchcancel','mouseup'].forEach(t=>document.addEventListener(t, e=>{ if (t==='pointercancel' && lp && !lp.fired) return; releaseGuard(); }, {capture:true, passive:true}));
+document.addEventListener('contextmenu', e => { const el=e.target.closest('[data-long]');
+  if (lp && lp.fired){ e.preventDefault(); return; }
+  if (el){ e.preventDefault(); clearTimeout(longT); if (!lp) lp={}; fireLong(el); guardUntil=Date.now()+300; } });
+document.addEventListener('click', e => { if (Date.now() < guardUntil){ e.preventDefault(); e.stopImmediatePropagation(); } }, true);
+PP.longGuardActive = () => Date.now() < guardUntil;
 document.addEventListener('click', e => {
-  if (longFired){ longFired=false; e.preventDefault(); return; }
   const el = findAct(e.target); if(!el) return;
   if (el.disabled) return;
   e.preventDefault();
@@ -246,7 +281,7 @@ function demoPanel(){
   </div>
   <h5>«Мой голос»</h5><div class="opts">
     ${o('Запись ×1','demoSet','speed=1',d.speed===1)}${o('Запись ×8','demoSet','speed=8',d.speed===8)}
-    ${o('Отправка: ок','demoSet','mvErr=none',d.mvErr==='none')}${o('Сеть','demoSet','mvErr=net',d.mvErr==='net')}${o('Сессия 401','demoSet','mvErr=401',d.mvErr==='401')}${o('Устаревшая версия приложения','demoSet','mvErr=version',d.mvErr==='version')}
+    ${o('Отправка: ок','demoSet','mvErr=none',d.mvErr==='none')}${o('Сеть','demoSet','mvErr=net',d.mvErr==='net')}${o('Сессия 401','demoSet','mvErr=401',d.mvErr==='401')}${o('Устаревшая версия приложения','demoSet','mvErr=version',d.mvErr==='version')}${o('Голос не использовали 11 мес. (срок хранения — через 25 дней)','stateSet','voice.idleDays='+((+s.voice.idleDays||0)>=340?0:340),(+s.voice.idleDays||0)>=340)}
     ${o('Нужно повторное согласие v5','demoFlip','reconsent',d.reconsent)}
     ${o('Голос записан','stateSet','voice.exists='+(!s.voice.exists),s.voice.exists)}
   </div>

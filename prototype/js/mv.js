@@ -13,6 +13,7 @@ ENTER['app/myvoice/:id'] = (r, prev) => {
   PP.ensureApp(); const st=r.split('/').pop();
   if (st==='consent'){ if (!prev || !prev.startsWith('app/myvoice')) T.mvNote = T.mvNote || null; T.mvChecks={bio:false,adult:false,own:false}; T.mvConsent=false; }
   if (st==='record' && !T.mvConsent){ location.replace('#/app/myvoice/consent'); return; }
+  if (st==='record' && !(T.mvRec && T.mvRec.on)){ clearInterval(T.mvIv); T.mvRec=null; T.mvVersionBlocked=false; T.mvSendErr=null; }
   if (st==='review' && !T.mvSample){ location.replace('#/app/myvoice/'+(T.mvConsent?'record':'consent')); return; }
   if (st==='manage'){ if (!S().voice.exists){ location.replace('#/app/myvoice/consent'); return; } if (S().demo.reconsent && !T.mvRefused){ location.replace('#/app/myvoice/consent'); return; } }
   if (st==='ready' && !S().voice.exists){ location.replace('#/app/myvoice/consent'); return; }
@@ -24,6 +25,7 @@ LEAVE['app/myvoice/:id'] = (from, to) => {
 };
 R['app/myvoice/:id'] = (st) => ({consent, record, review, sending, ready, manage}[st]||PP.R.notfound)();
 
+PP.demoHooks.push((k)=>{ if (k==='mvErr' || k==='offline'){ T.mvVersionBlocked = S().demo.mvErr==='version' && !!T.mvVersionBlocked; if (!T.mvVersionBlocked && PP.route()==='app/myvoice/review' && T.mvSendErr) T.mvSendErr=null; } });
 /* consent v5 */
 function consent(){
   const re = isReconsent(); const c=T.mvChecks||{};
@@ -132,7 +134,7 @@ A.mvPlay = () => { if (T.mvPlaying){ stopReviewPlay(); return; } T.mvPlaying=tru
   if (b){ try{ T.mvAudio=new Audio(URL.createObjectURL(b)); T.mvAudio.onended=()=>{T.mvPlaying=false; PP.render();}; T.mvAudio.play().catch(()=>{}); }catch(e){} }
   T.mvPlayT=setTimeout(()=>{ T.mvPlaying=false; PP.render(); }, b?Math.min(40000,(T.mvSample.seconds||5)*1000):3500); };
 function stopReviewPlay(){ T.mvPlaying=false; clearTimeout(T.mvPlayT); try{ T.mvAudio && T.mvAudio.pause(); }catch(e){} }
-A.mvRerecord = () => { stopReviewPlay(); T.mvSample=null; T.mvRec=null; PP.go('#/app/myvoice/record'); return false; };
+A.mvRerecord = () => { stopReviewPlay(); T.mvVersionBlocked=false; T.mvSendErr=null; T.mvSample=null; T.mvRec=null; PP.go('#/app/myvoice/record'); return false; };
 A.mvSend = () => { stopReviewPlay(); if (S().voice.exists){ PP.dialog({title:PP.C(['Заменить голос','Reemplazar la voz','Replace Voice']), msg:PP.C(['Текущий голос заменится новым.','Tu voz actual se reemplazará por la nueva.','Your current voice will be replaced with the new one.']), buttons:[{t:PP.C(['Заменить','Reemplazar','Replace']),a:'mvSendGo',cls:'pri'},{t:PP.C(['Отмена','Cancelar','Cancel']),a:'noop'}]}); return; } A.mvSendGo(); return false; };
 A.mvSendGo = () => { PP.go('#/app/myvoice/sending'); return false; };
 
@@ -161,13 +163,13 @@ function manage(){ const s=S(); const silenced = T.mvRefused && s.demo.reconsent
   const now=new Date(); const reset=Math.max(1, Math.ceil((Date.UTC(now.getUTCFullYear(), now.getUTCMonth()+1, 1)-now)/864e5));
   return `${nav(MV('title'), mvBack(), L('Настройки','Ajustes','Settings'))}<div class="scroll">
   ${silenced?`<div class="note">${esc(PP.C(CP.MV.manageNote))}</div>${btn(PP.C(CP.MV.giveConsentButton),'mvGiveConsent',undefined,'pri')}<div style="height:12px"></div>`:''}
-  <div class="grp">${li_({t:MV('title'),right:tg(s.voice.on&&!silenced,'mvOn',undefined,silenced)})}${li_({t:L('Голосовые через «Мой голос»','Audios con «Mi voz»','Voice Messages With My Voice'),right:tg(s.shareMyVoice&&!silenced,'mvShare',undefined,silenced)})}</div>
+  <div class="grp">${li_({t:MV('title'),right:tg(s.voice.on&&!silenced,'mvOn',undefined,silenced)})}${li_({t:L('Голосовые через «Мой голос»','Audios con «Mi voz»','Voice Messages With My Voice'),s:!s.voice.on&&!silenced?L('Сначала включите «Мой голос»','Activa primero «Mi voz»','Turn on My Voice first'):'',right:tg(s.shareMyVoice&&s.voice.on&&!silenced,'mvShare',undefined,silenced||!s.voice.on)})}</div>
   ${silenced?'':`<button class="btn ghost mt" ${PP.attr('mvSample')}>${T.playing==='mvs'?I.stop:I.play} ${esc(L('Прослушать пример озвучки','Escuchar ejemplo de voz','Play Voice Sample'))}</button>
   <p class="gf">${esc(L(`Использовано ${s.voice.used*10}% · сброс через ${reset} дн`,`Usado: ${s.voice.used*10}% · se restablece en ${reset} d`,`Used ${s.voice.used*10}% · resets in ${reset} d`))}</p>`}
   <p class="gf">${esc(PP.C(['Ваш голос будет удалён %@, если им не пользоваться. Озвучьте сообщение своим голосом, чтобы продлить, или удалите голос сами.','Tu voz se eliminará el %@ si no la usas. Di un mensaje con tu voz para mantenerla, o elimínala tú.','Your voice will be deleted on %@ if it isn’t used. Voice a message in your voice to keep it, or delete it yourself.']).replace('%@',exp))}</p>
   <div class="grp" style="margin-top:16px">${li_({t:L('Перезаписать голос','Regrabar la voz','Re-Record Voice'),a:'mvRerecordVoice'})}${li_({t:MV('deleteVoice'),a:'mvDeleteAsk',dng:true,noChev:true})}</div></div>`; }
-A.mvOn = () => { const v=S().voice; v.on=!v.on; };
-A.mvShare = () => { S().shareMyVoice=!S().shareMyVoice; };
+A.mvOn = () => { const v=S().voice; v.on=!v.on; if (!v.on) S().shareMyVoice=false; };
+A.mvShare = () => { if (!S().voice.on){ PP.toast(L('Сначала включите «Мой голос»','Activa primero «Mi voz»','Turn on My Voice first')); return; } S().shareMyVoice=!S().shareMyVoice; };
 A.mvSample = () => { if (T.playing==='mvs'){ PP.stopSpeak(); return; } const s=S(); if (s.demo.offline){ PP.toast(PP.C(['Сейчас озвучка своим голосом недоступна. Попробуйте позже.','Ahora mismo la locución con tu voz no está disponible. Inténtalo más tarde.','Playback in your voice isn’t available right now. Please try again later.'])); return; }
   if (s.voice.used>=10){ PP.toast(L('Лимит озвучки своим голосом на этот месяц исчерпан.','Has agotado el límite de locución con tu voz de este mes.','You’ve used up this month’s limit for playback in your voice.')); return; }
   s.voice.used++; const l = PP.lang()==='es'?'es':'ru'; PP.speak(PP.C(['Привет! Это пример озвучки голосового сообщения.','¡Hola! Este es un ejemplo de voz de un mensaje de audio.','Hi! This is a sample voice message.']), PP.lang()==='en'?'ru':l, 'mvs'); return false; };

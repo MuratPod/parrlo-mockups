@@ -55,6 +55,7 @@ const tgtDefault = () => { const p=S().pair; return p.theirs==='ru' ? p.mine : p
 LEAVE['kb/chat'] = () => { clearTimeout(T.kbReplyT); };
 ENTER['kb/chat'] = () => { const k=kbs(); if (!S().kb.added) k.sys=true; else if (k.sysForced!==true) k.sys=false; if (!T.kbMsgs) T.kbMsgs=[{in:true, text:'¡Hola! Soy Carmen, del piso. ¿Cuándo te viene bien ver el apartamento?'}]; };
 
+PP.demoHooks.push((k)=>{ const kb=T.kb; if (!kb) return; kb.err=null; kb.dismissed=null; if (kb.mode==='how' && S().kb.full) kb.mode='typing'; if (kb.busy) kb.busy=false; });
 /* ---------- chat with keyboard ---------- */
 const LAY = {
   ru:['йцукенгшщзх','фывапролджэ','ячсмитьбю'],
@@ -74,19 +75,19 @@ function blocker(){ // persistent bar, order as in KeyboardViewController
 function bar(code){ if (!code) return '';
   if (code==='nofull') return `<div class="warnbar">${I.lock}<span class="tx">${esc(K('nofull.short'))}</span><button class="sbtn g" ${PP.attr('kbHow')}>${esc(K('nofull.button'))}</button></div>`;
   if (code.startsWith('token')) return `<div class="warnbar">${I.info}<span class="tx"><b>${esc(K(code))}</b><br>${esc(K(code+'.detail'))}</span><button class="sbtn g" ${PP.attr('kbOpenParrlo')}>Parrlo</button></div>`;
-  return `<div class="warnbar">${I.info}<span class="tx">${esc(K(code))}</span>${code==='failed'?`<button class="sbtn g" ${PP.attr('kbTranslate')}>${esc(L('Повторить','Reintentar','Retry'))}</button>`:''}<button class="sbtn" ${PP.attr('kbErrClose')} aria-label="close">${I.x}</button></div>`; }
+  return `<div class="warnbar">${I.info}<span class="tx">${esc(K(code))}</span>${code==='failed'?`<button class="sbtn g" ${PP.attr('kbTranslate')}>${esc(L('Повторить','Reintentar','Retry'))}</button>`:''}<button class="sbtn" ${PP.attr('kbErrClose')} aria-label="${esc(L('Закрыть','Cerrar','Close'))}">${I.x}</button></div>`; }
 function keyRows(k){ const rows = k.num?LAY.num:LAY[k.layout]; const up=(c)=>k.shift?c.toUpperCase():c;
   const key = (c) => `<button class="k" ${PP.attr('kbKey',c)}>${esc(up(c))}</button>`;
   return `<div class="rows ${k.layout}">
    <div class="r">${[...rows[0]].map(key).join('')}</div><div class="r">${[...rows[1]].map(key).join('')}</div>
-   <div class="r"><button class="k fn" ${PP.attr('kbShift')} aria-label="shift" style="${k.shift?'background:#E8ECF1;color:#0E1116':''}">${I.shift}</button>${[...rows[2]].map(key).join('')}<button class="k fn" ${PP.attr('kbDel')} aria-label="delete">${I.del}</button></div>
-   <div class="r"><button class="k fn" ${PP.attr('kbNum')}>${k.num?'АБВ':'123'}</button><button class="k fn" ${PP.attr('kbGlobe')} aria-label="next keyboard">${I.globe}</button><button class="k lang fn" ${PP.attr('kbLang')}>${k.layout.toUpperCase()}</button><button class="k sp" id="kbSpace" ${PP.attr('kbKey',' ')}>${esc(LNAME[k.layout])}</button><button class="k fn" ${PP.attr('kbRet')} aria-label="return">${I.ret}</button></div></div>`; }
+   <div class="r"><button class="k fn" ${PP.attr('kbShift')} aria-label="${esc(L('Заглавные','Mayúsculas','Shift'))}" style="${k.shift?'background:#E8ECF1;color:#0E1116':''}">${I.shift}</button>${[...rows[2]].map(key).join('')}<button class="k fn" ${PP.attr('kbDel')} aria-label="${esc(L('Удалить','Borrar','Delete'))}">${I.del}</button></div>
+   <div class="r"><button class="k fn" ${PP.attr('kbNum')}>${k.num?'АБВ':'123'}</button><button class="k fn" ${PP.attr('kbGlobe')} aria-label="${esc(L('Следующая клавиатура','Siguiente teclado','Next Keyboard'))}">${I.globe}</button><button class="k lang fn" ${PP.attr('kbLang')}>${k.layout.toUpperCase()}</button><button class="k sp" id="kbSpace" ${PP.attr('kbKey',' ')}>${esc(LNAME[k.layout])}</button><button class="k fn" ${PP.attr('kbRet')} aria-label="${esc(L('Ввод','Intro','Return'))}">${I.ret}</button></div></div>`; }
 function stripHtml(k){ const s=S(); const tgt=k.target||tgtDefault(); const tone=k.tone;
   const label = !k.text.trim() && T.kbCopied ? K('translateCopied') : k.sel ? K('translateSelected') : K('translate');
   return `<div class="strip"><button class="ib" ${PP.attr('kbParrot')} aria-label="Parrlo">${PP.parrot('sm').replace('class="','style="width:30px;height:30px" class="')}</button>
    <button class="sbtn g" ${PP.attr('kbTarget')}>→ ${esc(tgt.toUpperCase())}</button>
    <button class="sbtn" ${PP.attr('kbTone')} style="${tone?'background:#24423A;color:#BFF2DC':''}">${esc(tone==='polite'?K('tone.polite'):K('tone.friend'))}</button>
-   <button class="sbtn" ${PP.attr('kbInfo')} aria-label="info">i</button>
+   <button class="sbtn" ${PP.attr('kbInfo')} aria-label="${esc(L('Как это работает','Cómo funciona','How It Works'))}">i</button>
    <button class="tr" ${PP.attr('kbTranslate')} ${k.busy?'disabled':''}>${k.busy?'<span class="spark"><i></i><i></i><i></i></span>':esc(label)}</button></div>`; }
 function kbHtml(){ const k=kbs(); const s=S();
   if (k.sys) return sysKb();
@@ -94,36 +95,38 @@ function kbHtml(){ const k=kbs(); const s=S();
   let body;
   if (k.mode==='preview') body = `<div class="panel"><div class="ter xs">${esc(K('aiNote'))}</div><div class="pcard" id="kbOut">${esc(k.out)}</div><div class="r" style="display:flex;gap:8px">${btn(K('close'),'kbClosePanel',undefined,'sec')}${k.incoming?btn(L('Скопировать','Copiar','Copy'),'kbCopyOut',undefined,'sec'):btn(K('edit'),'kbEdit',undefined,'sec')+btn(K('insert'),'kbInsert',undefined,'pri')}</div></div>`;
   else if (k.mode==='edit') body = `<div class="panel"><div class="ter xs">${esc(K('hint.h7'))}</div><div class="pcard"><textarea id="kbEditTa" data-input="kbEditInput">${esc(k.out)}</textarea></div><div class="r" style="display:flex;gap:8px">${btn(K('close'),'kbClosePanel',undefined,'sec')}${btn(K('insert'),'kbInsert',undefined,'pri')}</div></div>`;
-  else if (k.mode==='info') body = `<div class="panel"><div class="pcard" style="font-size:14px"><b>${esc(PP.C(CP.KB['keyboard.full.title']))}</b><p class="sec">${esc(PP.C(CP.KB['keyboard.privacy']))}</p><p class="sec">${esc(K('hint.h5').replace(/\{[^}]+\}/,(k.layout||'ru').toUpperCase()).replace(/\{[^}]+\}/,(k.target||tgtDefault()).toUpperCase()))}</p><p class="sec">${esc(K('hint.h10'))}</p></div>${btn(K('close'),'kbClosePanel',undefined,'sec')}</div>`;
+  else if (k.mode==='info') body = `<div class="panel"><div class="pcard" style="font-size:14px"><b>${esc(L('Как работает перевод в клавиатуре','Cómo funciona la traducción en el teclado','How Keyboard Translation Works'))}</b><p class="sec">${esc(PP.C(CP.KB['keyboard.privacy']))}</p><p class="sec">${esc(K('hint.h5').replace(/\{[^}]+\}/,(k.layout||'ru').toUpperCase()).replace(/\{[^}]+\}/,(k.target||tgtDefault()).toUpperCase()))}</p><p class="sec">${esc(K('hint.h10'))}</p></div>${btn(K('close'),'kbClosePanel',undefined,'sec')}</div>`;
   else if (k.mode==='how') body = `<div class="panel"><div class="pcard" style="font-size:15px">${esc(K('nofull.panel'))}</div><div class="r" style="display:flex;gap:8px">${btn(K('close'),'kbClosePanel',undefined,'sec')}${btn(K('full.button'),'kbGoSettings',undefined,'pri')}</div></div>`;
   else body = keyRows(k);
   const bl = blocker(); const err = k.err ? bar(k.err) : (bl && bl===k.dismissed ? '' : bar(bl));
   const hint = k.hint ? `<div class="hint" id="kbHint">${esc(k.hint)}</div>` : '';
   return `<div class="kb">${err}${stripHtml(k)}${hint}${body}</div>`; }
-function sysKb(){ const k=kbs(); const s=S(); const rows=LAY[k.layout==='ru'?'ru':'en'];
-  const key=(c)=>`<button class="k" ${PP.attr('kbKey',c)}>${esc(c)}</button>`;
+function sysKb(){ const k=kbs(); const s=S(); const rows = k.num?LAY.num:LAY[k.layout==='ru'?'ru':'en']; const up=(c)=>k.shift?c.toUpperCase():c;
+  const key=(c)=>`<button class="k" ${PP.attr('kbKey',c)}>${esc(up(c))}</button>`;
   return `${s.kb.added?'':`<div class="warnbar" style="margin:6px;border-radius:12px;padding:8px 10px;background:#2F2A1F;color:#F7D9A3;font-size:13px;display:flex;gap:8px;align-items:center"><span style="flex:1">${esc(L('Клавиатура Parrlo ещё не добавлена','El teclado Parrlo aún no está añadido','The Parrlo keyboard isn’t added yet'))}</span><button class="btn mint" style="width:auto;height:32px;padding:0 12px;font-size:13px" data-go="#/kb/ios/settings">${esc(L('Добавить','Añadir','Add'))}</button></div>`}
-  <div class="syskb"><div class="ter xs center">${esc(L('Системная клавиатура iOS','Teclado del sistema iOS','iOS System Keyboard'))}</div><div class="r">${[...rows[0]].map(key).join('')}</div><div class="r">${[...rows[1]].map(key).join('')}</div><div class="r">${[...rows[2]].map(key).join('')}<button class="k fn" ${PP.attr('kbDel')}>${I.del}</button></div>
-  <div class="r"><button class="k fn" ${PP.attr('kbGlobe')} aria-label="next keyboard">${I.globe}</button><button class="k sp" ${PP.attr('kbKey',' ')}>${esc(L('Пробел','espacio','space'))}</button><button class="k fn" ${PP.attr('kbRet')}>${I.ret}</button></div></div>`; }
+  <div class="syskb"><div class="sysk-note">${esc(L('Системная клавиатура iOS','Teclado del sistema iOS','iOS System Keyboard'))}</div><div class="r">${[...rows[0]].map(key).join('')}</div><div class="r">${[...rows[1]].map(key).join('')}</div>
+  <div class="r"><button class="k fn" ${PP.attr('kbShift')} aria-label="${esc(L('Заглавные','Mayúsculas','Shift'))}" style="${k.shift?'background:#E8ECF1;color:#0E1116':''}">${I.shift}</button>${[...rows[2]].map(key).join('')}<button class="k fn" ${PP.attr('kbDel')} aria-label="${esc(L('Удалить','Borrar','Delete'))}">${I.del}</button></div>
+  <div class="r"><button class="k fn" ${PP.attr('kbNum')}>${k.num?'АБВ':'123'}</button><button class="k fn" ${PP.attr('kbGlobe')} aria-label="${esc(L('Следующая клавиатура','Siguiente teclado','Next Keyboard'))}">${I.globe}</button><button class="k sp" ${PP.attr('kbKey',' ')}>${esc(L('Пробел','espacio','space'))}</button><button class="k fn" style="flex:2;font-size:14px" ${PP.attr('kbRet')}>${esc(L('Ввод','intro','return'))}</button></div></div>`; }
 R['kb/chat'] = () => { const k=kbs();
-  return `<div class="msgr"><div class="mh"><button data-go="#/kb" style="color:#5AA9FF;display:flex;align-items:center" aria-label="back">${I.back}</button><span class="av">C</span><span style="flex:1"><b>Carmen</b><br><span class="xs sec">${esc(L('Мессенджер · нейтральная схема','Mensajería · esquema neutro','Messenger · neutral scheme'))}</span></span></div>
+  return `<div class="msgr"><div class="mh"><button data-go="#/kb" style="color:#5AA9FF;display:flex;align-items:center" aria-label="${esc(L('Назад','Atrás','Back'))}">${I.back}</button><span class="av">C</span><span style="flex:1"><b>Carmen</b><br><span class="xs sec">${esc(L('Мессенджер · нейтральная схема','Mensajería · esquema neutro','Messenger · neutral scheme'))}</span></span></div>
   <div class="ml" id="kbFeed">${(T.kbMsgs||[]).map((m,i)=>m.in?`<button class="mb in" ${PP.attr('kbMsgTap',i)} data-long="kbMsgCopy" data-lv="${i}">${esc(m.text)}<span class="tm">${esc(L('удерживайте — скопировать','mantén pulsado para copiar','hold to copy'))}</span></button>`:`<div class="mb out">${esc(m.text)}<span class="tm">✓✓</span></div>`).join('')}</div>
-  <div class="inp"><button class="field" aria-label="${esc(L('Поле сообщения','Campo de mensaje','Message field'))}" ${PP.attr('kbField')} data-long="kbSelect" style="${k.sel?'background:#2B4A6B':''}">${k.text?esc(k.text):`<span class="ph">${esc(L('Сообщение','Mensaje','Message'))}</span>`}<span class="cur"></span></button><button class="sendb" ${PP.attr('kbSend')} aria-label="send" ${k.text.trim()?'':'disabled style="opacity:.45"'}>${I.send}</button></div></div>${kbHtml()}`; };
+  <div class="inp"><button class="field ${k.flash?'flash':''}" aria-label="${esc(L('Поле сообщения','Campo de mensaje','Message field'))}" ${PP.attr('kbField')} data-long="kbSelect" style="${k.sel?'background:#2B4A6B':''}">${k.text?esc(k.text):`<span class="ph">${esc(L('Сообщение','Mensaje','Message'))}</span>`}<span class="cur"></span></button><button class="sendb" ${PP.attr('kbSend')} aria-label="${esc(L('Отправить','Enviar','Send'))}" ${k.text.trim()?'':'disabled style="opacity:.45"'}>${I.send}</button></div></div>${kbHtml()}`; };
 
 /* actions */
+function flash(){ const k=kbs(); k.flash=true; clearTimeout(T.kbFlashT); T.kbFlashT=setTimeout(()=>{ k.flash=false; if (PP.route()==='kb/chat') PP.render(); }, 900); }
 const firstHint = () => { const k=kbs(); if (!S().kb.hintSwipe){ k.hint=K('hint.h4'); } };
 function toneHint(){ const k=kbs(); const t=k.text.toLowerCase(); if (k.tone) { k.hint=null; return; }
   if (/здравствуйте|уважаем|прошу|buenos días|estimad|usted/.test(t)) k.hint=K('hint.h8'); else if (/привет|пока|спасиб|hola|guap|tío/.test(t)) k.hint=K('hint.h9'); else if (k.hint===K('hint.h8')||k.hint===K('hint.h9')||k.hint===K('hint.h1')) k.hint=null; }
 A.kbKey = (c) => { const k=kbs(); k.err=null; k.sel=false; k.text += (k.shift?c.toUpperCase():c); if (k.shift) k.shift=false; if (k.text.length>2000) k.hint=K('hint.h11'); else toneHint(); };
-A.kbDel = () => { const k=kbs(); if (!k.text){ k.hint=K('hint.h3'); return; } k.sel ? k.text='' : k.text=k.text.slice(0,-1); k.sel=false; toneHint(); };
+A.kbDel = () => { const k=kbs(); if (!k.text){ k.hint=K('hint.h3'); flash(); return; } k.sel ? k.text='' : k.text=k.text.slice(0,-1); k.sel=false; toneHint(); };
 A.kbShift = () => { kbs().shift=!kbs().shift; };
 A.kbNum = () => { kbs().num=!kbs().num; };
-A.kbRet = () => { kbs().text += '\n'; };
+A.kbRet = () => { const k=kbs(); if (!k.text){ k.hint=K('hint.h1'); flash(); return; } k.text += '\n'; };
 A.kbLang = () => { const k=kbs(); k.layout=NEXT[k.layout]; k.num=false; S().kb.hintSwipe=true; if (k.hint===K('hint.h4')) k.hint=null; };
 A.kbGlobe = () => { const k=kbs(); if (!S().kb.added){ PP.toast(L('Других клавиатур нет — добавьте Parrlo в Настройках','No hay otros teclados: añade Parrlo en Ajustes','No other keyboards — add Parrlo in Settings')); return; } k.sys=!k.sys; k.sysForced=k.sys; if (!k.sys) firstHint(); };
-A.kbField = () => { const k=kbs(); if (!k.text){ k.sel=false; k.hint = k.hint===K('hint.h1') ? K('hint.h2') : K('hint.h1'); } else { k.sel=!k.sel; } };
+A.kbField = () => { const k=kbs(); if (!k.text){ flash(); k.sel=false; k.hint = k.hint===K('hint.h1') ? K('hint.h2') : K('hint.h1'); } else { k.sel=!k.sel; } };
 A.kbSelect = () => { const k=kbs(); if (k.text) { k.sel=!k.sel; } else PP.toast(L('Нечего выделить','No hay nada que seleccionar','Nothing to select')); };
-A.kbMsgTap = (i) => { const k=kbs(); k.hint=K('hint.h2'); };
+A.kbMsgTap = (i) => { const k=kbs(); if (k.sys || S().demo.under16kb || k.hint===K('hint.h2')) PP.toast(L('Удерживайте сообщение, чтобы скопировать','Mantén pulsado el mensaje para copiarlo','Press and hold the message to copy it')); k.hint=K('hint.h2'); };
 A.kbMsgCopy = (i) => { const m=(T.kbMsgs||[])[+i]; if (!m) return; T.kbCopied=m.text; PP.copy(m.text); kbs().text===''; PP.toast(L('Скопировано','Copiado','Copied')); };
 A.kbSend = () => { const k=kbs(); const t=k.text.trim(); if (!t) return; T.kbMsgs.push({in:false, text:t}); k.text=''; k.sel=false; k.hint=null;
   clearTimeout(T.kbReplyT); T.kbReplyT=setTimeout(()=>{ const rep=['¡Perfecto! ¿Te va bien mañana a las seis?','Vale, te mando la dirección por aquí.','Gracias, nos vemos pronto.']; T.kbMsgs.push({in:true, text:rep[(T.kbMsgs.length>>1)%rep.length]}); if (PP.route()==='kb/chat'){ PP.render(); const f=document.getElementById('kbFeed'); if(f) f.scrollTop=f.scrollHeight; } }, 1400); };

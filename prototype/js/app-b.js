@@ -24,7 +24,7 @@ R['app/conv'] = () => {
   if (s.scope==='none' && !hasTurns){
     feed = `<div class="feed"><div class="empty"><h2 class="t" style="color:var(--text)">${esc(lk('textOffTitle'))}</h2><p>${esc(L('Пока вы не разрешите, Parrlo не отправляет на сервер ни голос, ни текст.','Hasta que lo permitas, Parrlo no envía a ningún servidor ni tu voz ni tu texto.','Until you allow it, Parrlo sends neither your voice nor your text to any server.'))}</p>${btn(lk('allow'),'openConsent')}</div></div>`;
   } else if (!hasTurns){
-    feed = `<div class="feed"><div class="empty">${PP.parrot('sm')}<p class="mt">${esc(L(`Нажмите «${DATA.SPEAK[p.mine].speak}» и говорите. Собеседник отвечает своей кнопкой.`,`Pulsa «${DATA.SPEAK[p.mine].speak}» y habla. Tu interlocutor responde con su botón.`,`Tap “${DATA.SPEAK[p.mine].speak}” and speak. Your partner answers with their own button.`))}</p></div></div>`;
+    feed = `<div class="feed"><div class="empty">${PP.parrot('sm')}<p class="mt">${c.text ? esc(L('Напишите фразу на любом из двух языков — Parrlo определит язык и переведёт.','Escribe una frase en cualquiera de los dos idiomas: Parrlo detecta el idioma y la traduce.','Type a phrase in either language — Parrlo detects the language and translates it.')) : esc(L(`Нажмите «${DATA.SPEAK[p.mine].speak}» и говорите. Собеседник отвечает своей кнопкой.`,`Pulsa «${DATA.SPEAK[p.mine].speak}» y habla. Tu interlocutor responde con su botón.`,`Tap “${DATA.SPEAK[p.mine].speak}” and speak. Your partner answers with their own button.`))}</p></div></div>`;
   } else feed = `<div class="feed">${c.turns.map(turnHTML).join('')}${tapTip()}</div>`;
   let dock;
   if (c.text){
@@ -62,8 +62,10 @@ A.repeatLast = () => { PP.UI.menu=null; const t=((T.conv||{}).turns||[]).filter(
 A.copyConv = () => { PP.UI.menu=null; const tx=((T.conv||{}).turns||[]).filter(t=>t.status==='done').map(t=>`${t.src}\n${t.out}`).join('\n\n'); PP.copy(tx); PP.toast(L('Разговор скопирован','Conversación copiada','Conversation copied')); };
 A.guestQR = () => { PP.UI.menu=null; const s=S();
   if (s.localNet==='unknown'){ PP.sysAlert({title:L('Приложение «Parrlo» запрашивает разрешение на поиск устройств в локальной сети','«Parrlo» quiere buscar dispositivos en tu red local','“Parrlo” Would Like to Find Devices on Your Local Network'), msg:L('Разговор на двух телефонах: связь с телефоном собеседника рядом, без интернета.','Conversación con dos teléfonos: conexión con el teléfono de tu interlocutor, sin internet.','Two-phone conversation: connecting to the other person’s phone nearby, without internet.'), buttons:[{t:L('Не разрешать','No permitir','Don’t Allow'),a:'localNet',v:'denied'},{t:L('Разрешить','Permitir','Allow'),a:'localNet',v:'granted'}]}); return; }
+  if (s.localNet==='denied'){ PP.dialog({title:L('Нет доступа к локальной сети','Sin acceso a la red local','No Local Network Access'), msg:L('Разговор на двух телефонах работает только с доступом к локальной сети. Разрешите его: Настройки iPhone → Parrlo → Локальная сеть.','La conversación con dos teléfonos solo funciona con acceso a la red local. Permítelo en Ajustes del iPhone → Parrlo → Red local.','The two-phone conversation needs local network access. Allow it in iPhone Settings → Parrlo → Local Network.'), buttons:[{t:L('Открыть Настройки','Abrir Ajustes','Open Settings'),a:'guestSettings',cls:'pri'},{t:L('Отмена','Cancelar','Cancel'),a:'noop'}]}); return; }
   PP.sheet('guest'); PP.rt(()=>{ if (PP.UI.sheet && PP.UI.sheet.name==='guest'){ PP.UI.sheet=null; T.guest=true; PP.toast(L('Гость на связи','Invitado conectado','Guest connected')); PP.render(); } }, 6000); };
-A.localNet = (v) => { S().localNet=v; A.guestQR(); };
+A.localNet = (v) => { S().localNet=v; if (v==='granted') A.guestQR(); else PP.toast(L('Гость по QR недоступен без локальной сети','Invitado por QR no disponible sin red local','Guest by QR needs the local network')); };
+A.guestSettings = () => { PP.go('#/ios/parrlo-app'); return false; };
 function qrSVG(){ let h='<svg viewBox="0 0 29 29" width="160" height="160" shape-rendering="crispEdges"><rect width="29" height="29" fill="#fff"/>'; let x=7;
   for (let i=0;i<29;i++) for (let j=0;j<29;j++){ x=(x*1103515245+12345)&0x7fffffff; const f=(a,b)=>i>=a&&i<a+7&&j>=b&&j<b+7; const inF=f(0,0)||f(0,22)||f(22,0);
     const on = inF ? ((i%22===0||i%22===6||j%22===0||j%22===6)||(i%22>=2&&i%22<=4&&j%22>=2&&j%22<=4)) : (x>>8)%2===0; if (on) h+=`<rect x="${j}" y="${i}" width="1" height="1" fill="#0E1116"/>`; }
@@ -166,11 +168,11 @@ SHEETS.share = (o) => {
   const fname = o.fname || (o.kind==='voice' ? ({ru:'Parrlo ИИ-голос — русский.m4a', es:'Voz IA Parrlo — español.m4a', en:'Parrlo AI voice — English.m4a', zh:'Parrlo AI voice — 中文.m4a'})[o.lang] : null);
   const cap = PP.C(CP.SL.l6Caption);
   const preview = o.kind==='voice'
-    ? `<div class="prev"><span class="fi">${I.file}</span><span style="flex:1;min-width:0"><b style="display:block;font-size:14px">${esc(fname)}</b><span class="sec xs">${esc(o.myVoice?L('Мой голос · голос синтезирован ИИ','Mi voz · voz generada por IA','My Voice · AI-generated voice'):(o.capRecipient||cap))}</span>${o.cloudOff?`<br><span class="xs" style="color:var(--warn)">${esc(lk('shareCloudVoiceOff'))}</span>`:''}</span><button class="ib" ${PP.attr('sharePlay')} aria-label="play">${T.playing==='share'?I.stop:I.play}</button></div>`
+    ? `<div class="prev"><span class="fi">${I.file}</span><span style="flex:1;min-width:0"><b style="display:block;font-size:14px">${esc(fname)}</b><span class="sec xs">${esc(o.myVoice?L('Мой голос · голос синтезирован ИИ','Mi voz · voz generada por IA','My Voice · AI-generated voice'):(o.capRecipient||cap))}</span>${o.cloudOff?`<br><span class="xs" style="color:var(--warn)">${esc(lk('shareCloudVoiceOff'))}</span>`:''}</span><button class="ib" ${PP.attr('sharePlay')} aria-label="${esc(L('Прослушать','Escuchar','Play'))}">${T.playing==='share'?I.stop:I.play}</button></div>`
     : `<div class="prev"><span class="fi">Aa</span><span style="flex:1;font-size:14px">${esc(o.text)}</span></div>`;
-  const apps = [['wa','WhatsApp'],['msg',L('Сообщения','Mensajes','Messages')],['mail',L('Почта','Mail','Mail')],['notes',L('Заметки','Notas','Notes')]];
+  const apps = [['wa','WhatsApp'],['msg',L('Сообщения','Mensajes','Messages')],['mail',L('Почта','Mail','Mail')],['notes',L('Заметки','Notas','Notes')]].filter(([k])=>k!=='wa'||S().demo.waInstalled);
   return `<div class="share"><h3>${esc(L('Поделиться','Compartir','Share'))}</h3>${preview}
-  <div class="apps">${apps.map(([k,n])=>`<button class="app" ${PP.attr('shareTo',k)}><span class="ic">${k==='wa'?I.chat:esc(n[0])}</span>${esc(n)}</button>`).join('')}</div>
+  <div class="apps">${apps.map(([k,n])=>`<button class="app" ${PP.attr('shareTo',k)}><span class="ic">${({wa:I.chat,msg:I.msg,mail:I.mail,notes:I.note})[k]}</span>${esc(n)}</button>`).join('')}</div>
   <div class="grp">${li_({t:L('Скопировать','Copiar','Copy'),a:'shareCopy',noChev:true})}${li_({t:L('Сохранить в Файлы','Guardar en Archivos','Save to Files'),a:'shareSave',noChev:true})}</div>
   <div class="mt">${btn(L('Отмена','Cancelar','Cancel'),'closeSheet',undefined,'ghost')}</div></div>`;
 };
@@ -178,7 +180,7 @@ A.sharePlay = () => { const o=PP.UI.sheet.arg; if (T.playing==='share'){ PP.stop
 A.shareCopy = () => { const o=PP.UI.sheet.arg; PP.copy(o.text); PP.UI.sheet=null; PP.toast(L('Скопировано','Copiado','Copied')); };
 A.shareSave = () => { PP.UI.sheet=null; PP.toast(L('Сохранено в Файлы','Guardado en Archivos','Saved to Files')); };
 A.shareTo = (k) => { const o=PP.UI.sheet.arg; PP.UI.sheet=null; PP.stopSpeak();
-  if (k==='wa' && (o.ctx==='ext')){ T.waOut = T.waOut||[]; T.waOut.push(o.kind==='voice'?{voice:true, name:o.fname, cap:o.capRecipient}:{text:o.text}); S().sharedOnce=true; PP.go('#/wa/chat'); return false; }
+  if (k==='wa' && o.ctx==='ext' && o.reply){ T.waOut = T.waOut||[]; T.waOut.push(o.kind==='voice'?{voice:true, name:o.fname, cap:o.capRecipient}:{text:o.text}); S().sharedOnce=true; PP.go('#/wa/chat'); return false; }
   const n={wa:'WhatsApp',msg:L('Сообщения','Mensajes','Messages'),mail:L('Почта','Mail','Mail'),notes:L('Заметки','Notas','Notes')}[k];
   PP.toast(L(`Передано в «${n}»`,`Enviado a «${n}»`,`Sent to “${n}”`)); };
 

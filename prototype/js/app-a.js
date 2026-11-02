@@ -123,7 +123,7 @@ R['app/main'] = () => {
     <h1 class="t center" style="font-size:30px;margin-top:10px">${esc(L('Переводчик','Traductor','Translator'))}</h1>
     <p class="sec center">${esc(L('Скажите, как можете, — прозвучите безупречно. Говорите по очереди: переведу и произнесу вслух.','Habla como puedas, suena impecable. Habla por turnos: traduzco y lo digo en voz alta.','Say it however you can — sound flawless. Take turns: I translate and speak it aloud.'))}</p>
     <div class="pairbtns"><button class="pb" ${PP.attr('langSheet','mine')}><small>${esc(L('Сейчас у вас','Ahora, el tuyo','Yours now'))}</small><b>${esc(PP.langNative(p.mine))}</b></button>
-      <button class="ib swap" ${PP.attr('swapPair')} aria-label="swap">${I.swap}</button>
+      <button class="ib swap" ${PP.attr('swapPair')} aria-label="${esc(L('Поменять языки местами','Intercambiar idiomas','Swap Languages'))}">${I.swap}</button>
       <button class="pb" ${PP.attr('langSheet','theirs')}><small>${esc(L('Сейчас у собеседника','Ahora, del interlocutor','Partner’s now'))}</small><b>${esc(PP.langNative(p.theirs))}</b></button></div>
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><span class="sec sm" style="flex:1">${esc(L('Собеседник','Interlocutor','Partner'))}</span>${seg([['male',L('Он','Él','He')],['female',L('Она','Ella','She')]], s.partnerGender, 'setPartnerGender')}</div>
     <div style="flex:1"></div>
@@ -143,12 +143,12 @@ SHEETS.pair = () => { const s=S(), p=s.pair;
   <p class="gf">${esc(L('Пол собеседника нужен для окончаний в переводе. Если выбрать один язык с обеих сторон, языки поменяются местами.','El género del interlocutor sirve para las terminaciones. Si eliges el mismo idioma en ambos lados, los idiomas se intercambian.','Partner gender is used for word endings in the translation. If you pick the same language on both sides, the two languages swap.'))}</p></div>
   <div class="mt">${btn(L('Готово','Listo','Done'),'closeSheet')}</div>`; };
 A.langSheet = (side) => { T.langQ=''; PP.sheet('lang', side); };
-SHEETS.lang = (side) => { const s=S(); const curL=s.pair[side]; const q=(T.langQ||'').toLowerCase();
-  const all=['ru','es','en','zh'].filter(c=>!q || PP.langName(c).toLowerCase().includes(q) || PP.langNative(c).toLowerCase().includes(q));
+SHEETS.lang = (side) => { const s=S(); const curL=s.pair[side]; const q=(T.langQ||'').toLowerCase(); const otherL = s.pair[side==='mine'?'theirs':'mine'];
+  const all=['ru','es','en','zh'].filter(c=>c!==otherL).filter(c=>!q || PP.langName(c).toLowerCase().includes(q) || PP.langNative(c).toLowerCase().includes(q));
   const row = c => li_({t:PP.langName(c), s:PP.langNative(c), a:'pickLang', v:side+'|'+c, right: c===curL?`<span style="color:var(--green)">${I.check}</span>`:'<span></span>'});
   return `<h3>${esc(side==='mine'?L('Ваш язык','Tu idioma','Your Language'):L('Язык собеседника','Idioma del interlocutor','Partner’s Language'))}</h3>
   <input id="langq" placeholder="${esc(L('Поиск','Buscar','Search'))}" value="${esc(T.langQ||'')}" style="width:100%;padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface);margin-bottom:10px;outline:none" data-input="langQ">
-  <div class="sb">${!q?`<div class="gh">${esc(L('Недавние','Recientes','Recent'))}</div><div class="grp">${s.recent.map(row).join('')}</div><div class="gh">${esc(L('Все языки','Todos los idiomas','All Languages'))}</div>`:''}<div class="grp">${all.map(row).join('')||`<div class="li sec">${esc(L('Ничего не найдено','Sin resultados','No results'))}</div>`}</div></div>
+  <div class="sb">${!q?`<div class="gh">${esc(L('Недавние','Recientes','Recent'))}</div><div class="grp">${s.recent.filter(c=>c!==otherL).map(row).join('')}</div><div class="gh">${esc(L('Все языки','Todos los idiomas','All Languages'))}</div>`:''}<div class="grp">${all.map(row).join('')||`<div class="li sec">${esc(L('Ничего не найдено','Sin resultados','No results'))}</div>`}</div></div>
   <div class="mt">${btn(L('Отмена','Cancelar','Cancel'),'closeSheet',undefined,'ghost')}</div>`; };
 A.pickLang = (v) => { const [side,c]=v.split('|'); const p=S().pair; const other = side==='mine'?'theirs':'mine';
   if (p[other]===c){ p[other]=p[side]; p[side]=c; PP.toast(L('Языки поменялись местами','Los idiomas se han intercambiado','Languages swapped')); } else p[side]=c;

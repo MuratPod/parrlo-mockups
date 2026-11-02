@@ -59,6 +59,10 @@ const I = PP.I = {
   info:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="18" height="18"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/></svg>',
   lock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>',
   file:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/><path d="M14 3v5h5M9 15l2 2 4-4"/></svg>',
+  msg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="26" height="26"><rect x="3" y="4" width="18" height="13" rx="4"/><path d="M8 17l-2 4 5-4"/></svg>',
+  mail:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="26" height="26"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>',
+  note:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="26" height="26"><path d="M6 3h9l4 4v14H6z"/><path d="M9 11h7M9 15h7"/></svg>',
+  folder:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="26" height="26"><path d="M3 6h7l2 2h9v11H3z"/></svg>',
   chat:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="26" height="26"><path d="M21 12a8 8 0 01-11.6 7.1L4 20l1-4.6A8 8 0 1121 12z"/></svg>',
 };
 PP.parrot = (cls='') => `<img class="parrot ${cls}" src="assets/parrlo.svg" alt="Parrlo">`;
@@ -81,20 +85,20 @@ function clearRT(){ for(const [id,iv] of rTimers) iv?clearInterval(id):clearTime
 
 /* overlays */
 const UI = PP.UI = {sheet:null, dialog:null, alert:null, menu:null, toast:null, demo:false};
-PP.closeOv = () => { UI.sheet=null; UI.dialog=null; UI.alert=null; UI.menu=null; };
+PP.closeOv = () => { UI.sheet=null; UI.sheetPrev=null; UI.dialog=null; UI.alert=null; UI.menu=null; };
 PP.sheet = (name, arg) => { UI.menu=null; UI.sheet={name,arg}; };
 PP.dialog = (d) => { UI.menu=null; UI.dialog=d; };
 PP.sysAlert = (d) => { UI.alert=d; };
 PP.menu = (m) => { UI.menu=m; };
 let toastT;
-PP.toast = (msg) => { UI.toast=msg; clearTimeout(toastT); toastT=setTimeout(()=>{UI.toast=null; renderOv();}, 2200); renderOv(); };
+PP.toast = (msg) => { UI.toast=msg; UI.toastAt=Date.now(); clearTimeout(toastT); toastT=setTimeout(()=>{UI.toast=null; renderOv();}, 2200); renderOv(); };
 function renderOv(){
   const ov = document.getElementById('ov'); let h='';
   if (UI.sheet){ const f=PP.SHEETS[UI.sheet.name]; if(f){ h+=`<div class="scrim" data-a="closeSheet"></div><div class="sheet" data-sheet="${UI.sheet.name}"><div class="grab"></div>${f(UI.sheet.arg)}</div>`; } }
   if (UI.menu){ h+=`<div class="scrim" data-a="closeMenu" style="background:rgba(0,0,0,.25)"></div><div class="menu">${UI.menu.head?`<div class="mh">${esc(UI.menu.head)}</div>`:''}${UI.menu.items.map(it=>`<button class="mi ${it.dng?'dng':''}" ${PP.attr(it.a,it.v)}>${esc(it.t)}${it.r?`<span class="sec">${esc(it.r)}</span>`:''}</button>`).join('')}</div>`; }
-  if (UI.dialog){ const d=UI.dialog; h+=`<div class="scrim" ${d.noDismiss?'':'data-a="closeDialog"'}></div><div class="dialog" role="dialog"><h3>${esc(d.title)}</h3>${d.msg?`<p>${esc(d.msg)}</p>`:''}${d.html||''}<div class="bts">${d.buttons.map(b=>`<button class="btn ${b.cls||'sec'}" data-dlg="1" ${PP.attr(b.a,b.v)}>${esc(b.t)}</button>`).join('')}</div></div>`; }
-  if (UI.alert){ const d=UI.alert; h+=`<div class="scrim" style="background:rgba(0,0,0,.35)"></div><div class="sysalert" role="alertdialog"><div class="b"><h4>${esc(d.title)}</h4><p>${esc(d.msg)}</p></div><div class="bt">${d.buttons.map(b=>`<button data-dlg="1" ${PP.attr(b.a,b.v)}>${esc(b.t)}</button>`).join('')}</div></div>`; }
   if (UI.demo) h+=demoPanel();
+  if (UI.dialog){ const d=UI.dialog; h+=`<div class="scrim top" ${d.noDismiss?'':'data-a="closeDialog"'}></div><div class="dialog" role="dialog"><h3>${esc(d.title)}</h3>${d.msg?`<p>${esc(d.msg)}</p>`:''}${d.html||''}<div class="bts">${d.buttons.map(b=>`<button class="btn ${b.cls||'sec'}" data-dlg="1" ${PP.attr(b.a,b.v)}>${esc(b.t)}</button>`).join('')}</div></div>`; }
+  if (UI.alert){ const d=UI.alert; h+=`<div class="scrim top" style="background:rgba(0,0,0,.35)"></div><div class="sysalert" role="alertdialog"><div class="b"><h4>${esc(d.title)}</h4><p>${esc(d.msg)}</p></div><div class="bt">${d.buttons.map(b=>`<button data-dlg="1" ${PP.attr(b.a,b.v)}>${esc(b.t)}</button>`).join('')}</div></div>`; }
   if (UI.toast) h+=`<div class="toast" role="status">${esc(UI.toast)}</div>`;
   ov.innerHTML = h;
 }
@@ -121,7 +125,7 @@ PP.render = () => {
 };
 function onRoute(){
   const r = PP.route();
-  if (cur && cur!==r){ const lv = PP.LEAVE[base(cur)]; if (lv) lv(cur, r); clearRT(); PP.closeOv(); }
+  if (cur && cur!==r){ const lv = PP.LEAVE[base(cur)]; if (lv) lv(cur, r); clearRT(); PP.closeOv(); if (UI.toast && Date.now()-(UI.toastAt||0)>400) UI.toast=null; }
   const prev = cur; cur = r;
   const en = PP.ENTER[base(r)]; if (en) en(r, prev);
   PP.render();
@@ -139,7 +143,10 @@ document.addEventListener('pointerdown', e => {
   longFired=false; longEl=el; clearTimeout(longT);
   longT=setTimeout(()=>{ longFired=true; run(el.dataset.long, el.dataset.lv ?? el.dataset.v, el); }, 520);
 });
-['pointerup','pointercancel','pointerleave'].forEach(t=>document.addEventListener(t, ()=>clearTimeout(longT)));
+let lpX=0, lpY=0;
+document.addEventListener('pointerdown', e => { lpX=e.clientX; lpY=e.clientY; }, true);
+document.addEventListener('pointermove', e => { if (Math.abs(e.clientX-lpX)>10 || Math.abs(e.clientY-lpY)>10) clearTimeout(longT); });
+['pointerup','pointerleave'].forEach(t=>document.addEventListener(t, ()=>clearTimeout(longT)));
 document.addEventListener('contextmenu', e => { const el=e.target.closest('[data-long]'); if(el){ e.preventDefault(); clearTimeout(longT); if (longEl!==el || !longFired) run(el.dataset.long, el.dataset.lv ?? el.dataset.v, el); } });
 document.addEventListener('click', e => {
   if (longFired){ longFired=false; e.preventDefault(); return; }
@@ -160,18 +167,19 @@ window.addEventListener('hashchange', onRoute);
 
 /* generic actions */
 Object.assign(PP.A, {
-  closeSheet(){ const s=UI.sheet; UI.sheet=null; if (s && PP.onSheetClose) PP.onSheetClose(s.name); },
+  closeSheet(){ const s=UI.sheet; if (s && s.name==='legal' && UI.sheetPrev){ UI.sheet=UI.sheetPrev; UI.sheetPrev=null; return; } UI.sheet=null; UI.sheetPrev=null; if (s && PP.onSheetClose) PP.onSheetClose(s.name); },
   closeMenu(){ UI.menu=null; }, closeDialog(){ UI.dialog=null; }, noop(){},
   toggleDemo(){ UI.demo=!UI.demo; },
   setUi(v){ S().ui=v; },
-  legal(v){ PP.sheet('legal', v); },
-  demoSet(v){ const [k,val]=v.split('='); const d=S().demo; d[k] = val==='true'?true:val==='false'?false:isNaN(+val)||val===''?val:+val; if (PP.onDemo) PP.onDemo(k); },
-  demoFlip(k){ const d=S().demo; d[k]=!d[k]; if (PP.onDemo) PP.onDemo(k); },
-  stateSet(v){ const [k,val]=v.split('='); const path=k.split('.'); let o=S(); while(path.length>1) o=o[path.shift()]; o[path[0]] = val==='true'?true:val==='false'?false:val==='null'?null:val; if (PP.onDemo) PP.onDemo(k); },
-  resetAll(){ PP.dialog({title:L('Сбросить прототип?','¿Reiniciar el prototipo?','Reset Prototype?'), msg:L('Ответ о возрасте, онбординг, согласия, «Мой голос», история и клавиатура вернутся к началу.','La edad, la introducción, los permisos, «Mi voz», el historial y el teclado volverán al inicio.','Age, onboarding, consents, My Voice, history and keyboard go back to the start.'), buttons:[{t:L('Сбросить','Reiniciar','Reset'),a:'resetDo',cls:'dng'},{t:L('Отмена','Cancelar','Cancel'),a:'noop'}]}); },
+  legal(v){ const prev = UI.sheet && UI.sheet.name!=='legal' ? UI.sheet : null; PP.sheet('legal', v); UI.sheetPrev = prev; },
+  demoSet(v){ const [k,val]=v.split('='); const d=S().demo; d[k] = val==='true'?true:val==='false'?false:k==='speed'?+val:val; PP.demoChanged(k); },
+  demoFlip(k){ const d=S().demo; d[k]=!d[k]; PP.demoChanged(k); },
+  stateSet(v){ const [k,val]=v.split('='); const path=k.split('.'); let o=S(); while(path.length>1) o=o[path.shift()]; o[path[0]] = val==='true'?true:val==='false'?false:val==='null'?null:val; PP.demoChanged(k); },
+  resetAll(){ UI.demo=false; PP.dialog({title:L('Сбросить прототип?','¿Reiniciar el prototipo?','Reset Prototype?'), msg:L('Ответ о возрасте, онбординг, согласия, «Мой голос», история и клавиатура вернутся к началу.','La edad, la introducción, los permisos, «Mi voz», el historial y el teclado volverán al inicio.','Age, onboarding, consents, My Voice, history and keyboard go back to the start.'), buttons:[{t:L('Сбросить','Reiniciar','Reset'),a:'resetDo',cls:'dng'},{t:L('Отмена','Cancelar','Cancel'),a:'noop'}]}); },
   resetDo(){ PP.reset(); UI.demo=false; PP.toast(L('Прототип сброшен','Prototipo reiniciado','Prototype reset')); PP.go('#/'); },
   copyText(v){ PP.copy(v); PP.toast(L('Скопировано','Copiado','Copied')); },
 });
+PP.demoHooks = []; PP.demoChanged = (k) => { for (const h of PP.demoHooks) h(k); };
 PP.copy = (t) => { try{ navigator.clipboard && navigator.clipboard.writeText(t).catch(()=>{}); }catch(e){} PP.T.clip = t; };
 
 /* legal / in-app browser sheet */
@@ -234,11 +242,11 @@ function demoPanel(){
   </div>
   <h5>Клавиатура: сессия (токен)</h5><div class="opts">
     ${o('Авто (по приложению)','demoSet','token=auto',d.token==='auto')}${o('Есть','demoSet','token=ok',d.token==='ok')}${o('Нет токена','demoSet','token=missing',d.token==='missing')}${o('Сессия истекла (401)','demoSet','token=reconnect',d.token==='reconnect')}
-    ${o('Полный доступ','stateSet','kb.full='+(!s.kb.full),s.kb.full)}${o('Сервис 503','demoFlip','unavailable',d.unavailable)}${o('Младше 16 (клавиатура)','demoFlip','under16kb',d.under16kb)}
+    ${o('Полный доступ','stateSet','kb.full='+(!s.kb.full),s.kb.full)}${o('Сервис 503','demoFlip','unavailable',d.unavailable)}${o('Младше 16 (клавиатура): перевод скрыт без пояснения — как в коде','demoFlip','under16kb',d.under16kb)}
   </div>
   <h5>«Мой голос»</h5><div class="opts">
     ${o('Запись ×1','demoSet','speed=1',d.speed===1)}${o('Запись ×8','demoSet','speed=8',d.speed===8)}
-    ${o('Отправка: ок','demoSet','mvErr=none',d.mvErr==='none')}${o('Сеть','demoSet','mvErr=net',d.mvErr==='net')}${o('Сессия 401','demoSet','mvErr=401',d.mvErr==='401')}${o('consent_version','demoSet','mvErr=version',d.mvErr==='version')}
+    ${o('Отправка: ок','demoSet','mvErr=none',d.mvErr==='none')}${o('Сеть','demoSet','mvErr=net',d.mvErr==='net')}${o('Сессия 401','demoSet','mvErr=401',d.mvErr==='401')}${o('Устаревшая версия приложения','demoSet','mvErr=version',d.mvErr==='version')}
     ${o('Нужно повторное согласие v5','demoFlip','reconsent',d.reconsent)}
     ${o('Голос записан','stateSet','voice.exists='+(!s.voice.exists),s.voice.exists)}
   </div>

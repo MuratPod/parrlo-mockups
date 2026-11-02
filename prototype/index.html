@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Parrlo">
+<meta name="theme-color" content="#12161C">
+<meta name="robots" content="noindex">
+<title>Parrlo Translate · кликабельный прототип</title>
+<link rel="icon" type="image/png" href="assets/favicon-64.png">
+<link rel="apple-touch-icon" href="assets/app-icon-180.png">
+<link rel="preload" href="fonts/Inter-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/Nunito-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div id="stage">
+  <div id="device">
+    <div id="sb"><span id="clk">9:41</span><span class="isl"></span><button id="demoBtn" data-a="toggleDemo" aria-label="Демо-панель">Демо</button><span class="ic"><svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2.5" width="3" height="9.5" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="26" height="12" viewBox="0 0 26 12" fill="none" aria-hidden="true"><rect x=".5" y=".5" width="22" height="11" rx="3" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="16" height="8" rx="2" fill="currentColor"/><rect x="23.5" y="4" width="2" height="4" rx="1" fill="currentColor" opacity=".5"/></svg></span></div>
+    <main id="scr" aria-live="polite"></main>
+    <div id="ov"></div>
+    <button id="home" data-go="#/" aria-label="На старт прототипа"></button>
+  </div>
+  <aside id="side">
+    <h1>parrlo</h1>
+    <p>Кликабельный прототип Parrlo Translate и ParrloKeyboard по коду 5c0c39d0.</p>
+    <p>«Демо» в строке состояния открывает панель сценариев: нет сети, лимит, нет доступа к микрофону, полный доступ клавиатуры и другие ошибки.</p>
+    <p>Полоска внизу экрана возвращает на старт прототипа. На телефоне откройте страницу в Safari и добавьте её на экран «Домой» для полноэкранного режима.</p>
+    <p>Все переводы — демонстрационные данные; сеть не используется.</p>
+  </aside>
+</div>
+<script src="js/copy.js"></script>
+<script src="js/data.js"></script>
+<script src="js/core.js"></script>
+<script src="js/app-a.js"></script>
+<script src="js/app-b.js"></script>
+<script src="js/app-c.js"></script>
+<script src="js/mv.js"></script>
+<script src="js/wa.js"></script>
+<script src="js/kb.js"></script>
+<script>window.__routes = () => Object.keys(PP.R);</script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" width="240" height="240" role="img" aria-label="Parrlo">
+<!-- Парло, вариант A «Мягкий объём 2.5D», анфас, поза «покой». Статический кадр из MuratPod/parrlo-chat-mockups/alive-parrlo-front (front-svg.js, rigSVG + Reduce Motion pose). Ничего не перерисовано. -->
+  <defs>
+    <clipPath id="pa-disc"><circle cx="120" cy="120" r="120"></circle></clipPath>
+    <clipPath id="pa-pc"><circle r="11.5"></circle></clipPath>
+    <radialGradient id="pa-gbg" cx=".5" cy=".42" r=".6"><stop offset="0" stop-color="#21513F"></stop><stop offset="1" stop-color="#173A2E"></stop></radialGradient>
+    <radialGradient id="pa-ghead" cx=".36" cy=".3" r=".78"><stop offset="0" stop-color="#2FCB8E"></stop><stop offset=".5" stop-color="#00A86B"></stop><stop offset="1" stop-color="#007A4E"></stop></radialGradient>
+    <radialGradient id="pa-gbody" cx=".4" cy=".28" r=".8"><stop offset="0" stop-color="#16B97C"></stop><stop offset=".55" stop-color="#00A86B"></stop><stop offset="1" stop-color="#006B44"></stop></radialGradient>
+    <radialGradient id="pa-gbelly" cx=".5" cy=".35" r=".6"><stop offset="0" stop-color="#3ED39A" stop-opacity=".55"></stop><stop offset="1" stop-color="#3ED39A" stop-opacity="0"></stop></radialGradient>
+    <linearGradient id="pa-gwing" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0D7E52"></stop><stop offset="1" stop-color="#075238"></stop></linearGradient>
+    <linearGradient id="pa-gbeak" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFDA7A"></stop><stop offset=".45" stop-color="#FFC247"></stop><stop offset="1" stop-color="#EFA232"></stop></linearGradient>
+    <radialGradient id="pa-gshade" cx=".5" cy="0" r=".9"><stop offset="0" stop-color="#003D27" stop-opacity=".55"></stop><stop offset="1" stop-color="#003D27" stop-opacity="0"></stop></radialGradient>
+  </defs>
+  <g clip-path="url(#pa-disc)">
+    <circle data-part="bg" cx="120" cy="120" r="120" fill="url(#pa-gbg)"></circle>
+    <g id="pa-dots" data-part="dots">
+      <circle id="pa-dot-1" data-part="dot-1" cx="168" cy="50" r="4.6" fill="#BFF2DC" opacity="0.000"></circle>
+      <circle id="pa-dot-2" data-part="dot-2" cx="183" cy="35" r="6.2" fill="#BFF2DC" opacity="0.000"></circle>
+      <circle id="pa-dot-3" data-part="dot-3" cx="200" cy="20" r="7.8" fill="#BFF2DC" opacity="0.000"></circle>
+    </g>
+    <g id="pa-body" data-part="body" data-pivot="120 258" transform="translate(0 0.00) rotate(0.00 120 258) translate(120 258) scale(1 1.0000) translate(-120 -258)">
+      <ellipse cx="120" cy="200" rx="68" ry="60" fill="url(#pa-gbody)"></ellipse>
+      <g id="pa-belly" data-part="belly" transform="translate(120.00 206)"><ellipse cx="0" cy="0" rx="40" ry="38" fill="url(#pa-gbelly)"></ellipse></g>
+      <ellipse cx="120" cy="150" rx="52" ry="22" fill="url(#pa-gshade)"></ellipse>
+      <g id="pa-wing-l" data-part="wing-l" data-pivot="shoulder" transform="translate(58.87 160) rotate(-10.00) scale(0.987 1)" opacity="1.000"><ellipse cx="0" cy="32" rx="17" ry="35" fill="url(#pa-gwing)"></ellipse></g>
+      <g id="pa-wing-r" data-part="wing-r" data-pivot="shoulder" transform="translate(181.13 160) rotate(10.00) scale(0.987 1)" opacity="1.000"><ellipse cx="0" cy="32" rx="17" ry="35" fill="url(#pa-gwing)"></ellipse></g>
+    </g>
+    <g id="pa-head" data-part="head" data-pivot="120 160" transform="translate(0 0.00) rotate(0.00 120 160)">
+      <g id="pa-crest" data-part="crest" transform="translate(120.00 49.78) scale(1.000 1)">
+        <g id="pa-crest-1" data-part="crest-1" transform="rotate(-24.00) scale(1 1.000)"><rect x="-6.5" y="-36" width="13" height="46" rx="6.5" fill="#0B8F5E"></rect></g><g id="pa-crest-3" data-part="crest-3" transform="rotate(24.00) scale(1 1.000)"><rect x="-6.5" y="-36" width="13" height="46" rx="6.5" fill="#00A86B"></rect></g><g id="pa-crest-2" data-part="crest-2" transform="rotate(0.00) scale(1 1.000)"><rect x="-6.5" y="-44" width="13" height="54" rx="6.5" fill="#1DB37A"></rect></g>
+      </g>
+      <circle data-part="head-shape" cx="120" cy="104" r="60" fill="url(#pa-ghead)"></circle>
+      <g id="pa-temple-l" data-part="temple-l" transform="matrix(-17.004 -4.022 0.2302 -0.9732 78.49 97.60)" opacity="1.000"><rect x="0" y="-2.3" width="1" height="4.6" fill="#BFF2DC"></rect></g>
+      <g id="pa-temple-r" data-part="temple-r" transform="matrix(17.004 -4.022 0.2302 0.9732 161.51 97.60)" opacity="1.000"><rect x="0" y="-2.3" width="1" height="4.6" fill="#BFF2DC"></rect></g>
+      
+      <g id="pa-eye-l" data-part="eye-l" transform="matrix(0.8996 -0.0241 -0.0241 0.9942 93.32 97.60)" opacity="1.000">
+        <g id="pa-pupil-l" data-part="pupil-l" transform="translate(0.00 0.00) scale(1.000)" opacity="1.000">
+          <circle r="11.5" fill="#0E1116"></circle>
+          <circle cx="4.2" cy="-4.2" r="3.6" fill="#fff"></circle>
+          <circle cx="-3.2" cy="3.6" r="1.4" fill="#fff" opacity=".6"></circle>
+          <g clip-path="url(#pa-pc)">
+            <g id="pa-lid-l" data-part="lid-l" transform="translate(0 -12.00)"><rect x="-14" y="-26" width="28" height="26" fill="#00A86B"></rect><path d="M-12 0 H12" stroke="#0A7048" stroke-width="2.4" stroke-linecap="round"></path></g>
+            <g id="pa-lidc-l" data-part="lid-closed-l" opacity="0.000"><rect x="-14" y="-14" width="28" height="16" fill="#00A86B"></rect><path d="M-11 1.5 Q0 5 11 1.5" fill="none" stroke="#0A7048" stroke-width="2.4" stroke-linecap="round"></path><rect x="-14" y="1.5" width="28" height="14" fill="#00A86B"></rect></g>
+          </g>
+        </g>
+        <g id="pa-happy-l" data-part="happy-l" opacity="0.000"><path d="M-8.5 3.5 Q0 -7.5 8.5 3.5" fill="none" stroke="#0E1116" stroke-width="4.2" stroke-linecap="round"></path></g>
+        <circle r="17" fill="#BFF2DC" opacity=".09"></circle>
+        <g id="pa-glint-l" data-part="lens-glint-l" opacity="0.000"><path d="M4.8 -13.4 A14.2 14.2 0 0 1 13.4 -4.8" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"></path></g>
+        <circle r="19" fill="none" stroke="#BFF2DC" stroke-width="4.6"></circle>
+        <path d="M-17.3 -7.8 A19 19 0 0 1 -7.8 -17.3" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".55"></path>
+      </g>
+      <g id="pa-eye-r" data-part="eye-r" transform="matrix(0.8996 0.0241 0.0241 0.9942 146.68 97.60)" opacity="1.000">
+        <g id="pa-pupil-r" data-part="pupil-r" transform="translate(0.00 0.00) scale(1.000)" opacity="1.000">
+          <circle r="11.5" fill="#0E1116"></circle>
+          <circle cx="4.2" cy="-4.2" r="3.6" fill="#fff"></circle>
+          <circle cx="-3.2" cy="3.6" r="1.4" fill="#fff" opacity=".6"></circle>
+          <g clip-path="url(#pa-pc)">
+            <g id="pa-lid-r" data-part="lid-r" transform="translate(0 -12.00)"><rect x="-14" y="-26" width="28" height="26" fill="#00A86B"></rect><path d="M-12 0 H12" stroke="#0A7048" stroke-width="2.4" stroke-linecap="round"></path></g>
+            <g id="pa-lidc-r" data-part="lid-closed-r" opacity="0.000"><rect x="-14" y="-14" width="28" height="16" fill="#00A86B"></rect><path d="M-11 1.5 Q0 5 11 1.5" fill="none" stroke="#0A7048" stroke-width="2.4" stroke-linecap="round"></path><rect x="-14" y="1.5" width="28" height="14" fill="#00A86B"></rect></g>
+          </g>
+        </g>
+        <g id="pa-happy-r" data-part="happy-r" opacity="0.000"><path d="M-8.5 3.5 Q0 -7.5 8.5 3.5" fill="none" stroke="#0E1116" stroke-width="4.2" stroke-linecap="round"></path></g>
+        <circle r="17" fill="#BFF2DC" opacity=".09"></circle>
+        <g id="pa-glint-r" data-part="lens-glint-r" opacity="0.000"><path d="M4.8 -13.4 A14.2 14.2 0 0 1 13.4 -4.8" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"></path></g>
+        <circle r="19" fill="none" stroke="#BFF2DC" stroke-width="4.6"></circle>
+        <path d="M-17.3 -7.8 A19 19 0 0 1 -7.8 -17.3" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".55"></path>
+      </g>
+      <g id="pa-bridge" data-part="bridge" transform="matrix(17.957 0.000 0.0000 1.0000 111.02 96.54)"><path d="M0 -2.3 Q.5 -8.5 1 -2.3 V2.3 Q.5 -3.9 0 2.3 Z" fill="#BFF2DC"></path></g>
+      <g id="pa-beak" data-part="beak" transform="matrix(1.0000 0.0000 0.0000 0.9438 120.00 129.38)">
+        <g id="pa-mouth" data-part="mouth" transform="translate(0 2) scale(1 0.000) translate(0 -2)"><ellipse cx="0" cy="13" rx="11.5" ry="10.5" fill="#4A2320"></ellipse></g>
+        <g id="pa-beak-low" data-part="beak-bottom" transform="translate(0 0.00)"><path d="M-13 4 Q0 9 13 4 Q11 19 0 24 Q-11 19 -13 4 Z" fill="#E59A35"></path></g>
+        <g id="pa-beak-up" data-part="beak-top" transform="translate(0 0.00)"><path d="M-19 -9 Q0 -21 19 -9 Q18.5 7 0 18.5 Q-18.5 7 -19 -9 Z" fill="url(#pa-gbeak)"></path>
+          <circle cx="-5.2" cy="-8" r="1.7" fill="#D88E28"></circle><circle cx="5.2" cy="-8" r="1.7" fill="#D88E28"></circle>
+          <ellipse cx="-7" cy="-11.5" rx="5" ry="2.2" fill="#fff" opacity=".35"></ellipse></g>
+      </g>
+    </g>
+  </g>
+</svg>

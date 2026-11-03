@@ -106,7 +106,7 @@ function banners(){
 }
 PP.banners = banners;
 A.netRetry = () => { PP.toast(S().demo.offline ? L('Всё ещё нет интернета','Sigue sin haber internet','Still no internet') : L('Связь есть','Conectado','Connected')); };
-A.guestOff = () => { T.guest=false; };
+A.guestOff = () => { T.guest=false; T.guestTok=(T.guestTok||0)+1; clearTimeout(T.guestT); };
 
 /* 2.1 Start screen */
 ENTER['app/main'] = () => { ensureApp(); };

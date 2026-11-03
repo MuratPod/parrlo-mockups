@@ -52,7 +52,7 @@ A.moreMenu = () => { const s=S();
   PP.menu({items:[
     {t:L('Повторить последний перевод','Repetir la última traducción','Repeat Last Translation'),a:'repeatLast'},
     {t:L('Скопировать разговор','Copiar la conversación','Copy Conversation'),a:'copyConv'},
-    {t:L('Гость по QR','Invitado por QR','Guest by QR'),a:'guestQR'},
+    T.guest ? {t:L('Гость на связи · Отключить','Invitado conectado · Desconectar','Guest Connected · Disconnect'),a:'guestOffAsk'} : {t:L('Гость по QR','Invitado por QR','Guest by QR'),a:'guestQR'},
     {t:L('Пол собеседника','Género del interlocutor','Partner Gender'),a:'genderMenu',r:s.partnerGender==='male'?L('Он','Él','He'):L('Она','Ella','She')},
     {t:L('История','Historial','History'),a:'goto',v:'#/app/history'},
     {t:L('Настройки','Ajustes','Settings'),a:'goto',v:'#/app/settings'}]}); };
@@ -62,8 +62,13 @@ A.repeatLast = () => { PP.UI.menu=null; const t=((T.conv||{}).turns||[]).filter(
 A.copyConv = () => { PP.UI.menu=null; const tx=((T.conv||{}).turns||[]).filter(t=>t.status==='done').map(t=>`${t.src}\n${t.out}`).join('\n\n'); PP.copy(tx); PP.toast(L('Разговор скопирован','Conversación copiada','Conversation copied')); };
 /* Guest by QR works over the internet (WebRTC, as FiGuestSheet in code @5c0c39d0): no local-network gate, the QR is shown right away.
    Local network is needed only for a nearby/no-internet mode, which the prototype does not have. */
-A.guestQR = () => { PP.UI.menu=null;
-  PP.sheet('guest'); PP.rt(()=>{ if (PP.UI.sheet && PP.UI.sheet.name==='guest'){ PP.UI.sheet=null; T.guest=true; PP.toast(L('Гость на связи','Invitado conectado','Guest connected')); PP.render(); } }, 6000); };
+// r7: one connection timer per opening of the QR sheet, measured from the moment the QR is shown; a timer from an
+//     earlier (closed) opening can no longer connect the guest early. With a guest already connected: no new QR.
+A.guestOffAsk = () => { PP.UI.menu=null; PP.dialog({title:L('Отключить гостя?','¿Desconectar al invitado?','Disconnect the Guest?'), msg:L('Собеседник перестанет получать перевод на своём телефоне. Чтобы подключить снова, покажите новый QR.','Tu interlocutor dejará de recibir la traducción en su teléfono. Para volver a conectarlo, muestra un nuevo QR.','Your partner will stop getting the translation on their phone. To reconnect, show a new QR.'), buttons:[{t:L('Отключить','Desconectar','Disconnect'),a:'guestOff',cls:'pri'},{t:L('Отмена','Cancelar','Cancel'),a:'noop'}]}); };
+const GUEST_CONNECT_MS = 6000;
+A.guestQR = () => { PP.UI.menu=null; if (T.guest){ A.guestOffAsk(); return; }
+  const tok = T.guestTok = (T.guestTok||0)+1; clearTimeout(T.guestT);
+  PP.sheet('guest'); T.guestShownAt=Date.now(); T.guestT = PP.rt(()=>{ if (tok===T.guestTok && PP.UI.sheet && PP.UI.sheet.name==='guest'){ PP.UI.sheet=null; T.guest=true; T.guestAt=Date.now(); PP.toast(L('Гость на связи','Invitado conectado','Guest connected')); PP.render(); } }, GUEST_CONNECT_MS); };
 A.localNet = (v) => { S().localNet=v; }; // permission choice only; never blocks the QR guest
 A.guestSettings = () => { PP.go('#/ios/parrlo-app'); return false; };
 function qrSVG(){ let h='<svg viewBox="0 0 29 29" width="160" height="160" shape-rendering="crispEdges"><rect width="29" height="29" fill="#fff"/>'; let x=7;

@@ -122,6 +122,9 @@ function layoutOv(){
   if (m && UI.menu && UI.menu.anchor){ const a=UI.menu.anchor, h=m.offsetHeight; let maxB=H-40; const dock=document.querySelector('#scr .dock,#scr .mics,#scr .inp,#scr .composer'); if (dock){ const d=PP.devRect(dock); maxB=Math.min(maxB, d.top-8); } const minT=56;
     let top = a.bottom+8; if (top+h>maxB) top = a.top-8-h; if (top<minT) top = Math.max(minT, Math.min(a.bottom+8, maxB-h));
     m.style.top=top+'px'; m.style.bottom='auto'; }
+  else if (m){ // r7: an un-anchored menu («Ещё») opens below the banners at the top (e.g. «Гость на связи») instead of covering them
+    let top=112; document.querySelectorAll('#scr .banner').forEach(b=>{ const r=PP.devRect(b); if (r.bottom>r.top && r.top<H/2) top=Math.max(top, r.bottom+8); });
+    m.style.top=top+'px'; m.style.bottom='auto'; m.style.maxHeight=Math.max(160, H-top-40)+'px'; m.style.overflowY='auto'; }
   const t=document.querySelector('#ov .toast'); document.body.classList.toggle('toasting', false);
   if (!t) return;
   t.classList.remove('sbz'); t.style.top='0px'; t.style.bottom='auto'; t.style.visibility='hidden';

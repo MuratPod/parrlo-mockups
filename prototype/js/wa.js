@@ -80,7 +80,7 @@ function done(){ const e=T.ext, s=S(), d=s.demo; if (!e) return;
   const forced = d.extState; if (forced && forced!=='auto' && !e.retried){ e.state=forced; return PP.render(); }
   const src = e.kind==='voice'?DATA.WA_VOICE.es:DATA.WA_TEXT.es; e.src=src; e.srcLang='es';
   const tl = s.pair.mine==='es' ? s.pair.theirs : s.pair.mine;
-  e.out = DATA.translate(src,'es',tl).text; e.outLang=tl; e.state='done'; PP.render(); }
+  e.out = DATA.translate(src,'es',tl).text; e.outLang=tl; e.state = e.out && e.out.trim() ? 'done' : 'failed'; PP.render(); }
 A.extRetry = () => { T.ext.retried=true; T.ext.state='gate'; start(); };
 A.extPickLang = (l) => { const e=T.ext; e.src=e.kind==='voice'?DATA.WA_VOICE.es:DATA.WA_TEXT.es; e.srcLang=l; const tl = l==='ru'?'es':'ru'; e.out = l==='es' ? DATA.translate(e.src,'es',tl).text : e.src; e.outLang=tl; e.state='done'; };
 A.extClose = () => { T.ext=null; PP.stopSpeak(); PP.go('#/app/main'); return false; };
@@ -108,6 +108,7 @@ function doneBody(e, source){
   if (r){
     h += `<div class="card"><span class="sec sm">${esc(L('Ваш ответ','Tu respuesta','Your Reply'))} · ${PP.code(r.srcLang)} → ${PP.code(r.outLang)}</span>`;
     if (r.state==='rec') h += `<div class="wave" id="extWave">${Array.from({length:28},()=>'<i></i>').join('')}</div><p class="sec sm center">${esc(L('Слушаю','Escuchando','Listening'))}</p>`;
+    else if (r.state==='failed') h += `<p class="mt" style="color:var(--danger)">${esc(L('Не удалось перевести ответ. Запишите ещё раз.','No se pudo traducir la respuesta. Grábala otra vez.','Couldn’t translate the reply. Record it again.'))}</p>`;
     else if (r.state==='working') h += `<div class="bub working mt" style="display:inline-block"><span class="spark"><i></i><i></i><i></i></span></div>`;
     else if (r.state==='done') h += `<p class="sec" style="margin:8px 0">${esc(r.lit)}</p><button class="bub ${T.playing==='rep'?'playing':''}" style="background:var(--green);color:var(--ink);display:block;width:100%" ${PP.attr('extSpeak','out')}>${esc(r.out)}</button>${s.waSig?'':''}`;
     h += `</div>`;
@@ -132,7 +133,7 @@ A.extReplyRec = () => { const e=T.ext; const s=S(); const me = e.outLang; e.repl
 A.extReplyStop = () => { const e=T.ext; clearInterval(T.extRecIv); clearTimeout(T.extT); const r=e.reply; r.state='working';
   setTimeout(()=>{ const s=S(); if (s.demo.offline){ r.state=null; e.reply=null; e.state='offline'; PP.render(); return; }
     const raw = r.srcLang==='ru' ? 'ну да давай в воскресенье а во сколько' : 'yes lets do sunday what time';
-    r.raw=raw; r.lit = DATA.literary(raw, r.srcLang); r.out = DATA.translate(r.lit, r.srcLang, r.outLang).text; r.state='done'; PP.render(); }, 1000); };
+    r.raw=raw; r.lit = DATA.literary(raw, r.srcLang); r.out = DATA.translate(r.lit, r.srcLang, r.outLang).text; r.state = r.out && r.out.trim() ? 'done' : 'failed'; PP.render(); }, 1000); };
 A.extShare = () => { const e=T.ext; const t = e.reply&&e.reply.state==='done'?e.reply.out:e.out; const isReply = !!(e.reply&&e.reply.state==='done'); PP.sheet('share',{kind:'text', text:t, lang:isReply?e.reply.outLang:e.outLang, ctx:'ext', reply:isReply}); };
 A.extVoice = () => { PP.sheet('extVoice'); };
 SHEETS.extVoice = () => { const e=T.ext; const r=e.reply&&e.reply.state==='done'?e.reply:null; const lang = r?r.outLang:e.outLang; const text = r?r.out:e.out;

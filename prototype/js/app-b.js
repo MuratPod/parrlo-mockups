@@ -122,6 +122,7 @@ function completeTurn(t){
   if (src===t.raw) src = t.raw.charAt(0).toUpperCase()+t.raw.slice(1);
   t.src = src;
   const r = DATA.translate(src, t.srcLang, t.outLang, {style: me&&style==='formal'?'formal':'', gender: me?s.gender:s.partnerGender});
+  if (!r.text || !r.text.trim()){ fail(L('Не удалось перевести. Нажмите, чтобы повторить.','No se pudo traducir. Toca para reintentar.','Couldn’t translate. Tap to retry.')); return; } // as in code: empty translation → failed
   t.out = r.text; t.status='done';
   PP.render(); scrollFeed();
   if (s.autoSpeak && PP.route()==='app/conv') PP.speak(t.out, t.outLang, 't'+t.id);

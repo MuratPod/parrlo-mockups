@@ -109,6 +109,7 @@ function literary(text, lang){
   let s = ' '+String(text).toLowerCase()+' ';
   for (const f of (FILL[lang]||[]).sort((a,b)=>b.length-a.length)) s = s.replace(new RegExp('(^|[\\s,])'+f+'(?=[\\s,])','g'),' ');
   s = s.replace(/\s+/g,' ').replace(/\s+([,.!?])/g,'$1').replace(/^[,\s]+/,'').trim();
+  if (!/[\p{L}\p{N}]/u.test(s)) s = String(text).trim(); // QA r5: a phrase made only of «fillers» (e.g. «да») keeps its words
   return punct(cap(s), lang);
 }
 function wordTr(text, from, to){
@@ -127,6 +128,7 @@ function wordTr(text, from, to){
 // Main translate: returns {text, known}
 function translate(text, from, to, opt){
   opt=opt||{};
+  if (!String(text||'').trim()) return {text:'', known:false, empty:true};
   if (from===to) return {text, known:true};
   const h = find(text);
   if (h && (h.p[to] || (to==='es'&&h.p.es))) return {text: pickL(h.p, to, opt), known:true, id:h.p.id};
@@ -134,8 +136,9 @@ function translate(text, from, to, opt){
   if (from==='zh') return {text: to==='ru'?'Хорошо, я понял.':to==='es'?'Vale, lo he entendido.':'Okay, I understand.', known:false};
   const base = from==='ru' ? literary(text,'ru') : text;
   let t = wordTr(base, from, to);
-  t = punct(cap(t), to);
-  return {text:t, known:false};
+  if (!t.trim()) t = String(text).trim(); // emoji / punctuation / symbols: carried over as is
+  t = /[\p{L}\p{N}]/u.test(t) ? punct(cap(t), to) : t;
+  return {text:t, known:false, empty:!t.trim()};
 }
 const LANGS = {ru:{n:['Русский','Ruso','Russian'],c:'RU',tts:'ru-RU'}, es:{n:['Испанский','Español','Spanish'],c:'ES',tts:'es-ES'}, en:{n:['Английский','Inglés','English'],c:'EN',tts:'en-US'}, zh:{n:['Китайский','Chino','Chinese'],c:'ZH',tts:'zh-CN'}};
 const SPEAK = {ru:{speak:'Я говорю',done:'Готово'}, es:{speak:'Yo hablo',done:'Terminar'}, en:{speak:'I speak',done:'Done'}, zh:{speak:'我说',done:'完成'}};

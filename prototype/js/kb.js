@@ -93,8 +93,8 @@ function kbHtml(){ const k=kbs(); const s=S();
   if (k.sys) return sysKb();
   if (s.demo.under16kb) return `<div class="kb">${keyRows(k)}</div>`; // under 16: translation silently hidden
   let body;
-  if (k.mode==='preview') body = `<div class="panel"><div class="ter xs">${esc(K('aiNote'))}</div><div class="pcard" id="kbOut">${esc(k.out)}</div><div class="r" style="display:flex;gap:8px">${btn(K('close'),'kbClosePanel',undefined,'sec')}${k.incoming?btn(L('Скопировать','Copiar','Copy'),'kbCopyOut',undefined,'sec'):btn(K('edit'),'kbEdit',undefined,'sec')+btn(K('insert'),'kbInsert',undefined,'pri')}</div></div>`;
-  else if (k.mode==='edit') body = `<div class="panel"><div class="ter xs">${esc(K('hint.h7'))}</div><div class="pcard"><textarea id="kbEditTa" data-input="kbEditInput">${esc(k.out)}</textarea></div><div class="r" style="display:flex;gap:8px">${btn(K('close'),'kbClosePanel',undefined,'sec')}${btn(K('insert'),'kbInsert',undefined,'pri')}</div></div>`;
+  if (k.mode==='preview') body = `<div class="panel"><div class="ter xs">${esc(K('aiNote'))}</div><div class="pcard" id="kbOut">${esc(k.out)}</div><div class="r" style="display:flex;gap:8px">${btn(K('close'),'kbClosePanel',undefined,'sec')}${k.incoming?btn(L('Скопировать','Copiar','Copy'),'kbCopyOut',undefined,'sec'):btn(K('edit'),'kbEdit',undefined,'sec')+btn(K('insert'),'kbInsert',undefined,'pri',k.out&&k.out.trim()?'':'disabled')}</div></div>`;
+  else if (k.mode==='edit') body = `<div class="panel"><div class="ter xs">${esc(K('hint.h7'))}</div><div class="pcard"><textarea id="kbEditTa" data-input="kbEditInput">${esc(k.out)}</textarea></div><div class="r" style="display:flex;gap:8px">${btn(K('close'),'kbClosePanel',undefined,'sec')}${btn(K('insert'),'kbInsert',undefined,'pri',k.out&&k.out.trim()?'':'disabled')}</div></div>`;
   else if (k.mode==='info') body = `<div class="panel"><div class="pcard" style="font-size:14px"><b>${esc(L('Как работает перевод в клавиатуре','Cómo funciona la traducción en el teclado','How Keyboard Translation Works'))}</b><p class="sec">${esc(PP.C(CP.KB['keyboard.privacy']))}</p><p class="sec">${esc(K('hint.h5').replace(/\{[^}]+\}/,(k.layout||'ru').toUpperCase()).replace(/\{[^}]+\}/,(k.target||tgtDefault()).toUpperCase()))}</p><p class="sec">${esc(K('hint.h10'))}</p></div>${btn(K('close'),'kbClosePanel',undefined,'sec')}</div>`;
   else if (k.mode==='how') body = `<div class="panel"><div class="pcard" style="font-size:15px">${esc(K('nofull.panel'))}</div><div class="r" style="display:flex;gap:8px">${btn(K('close'),'kbClosePanel',undefined,'sec')}${btn(K('full.button'),'kbGoSettings',undefined,'pri')}</div></div>`;
   else body = keyRows(k);
@@ -141,8 +141,8 @@ A.kbErrClose = () => { const k=kbs(); k.dismissed = k.err || blocker(); k.err=nu
 A.kbClosePanel = () => { const k=kbs(); k.mode='typing'; k.incoming=false; };
 A.kbEdit = () => { kbs().mode='edit'; };
 A.kbCopyOut = () => { PP.copy(kbs().out); PP.toast(L('Скопировано','Copiado','Copied')); };
-A.kbInsert = () => { const k=kbs(); const ta=document.getElementById('kbEditTa'); if (ta) k.out=ta.value; k.text=k.out; k.mode='typing'; k.sel=false; k.hint=K('hint.h12'); };
-A.kbEditInput = (v) => { kbs().out=v; return false; };
+A.kbInsert = () => { const k=kbs(); const ta=document.getElementById('kbEditTa'); if (ta) k.out=ta.value; if (!k.out || !k.out.trim()) return false; k.text=k.out; k.mode='typing'; k.sel=false; k.hint=K('hint.h12'); };
+A.kbEditInput = (v) => { kbs().out=v; const b=document.querySelector('.kb [data-a=kbInsert]'); if (b) b.disabled=!v.trim(); return false; };
 A.kbTranslate = () => { const k=kbs(); const s=S(), d=s.demo; k.hint=null; k.dismissed=null;
   const useCopied = !k.text.trim() && !!T.kbCopied; const src = useCopied ? T.kbCopied : k.text.trim();
   if (!src){ k.hint=K('hint.h3'); return; }
@@ -154,6 +154,7 @@ A.kbTranslate = () => { const k=kbs(); const s=S(), d=s.demo; k.hint=null; k.dis
   setTimeout(()=>{ k.busy=false; if (d.failNext){ d.failNext=false; k.err='failed'; PP.save(); if (PP.route()==='kb/chat') PP.render(); return; }
     const from = DATA.detect(src); let to = useCopied ? (s.pair.mine==='es'?'ru':s.pair.mine) : (k.target||tgtDefault()); if (to===from) to = from==='ru'?'es':'ru';
     const r = DATA.translate(src, from, to, {style: k.tone==='polite'?'formal':'none', gender: s.gender});
+    if (!r.text || !r.text.trim()){ k.err='failed'; k.mode='typing'; if (PP.route()==='kb/chat') PP.render(); return; } // as in code: no translation → notice .failed, no preview
     k.out=r.text; k.incoming=useCopied; k.mode='preview'; k.hint=K('hint.h6'); if (PP.route()==='kb/chat') PP.render(); }, 700); };
 
 /* space-bar swipe changes language (h4) */
@@ -165,4 +166,6 @@ document.addEventListener('click', e => { if (PP.T.kbSwiped && Date.now()-PP.T.k
 document.addEventListener('keydown', e => { if (PP.route()!=='kb/chat') return; const k=kbs(); if (k.mode!=='typing' || e.target.closest('input,textarea') || e.metaKey || e.ctrlKey || e.altKey) return;
   if (e.key==='Backspace'){ A.kbDel(); } else if (e.key==='Enter'){ A.kbSend(); } else if (e.key.length===1){ k.text+=e.key; k.err=null; toneHint(); } else return;
   e.preventDefault(); PP.save(); PP.render(); });
+/* QA r5: an edited translation that became empty cannot be inserted */
+document.addEventListener('input', e => { if (!e.target || e.target.id!=='kbEditTa') return; const k=kbs(); k.out=e.target.value; const b=document.querySelector('.kb [data-a=kbInsert]'); if (b) b.disabled=!e.target.value.trim(); });
 })();

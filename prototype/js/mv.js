@@ -73,8 +73,11 @@ function record(){
   <div class="foot"><button class="btn bigrec ${on&&!canFinish?'sec':'pri'}" id="mvMain" ${PP.attr('mvMain')}>${on?'':I.mic.replace('<svg','<svg width="22" height="22"')}${esc(label)}</button></div>`;
 }
 A.mvMain = () => { const r=T.mvRec; if (!r || !r.on){ if (S().mic==='unknown'){ A.micAsk('mv'); return; } if (S().mic==='denied'){ T.mvNote=L('Нет доступа к микрофону. Разрешите его в Настройках.','Sin acceso al micrófono. Permítelo en Ajustes.','No microphone access. Allow it in Settings.'); return; } A.mvStart(); return; }
-  if (secs() < MIN){ abortUnfinished(PP.C(['Запись слишком короткая. Запишите образец ещё раз: не меньше 25 секунд (лучше около 30).','La grabación es demasiado corta. Graba la muestra otra vez: al menos 25 segundos (lo ideal, unos 30).','The recording is too short. Record the sample again: at least 25 seconds (about 30 is best).'])+' '+PP.C(['Запись никуда не отправлена.','La grabación no se ha enviado a ningún sitio.','The recording has not been sent anywhere.'])); return false; }
-  finish(); return false; };
+  const at = (r.pressT && Date.now()-r.pressT < 3000) ? r.pressS : secs(); // QA r4: duration = what the timer showed when the button was pressed
+  if (at < MIN){ abortUnfinished(PP.C(['Запись слишком короткая. Запишите образец ещё раз: не меньше 25 секунд (лучше около 30).','La grabación es demasiado corta. Graba la muestra otra vez: al menos 25 segundos (lo ideal, unos 30).','The recording is too short. Record the sample again: at least 25 seconds (about 30 is best).'])+' '+PP.C(['Запись никуда не отправлена.','La grabación no se ha enviado a ningún sitio.','The recording has not been sent anywhere.'])); return false; }
+  finish(at); return false; };
+// freeze the duration at the moment of the press (the click arrives only on release; with demo speed ×8 that adds seconds)
+document.addEventListener('pointerdown', e => { const r=T.mvRec; if (r && r.on && e.target.closest && e.target.closest('#mvMain')){ r.pressS=Math.floor(secs()); r.pressT=Date.now(); } }, true);
 A.mvStart = () => {
   T.mvNote=null; T.mvSample=null; T.mvRec={on:true, acc:0, t0:Date.now(), levels:[], quiet:false};
   startMic();
@@ -115,7 +118,7 @@ function tick(){
   const mb=document.getElementById('mvMain'); if (mb){ const can=s>=MIN; const lab=can?L('Готово','Listo','Done'):L('Прервать','Cancelar','Cancel'); if (mb.textContent!==lab){ mb.textContent=lab; mb.className='btn bigrec '+(can?'pri':'sec'); } }
 }
 function stopRec(){ clearInterval(T.mvIv); const r=T.mvRec; if (r && r.on){ r.acc=secs(); r.on=false; } return stopMic(); }
-function finish(){ const p=stopRec(); const s=Math.min(MAX, T.mvRec.acc);
+function finish(at){ const p=stopRec(); if (typeof at==='number') T.mvRec.acc=Math.min(T.mvRec.acc, at); const s=Math.min(MAX, Math.floor(T.mvRec.acc));
   T.mvSample={seconds:s, blob:null}; if (p) p.then(b=>{ if (T.mvSample) T.mvSample.blob=b; });
   T.mvSendErr=null; PP.go('#/app/myvoice/review'); }
 function abortUnfinished(note){ stopRec(); T.mvRec=null; T.mvSample=null; const s=S(); if (!s.voice.exists){ s.voice.on=false; s.shareMyVoice=false; } T.pendingShareVoice=false; PP.save();

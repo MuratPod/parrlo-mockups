@@ -112,6 +112,9 @@ function visRect(el){ // visible part of el, clipped by scrolling ancestors; fin
   for (let p=el.parentElement; p && p.id!=='device'; p=p.parentElement){ const cs=getComputedStyle(p); if (/(auto|scroll|hidden)/.test(cs.overflowY+cs.overflowX)){ let c=PP.devRect(p); if (sh && sh.contains(p)){ const sr=PP.devRect(sh); const dev=document.getElementById('device'); const dy=(dev.offsetHeight - sh.offsetHeight) - sr.top; c={top:c.top+dy,bottom:c.bottom+dy,left:c.left,right:c.right}; } r={top:Math.max(r.top,c.top),bottom:Math.min(r.bottom,c.bottom),left:Math.max(r.left,c.left),right:Math.min(r.right,c.right)}; if (r.bottom-r.top<1||r.right-r.left<1) return null; } }
   if (getComputedStyle(el).visibility==='hidden') return null;
   return r; }
+/* QA r4: toasts must not cover banners and cards either */
+const CONTENT_BLOCKS = '#scr .hintcard,#scr .banner,#scr .warnbar,#scr .note,#scr .card,#scr .hint,#ov .sheet .note,#ov .sheet .banner';
+PP.blockRects = () => { const out=PP.interactiveRects(); document.querySelectorAll(CONTENT_BLOCKS).forEach(el=>{ if (el.closest('.toast')) return; const r=visRect(el); if (r) out.push(r); }); return out; };
 PP.interactiveRects = () => { const out=[]; document.querySelectorAll(INTERACTIVE).forEach(el=>{ if (el.classList.contains('scrim') || el.closest('.toast')) return; if (el.id==='demoBtn' && document.body.classList.contains('toasting')) return; const r=visRect(el); if (r) out.push(r); }); return out; };
 function layoutOv(){
   const dev=document.getElementById('device'); const H=dev.offsetHeight, W=dev.offsetWidth;
@@ -122,7 +125,7 @@ function layoutOv(){
   const t=document.querySelector('#ov .toast'); document.body.classList.toggle('toasting', false);
   if (!t) return;
   t.classList.remove('sbz'); t.style.top='0px'; t.style.bottom='auto'; t.style.visibility='hidden';
-  const w=t.offsetWidth, h=t.offsetHeight, left=(W-w)/2, right=left+w; const rects=PP.interactiveRects(); const pad=6;
+  const w=t.offsetWidth, h=t.offsetHeight, left=(W-w)/2, right=left+w; const rects=PP.blockRects(); const pad=6;
   const free = (y) => rects.every(r=> r.right<=left-pad || r.left>=right+pad || r.bottom<=y-pad || r.top>=y+h+pad);
   let y=null; for (let yy=54; yy<=H-28-h; yy+=4){ if (free(yy)){ y=yy; break; } }
   if (y===null){ t.classList.add('sbz'); document.body.classList.add('toasting'); t.style.top='4px'; }
@@ -180,17 +183,22 @@ function pressStart(e){
   if (e.button>0) return;
   // a new press always ends the previous one: never ignore a press because of a stale guard
   clearTimeout(longT); if (lp && lp.fired && !lp.released) guardUntil=0;
-  lp={x:e.clientX, y:e.clientY, fired:false, released:false, el:null, key:null, t:e.type};
+  lp={x:e.clientX, y:e.clientY, fired:false, released:false, el:null, key:null, t:e.type, t0:performance.now(), moved:false};
   const el = e.target.closest && e.target.closest('[data-long]'); if(!el) return;
   if (document.querySelector('#ov .menu')) return;
   lp.el=el; lp.key=[el.dataset.long, el.dataset.lv ?? el.dataset.v ?? '', el.tagName];
-  longT=setTimeout(()=>fireLong(el), LP_MS);
+  longT=setTimeout(()=>{ if (lp && lp.el===el && !lp.fired && !lp.moved) fireLong(el); }, LP_MS);
 }
 document.addEventListener('pointerdown', pressStart, true);
 // fallback for input that produces only mouse/touch events
 document.addEventListener('mousedown', e => { if (!lp || lp.t!=='pointerdown' || Math.abs(e.clientX-lp.x)>2 || Math.abs(e.clientY-lp.y)>2) pressStart(e); }, true);
-document.addEventListener('pointermove', e => { if (lp && lp.el && !lp.fired && e.isPrimary!==false && (Math.abs(e.clientX-lp.x)>LP_SLOP || Math.abs(e.clientY-lp.y)>LP_SLOP)) clearTimeout(longT); }, true);
-['pointerup','pointercancel','touchend','touchcancel','mouseup'].forEach(t=>document.addEventListener(t, e=>{ if (t==='pointercancel' && lp && !lp.fired) return; releaseGuard(); }, {capture:true, passive:true}));
+/* QA r4: never depend on the timer alone. After an idle pause Chrome can delay/align timers (throttled or occluded window),
+   so the hold is also measured by elapsed time on every move and on release. */
+const holdDue = () => lp && lp.el && !lp.fired && !lp.moved && performance.now()-lp.t0 >= LP_MS;
+document.addEventListener('pointermove', e => { if (!lp || !lp.el || lp.fired || e.isPrimary===false) return;
+  if (Math.abs(e.clientX-lp.x)>LP_SLOP || Math.abs(e.clientY-lp.y)>LP_SLOP){ lp.moved=true; clearTimeout(longT); return; }
+  if (holdDue()){ clearTimeout(longT); fireLong(lp.el); } }, true);
+['pointerup','pointercancel','touchend','touchcancel','mouseup'].forEach(t=>document.addEventListener(t, e=>{ if (t==='pointercancel' && lp && !lp.fired) return; if (t!=='pointercancel' && t!=='touchcancel' && holdDue()){ clearTimeout(longT); fireLong(lp.el); } releaseGuard(); }, {capture:true, passive:true}));
 document.addEventListener('contextmenu', e => { const el=e.target.closest('[data-long]');
   if (lp && lp.fired && !lp.released){ e.preventDefault(); return; }
   if (el){ e.preventDefault(); clearTimeout(longT); lp={fired:false, key:[el.dataset.long, el.dataset.lv ?? el.dataset.v ?? '', el.tagName]}; fireLong(el); lp.released=true; guardUntil=Date.now()+300; } });

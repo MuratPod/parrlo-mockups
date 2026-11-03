@@ -240,6 +240,10 @@ a.lnk,button.lnk{color:var(--text);text-decoration:underline;text-underline-offs
 .kb .sbtn{height:34px;padding:0 10px;border-radius:17px;background:#2A3038;font-size:14px;font-weight:700;color:var(--text);white-space:nowrap}
 .kb .sbtn.g{color:var(--green)}
 .kb .tr{margin-left:auto;height:38px;padding:0 14px;border-radius:19px;background:var(--green);color:var(--ink);font-weight:800;font-size:15px;white-space:nowrap}
+/* QA r3: the label must never push the keyboard sideways — it shrinks and wraps to two lines instead */
+.kb .strip>*{flex:none}
+.kb .strip>.tr{flex:0 1 auto;min-width:0;max-width:100%;white-space:normal;line-height:1.08;font-size:14px;padding:0 12px;text-align:center;overflow:hidden;overflow-wrap:anywhere}
+#device,#scr,.kb{overflow-x:hidden;overflow-x:clip}
 .kb .tr[disabled]{opacity:.45}
 .kb .rows{display:flex;flex-direction:column;gap:10px;padding:4px 0 6px;height:246px}
 .kb .r{display:flex;gap:5px;justify-content:center}

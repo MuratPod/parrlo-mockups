@@ -12,7 +12,7 @@ R['kb'] = () => { const s=S(); const tokenOk = tokenState()==='ok';
   <div class="center" style="margin:8px 0 14px">${PP.parrot()}<h1 class="t">ParrloKeyboard</h1><p class="sec">${esc(L('Переводит прямо в любом чате: напишите по-русски — вставьте по-испански.','Traduce en cualquier chat: escribe en español e inserta en ruso.','Translates right in any chat: type in your language, insert in theirs.'))}</p></div>
   ${step(1, s.kb.added, L('Добавьте клавиатуру','Añade el teclado','Add the Keyboard'), L('Настройки → Основные → Клавиатура → Клавиатуры → Новая клавиатура → Parrlo','Ajustes > General > Teclado > Teclados > Añadir teclado > Parrlo','Settings > General > Keyboard > Keyboards > Add New Keyboard > Parrlo'), '#/kb/ios/settings')}
   ${step(2, s.kb.added && s.kb.full, L('Разрешите полный доступ','Permite el acceso total','Allow Full Access'), K('nofull.short'), '#/kb/full')}
-  ${step(3, s.kb.added && s.kb.full && tokenOk, K('token.missing'), K('token.missing.detail'), null, 'kbOpenApp')}
+  ${step(3, s.kb.added && s.kb.full && s.kb.linked!==false && tokenOk, K('token.missing'), K('token.missing.detail'), null, 'kbOpenApp')}
   ${step(4, false, L('Попробуйте в чате','Pruébalo en un chat','Try It in a Chat'), L('Нейтральный мессенджер-схема с клавиатурой Parrlo','Mensajería neutra de ejemplo con el teclado Parrlo','A neutral sample messenger with the Parrlo keyboard'), '#/kb/chat')}
   <p class="ter xs mt">${esc(PP.C(CP.KB['keyboard.privacy']))}</p></div>`; };
 A.kbOpenApp = () => { PP.A.openApp(); PP.toast(L('Parrlo открыт — клавиатура подключится к переводу','Parrlo abierto: el teclado se conectará a la traducción','Parrlo opened — the keyboard will connect to translation')); return false; };
@@ -45,10 +45,10 @@ A.kbFullTg = () => { const k=S().kb; if (k.full){ k.full=false; return; }
   PP.sysAlert({title:L('Разрешить полный доступ для клавиатур «Parrlo»?','¿Permitir acceso total a los teclados de «Parrlo»?','Allow Full Access for “Parrlo” Keyboards?'),
     msg:L('Клавиатуры с полным доступом могут передавать всё, что вы когда-либо вводили с их помощью, включая данные кредитных карт и адреса.','Los teclados con acceso total pueden transmitir todo lo que hayas escrito con ellos, incluidos números de tarjetas y direcciones.','Full access allows the developer of this keyboard to transmit anything you type, including previously typed text, credit card numbers and addresses.'),
     buttons:[{t:L('Разрешить','Permitir','Allow'),a:'kbFullYes'},{t:L('Не разрешать','No permitir','Don’t Allow'),a:'noop'}]}); };
-A.kbFullYes = () => { S().kb.full=true; };
+A.kbFullYes = () => { S().kb.full=true; S().kb.linked=false; /* step 3: Parrlo must be opened once after Full Access */ };
 
 /* ---------- state helpers ---------- */
-function tokenState(){ const d=S().demo; if (d.token && d.token!=='auto') return d.token; return S().intro ? 'ok' : 'missing'; }
+function tokenState(){ const s=S(), d=s.demo; if (d.token && d.token!=='auto') return d.token; return s.intro && !(s.kb.full && s.kb.linked===false) ? 'ok' : 'missing'; }
 PP.kbTokenState = tokenState;
 function kbs(){ if (!T.kb) T.kb = {text:'', layout: PP.lang()==='es'?'es':'ru', shift:false, num:false, mode:'typing', target:null, tone:null, out:'', hint:null, err:null, sys:false, sel:false, busy:false, incoming:false}; return T.kb; }
 const tgtDefault = () => { const p=S().pair; return p.theirs==='ru' ? p.mine : p.theirs; };

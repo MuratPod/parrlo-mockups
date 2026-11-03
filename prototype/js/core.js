@@ -155,6 +155,7 @@ function onRoute(){
   const r = PP.route();
   if (cur && cur!==r){ const lv = PP.LEAVE[base(cur)]; if (lv) lv(cur, r); clearRT(); PP.closeOv(); if (UI.toast && Date.now()-(UI.toastAt||0)>400) UI.toast=null; }
   const prev = cur; cur = r;
+  if (/^app\//.test(r) && S().kb.full && S().kb.linked===false && S().intro){ S().kb.linked=true; PP.save(); }
   const en = PP.ENTER[base(r)]; if (en) en(r, prev);
   PP.render();
   const f=document.querySelector('#scr .feed'); if(f) f.scrollTop=f.scrollHeight;
@@ -167,21 +168,32 @@ function findAct(el){ while(el && el!==document.body){ if(el.dataset && (el.data
 /* long-press: fires after 520 ms; the menu stays open after release.
    A guard swallows the click/pointerup that follows the long-press (mouse, touch, iOS pointercancel). */
 let longT=null, lp=null, guardUntil=0;
-const releaseGuard = () => { clearTimeout(longT); if (lp && lp.fired && guardUntil===Infinity) guardUntil = Date.now()+450; };
+const LP_MS=500, LP_SLOP=12;
+const releaseGuard = () => { clearTimeout(longT); if (lp && lp.fired && !lp.released){ lp.released=true; guardUntil = Date.now()+450; } };
 PP.devRect = (el) => { const dev=document.getElementById('device'); const d=dev.getBoundingClientRect(); const sc=d.width/dev.offsetWidth||1; const r=el.getBoundingClientRect(); return {top:(r.top-d.top)/sc, bottom:(r.bottom-d.top)/sc, left:(r.left-d.left)/sc, right:(r.right-d.left)/sc}; };
-function fireLong(el){ lp.fired=true; guardUntil=Infinity; setTimeout(()=>{ if (guardUntil===Infinity) guardUntil=0; }, 8000);
-  UI.nextAnchor = PP.devRect(el); run(el.dataset.long, el.dataset.lv ?? el.dataset.v, el); UI.nextAnchor=null; }
-document.addEventListener('pointerdown', e => {
-  clearTimeout(longT); lp={x:e.clientX, y:e.clientY, fired:false, el:null};
-  if (Date.now() < guardUntil) return;
-  const el = e.target.closest('[data-long]'); if(!el) return;
-  lp.el=el; longT=setTimeout(()=>fireLong(el), 520);
-}, true);
-document.addEventListener('pointermove', e => { if (lp && !lp.fired && (Math.abs(e.clientX-lp.x)>10 || Math.abs(e.clientY-lp.y)>10)) clearTimeout(longT); }, true);
+/* the pressed element may have been re-rendered during the hold (speech end, timers): resolve it again by its data */
+const liveLong = (el) => { if (el && el.isConnected) return el; const k=lp && lp.key; if (!k) return el;
+  return [...document.querySelectorAll('[data-long]')].find(x=>x.dataset.long===k[0] && (x.dataset.lv ?? x.dataset.v ?? '')===k[1] && x.tagName===k[2]) || el; };
+function fireLong(el){ if (!lp) lp={}; lp.fired=true; lp.released=false; guardUntil=Date.now()+8000; el=liveLong(el);
+  UI.nextAnchor = el.isConnected ? PP.devRect(el) : null; run(el.dataset.long, el.dataset.lv ?? el.dataset.v, el); UI.nextAnchor=null; }
+function pressStart(e){
+  if (e.button>0) return;
+  // a new press always ends the previous one: never ignore a press because of a stale guard
+  clearTimeout(longT); if (lp && lp.fired && !lp.released) guardUntil=0;
+  lp={x:e.clientX, y:e.clientY, fired:false, released:false, el:null, key:null, t:e.type};
+  const el = e.target.closest && e.target.closest('[data-long]'); if(!el) return;
+  if (document.querySelector('#ov .menu')) return;
+  lp.el=el; lp.key=[el.dataset.long, el.dataset.lv ?? el.dataset.v ?? '', el.tagName];
+  longT=setTimeout(()=>fireLong(el), LP_MS);
+}
+document.addEventListener('pointerdown', pressStart, true);
+// fallback for input that produces only mouse/touch events
+document.addEventListener('mousedown', e => { if (!lp || lp.t!=='pointerdown' || Math.abs(e.clientX-lp.x)>2 || Math.abs(e.clientY-lp.y)>2) pressStart(e); }, true);
+document.addEventListener('pointermove', e => { if (lp && lp.el && !lp.fired && e.isPrimary!==false && (Math.abs(e.clientX-lp.x)>LP_SLOP || Math.abs(e.clientY-lp.y)>LP_SLOP)) clearTimeout(longT); }, true);
 ['pointerup','pointercancel','touchend','touchcancel','mouseup'].forEach(t=>document.addEventListener(t, e=>{ if (t==='pointercancel' && lp && !lp.fired) return; releaseGuard(); }, {capture:true, passive:true}));
 document.addEventListener('contextmenu', e => { const el=e.target.closest('[data-long]');
-  if (lp && lp.fired){ e.preventDefault(); return; }
-  if (el){ e.preventDefault(); clearTimeout(longT); if (!lp) lp={}; fireLong(el); guardUntil=Date.now()+300; } });
+  if (lp && lp.fired && !lp.released){ e.preventDefault(); return; }
+  if (el){ e.preventDefault(); clearTimeout(longT); lp={fired:false, key:[el.dataset.long, el.dataset.lv ?? el.dataset.v ?? '', el.tagName]}; fireLong(el); lp.released=true; guardUntil=Date.now()+300; } });
 document.addEventListener('click', e => { if (Date.now() < guardUntil){ e.preventDefault(); e.stopImmediatePropagation(); } }, true);
 PP.longGuardActive = () => Date.now() < guardUntil;
 document.addEventListener('click', e => {

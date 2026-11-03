@@ -94,7 +94,7 @@ A.prepDl = () => { T.prep.dl=0; PP.rt(()=>{ if (T.prep.dl<100){ T.prep.dl=Math.m
 A.prepText = () => { S().intro=true; T.conv={started:true,turns:[],text:true}; PP.go('#/app/conv'); return false; };
 
 /* deep-link defaults */
-PP.ensureApp = () => { const s=S(); if (s.age===null) s.age='ok'; if (!s.intro) s.intro=true; if (s.scope===null) s.scope='voiceText'; };
+PP.ensureApp = () => { const s=S(); if (s.age===null) s.age='ok'; if (!s.intro) s.intro=true; if (s.scope===null) s.scope='voiceText'; if (s.kb.full && s.kb.linked===false) s.kb.linked=true; /* Parrlo opened after Full Access → keyboard connected */ };
 const ensureApp = PP.ensureApp;
 
 /* banners */

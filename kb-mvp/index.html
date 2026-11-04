@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Parrlo — клавиатура: макеты (KB-Design-1)</title><meta name="robots" content="noindex,nofollow"><meta name="color-scheme" content="dark"><meta name="theme-color" content="#0E1116">
+<style>
+@font-face{font-family:Inter;src:url(../prototype/fonts/Inter-Variable.woff2) format("woff2");font-weight:100 900}
+:root{--bg:#0E1116;--card:#171C23;--card2:#1F2630;--line:rgba(255,255,255,.12);--tx:#F2F5F7;--sec:#B4BEC8;--g:#2BC48A;--gd:#00A86B;--warn:#F2B35A;--err:#FF8A80}
+*{box-sizing:border-box}html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 Inter,system-ui,-apple-system,sans-serif;padding:max(24px,env(safe-area-inset-top)) 20px 64px}
+main{max-width:1180px;margin:0 auto}h1{font-size:28px;margin:24px 0 4px}h2{font-size:21px;margin:44px 0 6px}p.s{color:var(--sec);margin:0 0 16px;max-width:70ch}
+a{color:var(--g)}.lead a{margin-right:14px}
+.grid{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start}
+figure{margin:0}figcaption{color:var(--sec);font-size:14px;margin:8px 4px 0;max-width:360px}
+.ph{width:360px;background:#121820;border:1px solid var(--line);border-radius:28px;overflow:hidden;display:flex;flex-direction:column}
+.chat{padding:14px;min-height:150px;display:flex;flex-direction:column;gap:8px;font-size:15px}
+.mb{max-width:82%;padding:8px 12px;border-radius:14px;background:var(--card2)}.mb.out{align-self:flex-end;background:#1C3A31}
+.field{margin:0 14px 10px;padding:10px 14px;border-radius:18px;border:1px solid var(--line);background:var(--card);font-size:15px;min-height:44px}
+.field.empty{color:#9AA5B0}
+.kb{background:#1A1F27;padding:8px 6px 10px;border-top:1px solid var(--line)}
+.contacts{display:flex;gap:8px;padding:2px 6px 8px;overflow:hidden}
+.c{min-height:44px;padding:0 16px;border-radius:22px;border:1px solid var(--line);background:var(--card);color:var(--tx);font:600 15px Inter,sans-serif;display:flex;flex-direction:column;justify-content:center;align-items:center;line-height:1.1}
+.c.on{border-color:var(--g);background:rgba(43,196,138,.14)}.c small{font-size:11px;font-weight:500;color:var(--g)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 6px 8px}
+.chip{min-height:44px;padding:0 11px;border-radius:22px;border:1px solid var(--line);background:var(--card);color:var(--tx);font:500 15px Inter,sans-serif;display:inline-flex;align-items:center}
+.chip.on{border-color:var(--g)}.chip.info{border-style:dashed;color:var(--sec)}
+.go{padding:0 6px 8px}.pb{width:100%;min-height:52px;border-radius:26px;border:0;font:700 17px Inter,sans-serif;color:#fff;background:linear-gradient(135deg,var(--gd),var(--g));display:flex;align-items:center;justify-content:center;gap:8px}
+.pb.off{background:var(--card2);color:#8C97A3}
+.dots i{display:inline-block;width:6px;height:6px;border-radius:50%;background:#fff;margin:0 1px;opacity:.5}.dots i:nth-child(2){opacity:.75}.dots i:nth-child(3){opacity:1}
+.keys{display:flex;flex-direction:column;gap:6px;padding:0 4px}.keys div{display:flex;gap:4px;justify-content:center}.keys b{flex:1;height:40px;border-radius:7px;background:#2A313B;font:400 16px Inter,sans-serif;display:flex;align-items:center;justify-content:center}.keys .sp{flex:5}
+.sys{height:36px}
+.bar{display:flex;align-items:center;gap:8px;padding:14px 16px 6px}.bar b{font-size:20px}.back{color:var(--g);font-size:15px}
+.sec{color:var(--sec)}.sm{font-size:14px}.pad{padding:0 16px 16px}
+.row{display:flex;gap:12px;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line);min-height:64px}.row:last-child{border:0}
+.av{width:40px;height:40px;border-radius:50%;background:var(--card2);display:flex;align-items:center;justify-content:center;font-weight:700;flex:none}
+.row span.t{flex:1;min-width:0}.row b{display:block}.grp{background:var(--card);border-radius:16px;margin:8px 16px;border:1px solid var(--line)}
+.gh{font:600 13px Inter,sans-serif;color:var(--sec);margin:16px 16px 6px;text-transform:uppercase;letter-spacing:.04em}
+.in{margin:0 16px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card);min-height:48px}
+.seg{display:flex;margin:0 16px;background:var(--card);border-radius:12px;border:1px solid var(--line);padding:3px}.seg span{flex:1;text-align:center;padding:10px 4px;border-radius:9px;font-size:15px}.seg .on{background:var(--card2);color:var(--g);font-weight:600}
+.hint{margin:8px 16px 0;font-size:13px;line-height:1.45;color:var(--sec)}.cnt{display:flex;justify-content:space-between;margin:6px 16px 0;font-size:13px;color:var(--sec)}
+.btn{margin:16px;min-height:52px;border-radius:26px;background:linear-gradient(135deg,var(--gd),var(--g));color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center}
+.btn.sec2{background:var(--card2);color:var(--tx);margin-top:0}
+.err{margin:10px 14px;padding:12px 14px;border-radius:14px;background:rgba(255,138,128,.1);border:1px solid rgba(255,138,128,.4);font-size:14px;line-height:1.4}.err b{display:block;color:var(--err);margin-bottom:2px}.err.w{background:rgba(242,179,90,.1);border-color:rgba(242,179,90,.4)}.err.w b{color:var(--warn)}
+.err small{display:block;color:var(--sec);margin-top:4px;font-size:12px}
+.tabs{display:flex;gap:8px;margin:0 0 16px;flex-wrap:wrap}.tabs button{min-height:44px;padding:0 18px;border-radius:22px;border:1px solid var(--line);background:var(--card);color:var(--tx);font:600 15px Inter,sans-serif;cursor:pointer}.tabs button[aria-pressed=true]{border-color:var(--g);background:rgba(43,196,138,.14)}
+[data-l]{display:none}[data-l].show{display:block}
+.legal{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;max-width:760px;font-size:14px;color:var(--sec)}
+@media(max-width:420px){.ph{width:100%}}
+</style></head><body><main>
+<h1>Parrlo — клавиатура «контекстный помощник»</h1>
+<p class="s">Статичные макеты KB-Design-1 (волна 2). Только тёмная тема, демо-данные, без сети. Эталон: прототип <code>#/kb2</code> и брендбук v2.3. Существующие экраны не изменены.</p>
+<p class="lead"><a href="#kbd">Клавиатура</a><a href="#app">Папки и карточка</a><a href="#note">Заметка</a><a href="#errs">Ошибки клавиатуры</a><a href="#imp">Импорт</a></p>
+
+<h2 id="kbd">1. Клавиатура</h2>
+<p class="s">Ряд контактов с меткой «угадано», кнопка «Parrlo ✨» / «Пишу…», чипы Короче / Мягче / Ещё вариант / Отменить, «Учтён ответ …» / «Не учитывать». Кнопки отправки в клавиатуре нет: отправка — штатной кнопкой мессенджера.</p>
+<div class="grid" id="kbstates"></div>
+
+<h2 id="app">2. Приложение: папки контактов и карточка</h2>
+<div class="grid">
+<figure><div class="ph" id="folders"><div class="bar"><span class="back">‹ Клавиатура</span></div><div class="pad" style="padding-bottom:0"><b style="font-size:24px">Папки контактов</b><p class="sec sm" style="margin:6px 0 0">Для каждого собеседника — своя папка: роль, обращение и тон.</p></div>
+<div class="grp"><div class="row"><span class="av">Л</span><span class="t"><b>Луис · директор</b><span class="sec sm">на ты · деловой</span></span><span class="sec">›</span></div><div class="row"><span class="av">А</span><span class="t"><b>Ана · коллега</b><span class="sec sm">на ты · дружеский</span></span><span class="sec">›</span></div><div class="row"><span class="av">М</span><span class="t"><b>Мама · семья</b><span class="sec sm">на ты · тёплый</span></span><span class="sec">›</span></div></div>
+<div class="btn">Добавить контакт</div></div><figcaption>Список папок. Роль, «ты / вы» и тон задаются вручную или из импорта.</figcaption></figure>
+<figure><div class="ph" id="card"><div class="bar"><span class="back">‹ Папки</span></div><div class="pad" style="padding-bottom:0"><b style="font-size:24px">Луис</b></div>
+<div class="gh">Роль</div><div class="in">директор</div>
+<div class="gh">Обращение</div><div class="seg"><span class="on">ты</span><span>вы</span></div>
+<div class="gh">Тон</div><div class="seg"><span class="on">деловой</span><span>дружеский</span><span>тёплый</span></div>
+<div class="gh">Заметка для Parrlo</div><div class="in">официально, без шуток</div>
+<p class="hint">Напишите, как должно звучать ваше сообщение (например, «официально, без шуток»). Не пишите мнений о человеке и сведений о здоровье, интимной жизни, вере или политике. Если включена отправка, заметка уходит на наш сервер и ИИ-сервису вместе с вашим текстом.</p>
+<div class="cnt"><span>Не больше 140 символов</span><span>22 / 140</span></div><div class="btn">Сохранить</div></div><figcaption>Карточка: роль, ты/вы, тон, «Заметка для Parrlo» с подсказкой и лимитом. Пол собеседника показывается только для ru/es, где нужно согласование.</figcaption></figure>
+</div>
+
+<h2 id="note">3. Заметка: подсказка и лимит (RU / ES)</h2>
+<div class="tabs" data-for="note"><button aria-pressed="true" data-k="ru">RU</button><button aria-pressed="false" data-k="es">ES</button></div>
+<div class="grid"><div class="ph" id="notes"><div class="gh">Заметка для Parrlo</div></div></div>
+
+<h2 id="errs">4. Тексты ошибок клавиатуры</h2>
+<p class="s">Во всех случаях текст пользователя остаётся в поле — ничего не стирается. Тексты ошибок не содержат ни текста, ни переписки пользователя. Выберите язык.</p>
+<div class="tabs" data-for="errs"><button aria-pressed="true" data-k="ru">RU</button><button aria-pressed="false" data-k="es">ES</button><button aria-pressed="false" data-k="en">EN</button></div>
+<div class="grid" id="errgrid"></div>
+
+<h2 id="imp">5. Импорт переписки: нейтральное описание</h2>
+<p class="s">Функция называется «Экспорт чата»: без логотипа и названия мессенджера в названии функции и иконке (иконка — нейтральный файл/архив). Обходов защищённых чатов (скриншоты, распознавание текста, массовое копирование) не предлагаем.</p>
+<div class="grid">
+<figure><div class="ph"><div class="bar"><span class="back">‹ Назад</span></div><div class="pad"><b style="font-size:24px">Экспорт чата</b><p class="sec sm">Откройте нужный чат в мессенджере, выберите «Экспорт чата» → «Без медиа» → Parrlo. Нужен только текст.</p><p class="sec sm">Реплики без имён, телефонов и дат — это псевдонимизация: они остаются персональными данными. Переписка хранится в папке контакта на телефоне.</p></div><div class="btn">Выбрать файл экспорта</div></div><figcaption>Шаг импорта, нейтральный текст.</figcaption></figure>
+<div><div class="tabs" data-for="imperr"><button aria-pressed="true" data-k="ru">RU</button><button aria-pressed="false" data-k="es">ES</button><button aria-pressed="false" data-k="en">EN</button></div><div class="grid" id="imperrgrid"></div>
+<div class="legal" style="margin-top:16px"><b>Оговорка.</b> Заключение RG §2.5 (ошибки импорта) недоступно этой задаче; ниже — рабочие формулировки по смыслу. Менеджер сверяет с §2.5 перед передачей разработчику.</div></div>
+</div>
+</main>
+<script>
+const KB=[
+ ['Пусто · «угадано»','luis',1,'',0,'Сообщение',1],
+ ['Продиктовано, кнопка активна','luis',1,'э-э скажи ему что по поставке я узнал они переносят на четверг и надо решить про скидку',0,'',0],
+ ['«Пишу…»','luis',1,'э-э скажи ему что по поставке я узнал они переносят на четверг',1,'',0],
+ ['Готово: чипы вариантов','luis',1,'Луис, по поставке: поставщик переносит на четверг. По скидке предлагаю остановиться на 10%. Согласен?',2,'',0],
+ ['«Учтён ответ Луиса» / «Не учитывать»','luis',1,'',3,'Сообщение',1],
+ ['Готово с учтённым ответом','luis',1,'Луис, 7% подходит. По оплате прошу 14 дней вместо 30. Договорились?',4,'',0]];
+const names=['Луис','Ана','Мама'];
+function kb(c,guess,text,mode,ph){
+ const row=names.map((n,i)=>`<span class="c ${i==0?'on':''}">${n}${i==0&&guess?'<small>угадано</small>':''}</span>`).join('');
+ let chips='';
+ if(mode==3)chips=`<span class="chip info">Учтён ответ Луиса</span><span class="chip">Не учитывать</span>`;
+ if(mode==2)chips=`<span class="chip on">Короче</span><span class="chip">Мягче</span><span class="chip">Ещё вариант</span><span class="chip">Отменить</span>`;
+ if(mode==4)chips=`<span class="chip info">Учтён ответ Луиса</span><span class="chip">Короче</span><span class="chip">Мягче</span><span class="chip">Ещё вариант</span><span class="chip">Отменить</span>`;
+ const btn=mode==1?`<div class="pb off"><span class="dots"><i></i><i></i><i></i></span> Пишу…</div>`:`<div class="pb ${text&&mode==0?'':(mode==0?'off':'off')}" ${text&&mode==0?'':''}>Parrlo ✨</div>`;
+ const act=(mode==0&&text)?btn.replace('pb off','pb'):btn;
+ const f=text?text:`<span class="empty">${ph}</span>`;
+ return `<div class="ph"><div class="chat"><div class="mb">Привет! Что с поставкой? И по скидке надо решить до пятницы.</div></div><div class="field ${text?'':'empty'}">${f}</div>
+ <div class="kb"><div class="contacts">${row}</div>${chips?`<div class="chips">${chips}</div>`:''}<div class="go">${act}</div>
+ <div class="keys"><div>${[...'йцукенгшщзх'].map(k=>`<b>${k}</b>`).join('')}</div><div>${[...'фывапролджэ'].map(k=>`<b>${k}</b>`).join('')}</div><div>${[...'ячсмитьбю'].map(k=>`<b>${k}</b>`).join('')}<b>⌫</b></div><div><b class="sp">пробел</b></div></div><div class="sys"></div></div></div>`}
+document.getElementById('kbstates').innerHTML=KB.map(s=>`<figure>${kb(s[1],s[2],s[3],s[4],s[5])}<figcaption>${s[0]}</figcaption></figure>`).join('');
+const NOTE={ru:{h:'Заметка для Parrlo',v:'официально, без шуток',t:'Напишите, как должно звучать ваше сообщение (например, «официально, без шуток»). Не пишите мнений о человеке и сведений о здоровье, интимной жизни, вере или политике. Если включена отправка, заметка уходит на наш сервер и ИИ-сервису вместе с вашим текстом.',l:'Не больше 140 символов'},
+ es:{h:'Nota para Parrlo',v:'formal, sin bromas',t:'Escribe cómo quieres que suene tu mensaje (por ejemplo, «formal, sin bromas»). No escribas opiniones sobre la persona ni datos sobre salud, vida íntima, religión o política. Si el envío está activado, la nota se envía a nuestro servidor y al servicio de IA junto con tu texto.',l:'Máximo 140 caracteres'}};
+function note(k){const n=NOTE[k];document.getElementById('notes').innerHTML=`<div class="gh">${n.h}</div><div class="in">${n.v}</div><p class="hint">${n.t}</p><div class="cnt"><span>${n.l}</span><span>${n.v.length} / 140</span></div><div style="height:16px"></div>`}
+note('ru');
+const E={
+ru:[['w','Нет сети','Нет подключения к интернету. Проверьте сеть и нажмите «Parrlo ✨» ещё раз. Ваш текст сохранён.'],
+ ['e','Нет доступа','Не удалось подтвердить доступ. Откройте приложение Parrlo и войдите снова. Ваш текст сохранён.'],
+ ['w','Лимит на сегодня','Дневной лимит исчерпан. Он обновится завтра. Ваш текст сохранён.'],
+ ['w','Сервис занят','Сервис временно недоступен. Попробуйте через минуту. Ваш текст сохранён.'],
+ ['w','Бюджет исчерпан','Лимит запросов на этот месяц исчерпан. Ваш текст сохранён — отправьте его как есть.'],
+ ['w','Пустой ответ','Не получилось подготовить текст. Попробуйте ещё раз. Ваш текст сохранён.']],
+es:[['w','Sin conexión','No hay conexión a internet. Revisa la red y pulsa «Parrlo ✨» de nuevo. Tu texto se ha conservado.'],
+ ['e','Sin acceso','No se ha podido confirmar el acceso. Abre la app Parrlo e inicia sesión de nuevo. Tu texto se ha conservado.'],
+ ['w','Límite de hoy','Has alcanzado el límite diario. Se renueva mañana. Tu texto se ha conservado.'],
+ ['w','Servicio ocupado','El servicio no está disponible por ahora. Inténtalo en un minuto. Tu texto se ha conservado.'],
+ ['w','Presupuesto agotado','Se ha agotado el límite de solicitudes de este mes. Tu texto se ha conservado: envíalo tal cual.'],
+ ['w','Respuesta vacía','No se ha podido preparar el texto. Inténtalo de nuevo. Tu texto se ha conservado.']],
+en:[['w','No connection','You’re offline. Check your connection and tap “Parrlo ✨” again. Your text is kept.'],
+ ['e','No access','We couldn’t confirm your access. Open the Parrlo app and sign in again. Your text is kept.'],
+ ['w','Daily limit','You’ve reached today’s limit. It resets tomorrow. Your text is kept.'],
+ ['w','Service busy','The service is temporarily unavailable. Try again in a minute. Your text is kept.'],
+ ['w','Budget used up','This month’s request limit is used up. Your text is kept — send it as is.'],
+ ['w','Empty reply','We couldn’t prepare the text. Try again. Your text is kept.']]};
+const CODES=['сеть','401 / 403','429','503','бюджет','пустой ответ'];
+const IMP={ru:[['e','Файл не подходит','Это не файл экспорта чата. Выберите архив или текстовый файл, полученный через «Экспорт чата».'],['e','Файл слишком большой','Файл слишком большой. Повторите экспорт «Без медиа».'],['w','Чат пуст','В файле нет сообщений, которые можно использовать.'],['e','Не удалось прочитать','Не удалось прочитать файл. Повторите экспорт и попробуйте снова.']],
+es:[['e','Archivo no válido','Este no es un archivo de exportación de chat. Elige el archivo obtenido con «Exportar chat».'],['e','Archivo demasiado grande','El archivo es demasiado grande. Repite la exportación «Sin archivos adjuntos».'],['w','Chat vacío','El archivo no contiene mensajes utilizables.'],['e','No se pudo leer','No se pudo leer el archivo. Repite la exportación e inténtalo de nuevo.']],
+en:[['e','Unsupported file','This isn’t a chat export file. Choose the archive or text file you got from “Export chat”.'],['e','File too large','The file is too large. Export again “Without media”.'],['w','Empty chat','The file has no usable messages.'],['e','Couldn’t read it','We couldn’t read the file. Export again and retry.']]};
+function box(l,kind,title,txt,code){return `<figure><div class="ph"><div class="chat" style="min-height:60px"><div class="mb">Привет! Что с поставкой?</div></div><div class="field">Текст пользователя остаётся здесь</div><div class="err ${kind}"><b>${title}</b>${txt}${code?`<small>Код: ${code}</small>`:''}</div></div></figure>`}
+function errs(k){document.getElementById('errgrid').innerHTML=E[k].map((e,i)=>box(k,e[0],e[1],e[2],CODES[i])).join('')}
+function imps(k){document.getElementById('imperrgrid').innerHTML=IMP[k].map(e=>box(k,e[0],e[1],e[2])).join('')}
+errs('ru');imps('ru');
+document.querySelectorAll('.tabs').forEach(t=>t.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;t.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));const f=t.dataset.for,k=b.dataset.k;if(f=='note')note(k);if(f=='errs')errs(k);if(f=='imperr')imps(k)}));
+</script></body></html>

@@ -44,6 +44,7 @@ R['kb2'] = () => { const s=st();
   <div class="center" style="margin:6px 0 10px">${PP.parrot()}<h1 class="t">Контекстный помощник</h1>
   <p class="sec">Не переводчик, а помощник прямо в клавиатуре: надиктуйте как получится — Parrlo перепишет аккуратно, в тоне конкретного собеседника и с учётом вашей переписки.</p></div>
   <div class="k2tag">Концепт · демо-данные · сеть не используется</div>
+  <button class="step" data-go="#/kb2/agent" id="k2-step-agent"><span class="n">✨</span><span style="flex:1"><b>Помощник в клавиатуре · новое</b><br><span class="sec sm">Кнопка Parrlo → мини-диалог: письмо Луису или план для себя. В чат — только по «Вставить»</span></span>${I.chev}</button>
   <button class="step ${s.imported?'done':''}" data-go="#/kb2/wa/luis" id="k2-step-setup"><span class="n">${s.imported?I.check:'1'}</span><span style="flex:1"><b>Подключить переписку (один раз)</b><br><span class="sec sm">Мессенджер → чат → «Экспорт чата» → «Без медиа» → Parrlo</span></span>${I.chev}</button>
   <button class="step" data-go="#/kb2/chat" id="k2-step-daily"><span class="n">2</span><span style="flex:1"><b>Каждый день: чат с Луисом</b><br><span class="sec sm">Диктовка → «Parrlo ✨» → готовый текст, короче / мягче / ещё вариант</span></span>${I.chev}</button>
   <button class="step" data-go="#/kb2/app/contacts" id="k2-step-folders"><span class="n">3</span><span style="flex:1"><b>Папки контактов</b><br><span class="sec sm">Луис, Ана, Мама — роль, «ты / вы», тон, заметка</span></span>${I.chev}</button>

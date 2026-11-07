@@ -337,3 +337,89 @@ body.toasting #demoBtn,body.toasting #clk{visibility:hidden}
 .k2pick{width:100%}
 .k2voice .vw{display:flex;align-items:center;gap:2px}
 .k2voice .vw i{width:2px;background:#9AA4B2;border-radius:1px}
+
+/* ===== kb2 · «Помощник в клавиатуре» (#/kb2/agent) — mini-dialog inside the keyboard area, dark only ===== */
+.k2a .mh{padding:6px 12px}
+.k2a-fsw{height:30px;padding:0 10px;border-radius:15px;background:#262C34;color:#9AA4B2;font-weight:700;flex:none}
+.k2a-demo{flex:none;padding:3px 12px;background:#1C2026;color:#BFF2DC;font-size:11px;font-weight:700;text-align:center;border-bottom:1px solid var(--line)}
+.k2a .ml{min-height:60px;padding:8px 12px}
+.k2a .inp{padding:6px 10px}
+.k2a .field{position:relative;min-height:36px;padding:14px 14px 6px}
+.k2a-flab{position:absolute;left:14px;top:2px;font-size:9px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#6F7A88}
+.k2a .field.k2a-dim{opacity:.6}
+.k2a-notepg{background:#1C2026;border-radius:14px;padding:12px}
+.k2a-notepg p{margin:4px 0 0}
+.k2a-kb{padding:2px 3px 16px}
+.k2a-kb .rows{gap:7px;padding:5px 0 2px}
+.k2a-kb .k{height:39px}
+.k2a-kb.p .rows{gap:5px}
+.k2a-kb.p .k{height:34px;font-size:17px}
+.k2a-kb .k.k2a-back{flex:2.6;background:#24423A;color:#BFF2DC;font-weight:800;font-size:12.5px;line-height:1.05;padding:0 4px}
+.k2a-tool{display:flex;align-items:center;gap:10px;padding:5px 6px 2px}
+.k2a-key{flex:none;height:38px;padding:0 16px;border-radius:19px;background:#24423A;color:#BFF2DC;font-weight:900;font-family:Nunito,Inter,sans-serif;font-size:16px;box-shadow:inset 0 0 0 1.5px #2BC48A}
+.k2a-ts{flex:1;min-width:0;color:#9AA4B2;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.k2a-ts .ok,.k2a-note.ok{color:#2BC48A}
+.k2a-ts svg,.k2a-note svg{width:13px;height:13px;vertical-align:-2px}
+.k2a-panel{display:flex;flex-direction:column;gap:5px;padding:4px 6px 0}
+.k2a-bar{display:flex;align-items:center;gap:6px}
+.k2a-pill{flex:1;min-width:0;height:26px;border-radius:13px;background:#2BC48A;color:#0E1116;font-weight:900;font-size:13px;display:flex;align-items:center;justify-content:center}
+.k2a-next{flex:none;font-size:11px;font-weight:700;color:#F5B94A;padding:0 4px}
+.k2a-feed{height:146px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;padding:6px;border-radius:14px;background:#0E1116;box-shadow:inset 0 0 0 1px #24423A}
+.k2a-feed>*{flex:none}
+.k2a-me{align-self:flex-end;max-width:85%;background:#24423A;color:#E8ECF1;border-radius:12px 12px 4px 12px;padding:6px 10px;font-size:13.5px;line-height:1.3}
+.k2a-bot{align-self:flex-start;max-width:92%;background:#1C2026;color:#E8ECF1;border-radius:12px 12px 12px 4px;padding:6px 10px;font-size:13.5px;line-height:1.3}
+.k2a-bot.err{box-shadow:inset 0 0 0 1px #F5B94A;color:#F5D79A}
+.k2a-bot.stale{color:#9AA4B2;font-style:italic;background:transparent;box-shadow:inset 0 0 0 1px #2A3038}
+.k2a-bot.wait{color:#9AA4B2;display:flex;align-items:center;gap:8px}
+.k2a-hc{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.k2a-res{align-self:stretch;text-align:left;display:flex;flex-direction:column;gap:3px;background:#1C2026;border-radius:12px;padding:8px 10px;box-shadow:inset 0 0 0 1px #2A3038;color:var(--text)}
+.k2a-res.on{box-shadow:inset 0 0 0 2px #2BC48A;background:#16261F}
+.k2a-rl{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:800;color:#9AA4B2;text-transform:uppercase;letter-spacing:.03em}
+.k2a-radio{width:12px;height:12px;border-radius:6px;box-shadow:inset 0 0 0 1.5px #6F7A88;flex:none}
+.k2a-res.on .k2a-radio{box-shadow:inset 0 0 0 3.5px #2BC48A}
+.k2a-rt{font-size:14.5px;line-height:1.3}
+.k2a-rs{font-size:11px;color:#6F7A88}
+.k2a-res.on .k2a-rs{color:#2BC48A;font-weight:700}
+.k2a-plan{align-self:stretch;background:#1C2026;border-radius:12px;padding:8px 10px;font-size:13.5px;line-height:1.3}
+.k2a-plan .k2a-for{display:block;font-size:11px;color:#2BC48A;font-weight:700}
+.k2a-plan ol{margin:4px 0;padding-left:18px}
+.k2a-plan li{margin:2px 0}
+.k2a-plan p{margin:2px 0 0;color:#9AA4B2}
+.k2a-note{font-size:12px;color:#F5D79A;padding:0 4px;line-height:1.25}
+.k2a-actw{display:flex;gap:6px;align-items:center}
+.k2a-actw .more{flex:none;padding:0 10px}
+.k2a-acts{flex:1;min-width:0;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;align-items:center}
+.k2a-acts::-webkit-scrollbar{display:none}
+.k2a-pri{flex:none;height:34px;padding:0 16px;border-radius:17px;background:#2BC48A;color:#0E1116;font-weight:900;font-size:14px;white-space:nowrap}
+.k2a-pri:disabled{background:#2A3038;color:#6F7A88}
+.k2a-acts .k2chip{height:32px}
+.k2a-acts .k2chip.more{background:#1E232A;color:#9AA4B2}
+.k2a-ed{display:flex;align-items:center;gap:6px}
+.k2a-draft{flex:1;min-width:0;min-height:34px;max-height:52px;overflow-y:auto;border-radius:12px;background:#1C2026;box-shadow:inset 0 0 0 1.5px #2BC48A;padding:7px 10px;font-size:14px;line-height:1.3;word-break:break-word;white-space:pre-wrap}
+.k2a-draft .ph{color:#6F7A88}
+.k2a-draft .cur,.k2a .field .cur{display:inline-block;width:2px;height:16px;background:#2BC48A;vertical-align:-3px;animation:bl 1s infinite}
+.k2a .field .cur{background:#5AA9FF}
+.k2a-ask{flex:none;height:34px;padding:0 12px;border-radius:17px;background:#2A3038;color:#6F7A88;font-weight:800;font-size:14px}
+.k2a-ask.lit{background:#BFF2DC;color:#0E1116}
+.k2a-sys{display:flex;align-items:center;gap:8px;padding:2px 8px 0}
+.k2a-globe{width:30px;height:30px;display:flex;align-items:center;justify-content:center;color:#6F7A88}
+.k2a-globe svg{width:20px;height:20px}
+.k2aopts{display:flex;flex-wrap:wrap;gap:6px}
+.k2aopts .o{padding:8px 12px;border-radius:12px;background:var(--surface3);font-size:14px;font-weight:600;color:var(--text)}
+.k2aopts .o.on{background:#2BC48A;color:#0E1116}
+/* short phones (e.g. 375×667): compact mini-dialog so the chat above stays visible */
+@media (max-height:760px){
+  body.mobile .k2a .mh{padding:3px 12px}
+  body.mobile .k2a .inp{padding:4px 10px}
+  body.mobile .k2a-feed{height:clamp(64px,calc(100dvh - 560px),146px)}
+  body.mobile .k2a-kb{padding-bottom:6px}
+  body.mobile .k2a-kb .k{height:34px}
+  body.mobile .k2a-kb.p .rows{gap:4px;padding-top:3px}
+  body.mobile .k2a-kb.p .k{height:30px;font-size:16px}
+  body.mobile .k2a-panel{gap:4px}
+  body.mobile .k2a-pill{height:22px;font-size:12px}
+  body.mobile .k2a-pri,body.mobile .k2a-acts .k2chip,body.mobile .k2a-actw .more,body.mobile .k2a-ask{height:30px}
+  body.mobile .k2a-draft{min-height:30px;padding:5px 10px}
+  body.mobile .k2a-sys{display:none}
+}
+@media (max-height:600px){ body.mobile .k2a .ml{min-height:40px} }

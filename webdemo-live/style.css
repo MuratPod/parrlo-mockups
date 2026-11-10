@@ -2,7 +2,7 @@
 @font-face{font-family:"Nunito";font-weight:200 1000;font-display:swap;src:url(fonts/Nunito-Variable.woff2) format("woff2")}
 @font-face{font-family:"Inter";font-weight:100 900;font-display:swap;src:url(fonts/Inter-Variable.woff2) format("woff2")}
 
-/* Токены Parrlo v2.3 (dark): MuratPod/parrlo-mockups brandbook/assets/tokens/tokens.json. Границы вместо теней; единственное свечение — мятное у кнопки собеседника (вариант 5). Белый текст — только на #00875C (4,55:1). */
+/* Токены Parrlo v2.3 (dark): ParrloHQ/parrlo-mockups brandbook/assets/tokens/tokens.json. Границы вместо теней; единственное свечение — мятное у кнопки собеседника (вариант 5). Белый текст — только на #00875C (4,55:1). */
 :root{
   --fs-48:48px;--fs-32:32px;--fs-24:24px;--fs-20:20px;--fs-16:16px;--fs-14:14px;--fs-12:12px;
   --pl-bg:#12161C;--pl-surface:#1C2026;--pl-surfaceHigh:#242B34;--pl-text:#E8ECF1;--pl-textMuted:#9AA4B2;--pl-border:#2F3742;

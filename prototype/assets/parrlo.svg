@@ -1,5 +1,5 @@
 <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" width="240" height="240" role="img" aria-label="Parrlo">
-<!-- Парло, вариант A «Мягкий объём 2.5D», анфас, поза «покой». Статический кадр из MuratPod/parrlo-chat-mockups/alive-parrlo-front (front-svg.js, rigSVG + Reduce Motion pose). Ничего не перерисовано. -->
+<!-- Парло, вариант A «Мягкий объём 2.5D», анфас, поза «покой». Статический кадр из ParrloHQ/parrlo-chat-mockups/alive-parrlo-front (front-svg.js, rigSVG + Reduce Motion pose). Ничего не перерисовано. -->
   <defs>
     <clipPath id="pa-disc"><circle cx="120" cy="120" r="120"></circle></clipPath>
     <clipPath id="pa-pc"><circle r="11.5"></circle></clipPath>

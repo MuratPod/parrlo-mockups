@@ -14,4 +14,4 @@
 - `?s=app` — экран приложения
 - `?s=morph&t=0.6` — морфинг-анимация, `t` — прогресс (например 0.3, 0.6, 1.0, 1.3)
 
-Страница: https://muratpod.github.io/parrlo-mockups/webdemo-mock/
+Страница: https://parrlohq.github.io/parrlo-mockups/webdemo-mock/

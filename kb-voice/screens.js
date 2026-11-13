@@ -226,9 +226,9 @@ add({id:'H-G0', g:'ios-g', os:'ios', t:'Вход из 🔊', cap:'Клавиат
   r:(c,x)=>host(c,x,{title:c.gTitle,close:c.cancel,body:`<h1 class="h1">${c.gTitle}</h1><div class="card"><span class="lab">${c.gFrom}</span><span class="val">${c.lit.text}</span></div><p class="p">${c.gFromSub}</p>`,foot:btn(c.gNext)})});
 add({id:'H-G0b', g:'ios-g', os:'ios', t:'Вход из 🔊: поле пустое', cap:'Предлагаем надиктовать — дальше обычная диктовка (H-D2), результат сразу идёт в H-G1.',
   r:(c,x)=>host(c,x,{title:c.gTitle,close:c.cancel,center:true,body:`<span class="recbtn" style="background:var(--sf);color:var(--pri);box-shadow:none">${I.voice}</span><h2 class="h2">${c.gEmptyT}</h2><p class="p">${c.gEmptyB}</p>`,foot:btn(c.gDictate,'',I.mic)})});
-add({id:'H-G1', g:'ios-g', os:'ios', t:'Текст для озвучки', cap:'Выбор: мой литературный текст или перевод; текст редактируется. Голос — «Мужской / Женский», стандартный, без клона. Лимит 500 символов.',
+add({id:'H-G1', g:'ios-g', os:'ios', t:'Текст для озвучки', cap:'Выбор: мой литературный текст или перевод; текст редактируется. Голос — «Мужской / Женский», стандартный, без клона. Лимит 600 символов на запрос.',
   r:(c,x)=>host(c,x,{title:c.gTitle,close:c.cancel,body:`<span class="small b6">${c.gWhich}</span><div class="seg"><span>${c.gMine}</span><span class="on">${c.gTr}</span></div>
-    <div class="card"><span class="lab"><span>${c.gTr}</span><span style="text-transform:none;letter-spacing:0;font-weight:500">${c.lit.tr.length} / 500</span></span><span class="val edit">${c.lit.tr}<span class="caret"></span></span></div><span class="small">${c.gEditHint}</span>
+    <div class="card"><span class="lab"><span>${c.gTr}</span><span style="text-transform:none;letter-spacing:0;font-weight:500">${c.lit.tr.length} / 600</span></span><span class="val edit">${c.lit.tr}<span class="caret"></span></span></div><span class="small">${c.gEditHint}</span>
     <span class="small b6">${c.gVoice}</span><div class="seg"><span class="on">${c.female}</span><span>${c.male}</span></div><span class="small">${c.gVoiceNote}</span>`,foot:btn(c.gSpeak,'',I.voice)})});
 add({id:'H-G2', g:'ios-g', os:'ios', t:'Готовим голосовое', cap:'Один этап, без процентов. Анимация: попугай + волна.', anim:true,
   r:(c,x)=>host(c,x,{title:c.gTitle,center:true,body:`${MASCOT('speak',x.theme)}<h2 class="h2">${c.gPrep}</h2><div class="wave small" style="max-width:180px">${waveBars(16,2)}</div><span class="small">${c.gPrepSub}</span>`,foot:btn(c.cancel,'ghost')})});
@@ -241,8 +241,8 @@ add({id:'H-G4', g:'ios-g', os:'ios', t:'«Поделиться»', cap:'Сист
       <div class="apps"><div class="on"><i></i>${c.chat}</div><div><i></i>Mail</div><div><i></i>…</div><div><i></i>…</div></div><div class="acts"><div>${c.gShareSheet}</div><div>…</div></div></div>`})});
 add({id:'H-G4b', g:'ios-g', os:'ios', t:'Вернитесь в чат', cap:'После успешного «Поделиться». Подсветка «◀ <чат>»; в клавиатуре — K-V5.',
   r:(c,x)=>host(c,x,{title:c.gTitle,close:c.done,hl:true,center:true,body:`<span class="recbtn">${I.check}</span><h2 class="h2">${c.gShareT}</h2><p class="p">${fmt(c.gShareB,{chat:c.chat})}</p>`,foot:''})});
-add({id:'H-G5a', g:'ios-g', os:'ios', t:'Текст слишком длинный', cap:'Счётчик красный, кнопка неактивна. Порог 500 — уточнит parrlo-back.',
-  r:(c,x)=>host(c,x,{title:c.gTitle,close:c.cancel,body:`${msg('err',I.alert,c.gLongT,fmt(c.gLongB,{max:500,n:640}))}<div class="card"><span class="lab"><span>${c.gMine}</span><span style="color:var(--err);text-transform:none;letter-spacing:0">640 / 500</span></span><span class="val">${c.sumLong}</span></div>`,
+add({id:'H-G5a', g:'ios-g', os:'ios', t:'Текст слишком длинный', cap:'Счётчик красный, кнопка неактивна. Порог 600 символов на запрос (parrlo-back, 13.11).',
+  r:(c,x)=>host(c,x,{title:c.gTitle,close:c.cancel,body:`${msg('err',I.alert,c.gLongT,fmt(c.gLongB,{max:600,n:720}))}<div class="card"><span class="lab"><span>${c.gMine}</span><span style="color:var(--err);text-transform:none;letter-spacing:0">720 / 600</span></span><span class="val">${c.sumLong}</span></div>`,
     foot:`<span class="btn" style="background:var(--dis);color:var(--distx)">${c.gSpeak}</span>`})});
 add({id:'H-G5b', g:'ios-g', os:'ios', t:'Ошибка: нет сети', cap:'Текст сохранён, повтор.',
   r:(c,x)=>host(c,x,{title:c.gTitle,close:c.cancel,center:true,body:`<span class="recbtn" style="background:var(--warnbg);color:var(--warn);box-shadow:none">${I.wifiOff}</span><h2 class="h2">${c.eNetT}</h2><p class="p">${c.gNetB}</p>`,foot:btn(c.retry)})});

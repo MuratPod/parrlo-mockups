@@ -307,3 +307,4 @@ table.tx td.k{font:600 12px ui-monospace,Menlo,monospace;color:var(--p-sec);whit
 .body>*{flex-shrink:0}
 .keys .k.f{white-space:nowrap}
 .ph.and .keys .k.f{font-size:13px}
+.ph.dark .kb .ib.act svg{color:var(--onpri)}

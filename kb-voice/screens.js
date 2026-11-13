@@ -212,6 +212,7 @@ const errScreen = (id, t, cap, kind, ic, T, B, foot) => add({id, g:'ios-d', os:'
 errScreen('H-D7a','Ошибка: нет сети','Запись лежит на устройстве до повтора или отмены.','warn',I.wifiOff,c=>c.eNetT,c=>c.eNetB,c=>`${btn(c.retry)}${btn(c.again,'ghost')}`);
 errScreen('H-D7b','Ошибка: лимит 429','Время сброса из заголовка Retry-After / поля reset_at, в местном времени.','warn',I.clock,c=>c.e429T,(c,x)=>fmt(c.e429B,{time:'18:40',left:LEFT[x.lang]}),c=>`${btn(c.typeInstead,'sec')}`);
 errScreen('H-D7c','Ошибка: 503','Сервер или Soniox недоступны. Повтор не раньше чем через 30 с.','err',I.alert,c=>c.e503T,c=>c.e503B,c=>`${btn(c.retry)}${btn(c.cancel,'ghost')}`);
+errScreen('H-D7f','Занято (.busy)','Общий пул голоса на сегодня занят (429 kbd_usd_day / kbd_usd_month / stt_cap_minute) — не личный лимит (H-D7b). Без цифр и времени сброса.','warn',I.clock,c=>c.busyT,c=>c.busyB,c=>`${btn(c.retry)}${btn(c.typeInstead,'ghost')}`);
 errScreen('H-D7d','Ошибка: не распознано','Пустой результат распознавания. Ссылка на язык речи — если выбран не тот.','warn',I.ear,c=>c.eNrT,c=>c.eNrB,c=>`${btn(c.again)}${btn(c.speechLang+' ›','ghost')}`);
 errScreen('H-D7e','Ошибка: запись < 1 с','На сервер не отправляем.','warn',I.info,c=>c.eShortT,c=>c.eShortB,c=>`${btn(c.again)}`);
 add({id:'H-D8', g:'ios-d', os:'ios', t:'Прерывание: звонок', cap:'Звонок, Siri или уход в фон останавливают запись. Сохранённое не теряется: «Продолжить» дописывает, «Готово» отправляет в обработку.',
@@ -250,6 +251,8 @@ add({id:'H-G5c', g:'ios-g', os:'ios', t:'Ошибка: лимит 429', cap:'В�
   r:(c,x)=>host(c,x,{title:c.gTitle,close:c.cancel,center:true,body:`<span class="recbtn" style="background:var(--warnbg);color:var(--warn);box-shadow:none">${I.clock}</span><h2 class="h2">${c.e429T}</h2><p class="p">${fmt(c.gE429B,{time:'18:40',left:LEFT[x.lang]})}</p>`,foot:btn(c.done,'sec')})});
 add({id:'H-G5d', g:'ios-g', os:'ios', t:'Ошибка: 503', cap:'ElevenLabs или сервер недоступны.',
   r:(c,x)=>host(c,x,{title:c.gTitle,close:c.cancel,center:true,body:`<span class="recbtn" style="background:var(--errbg);color:var(--err);box-shadow:none">${I.alert}</span><h2 class="h2">${c.gE503T}</h2><p class="p">${c.gE503B}</p>`,foot:btn(c.retry)})});
+add({id:'H-G5e', g:'ios-g', os:'ios', t:'Занято (.busy)', cap:'Общий пул озвучки занят (429 kbd_usd_*/stt_cap_minute). Текст сохранён, «Повторить». Без цифр.',
+  r:(c,x)=>host(c,x,{title:c.gTitle,close:c.cancel,center:true,body:`<span class="recbtn" style="background:var(--warnbg);color:var(--warn);box-shadow:none">${I.clock}</span><h2 class="h2">${c.busyT}</h2><p class="p">${c.gBusyB}</p>`,foot:btn(c.retry)})});
 
 /* ===== Android ===== */
 const andRec = (c,x,o={}) => `${andTop(c,`<span class="rdot"></span>${c.recording}`,`<span class="b7" style="color:var(--tx);font-variant-numeric:tabular-nums">${o.t||'0:42'}</span> ${c.of} 2:00`)}
@@ -283,6 +286,8 @@ add({id:'A-V7b', g:'and', os:'and', t:'Ошибка: лимит 429', cap:'Вр�
   r:(c,x)=>kbScreen(c,x,{},{act:'mic',panel:`<div class="mid">${msg('warn',I.clock,c.e429T,fmt(c.e429B,{time:'18:40',left:LEFT[x.lang]}))}</div><div class="acts"><span class="pri">${c.typeInstead}</span></div>`})});
 add({id:'A-V7c', g:'and', os:'and', t:'Ошибка: не распознано', cap:'',
   r:(c,x)=>kbScreen(c,x,{},{act:'mic',panel:`<div class="mid">${msg('warn',I.ear,c.eNrT,c.eNrB)}</div><div class="acts"><span>${c.cancel}</span><span class="pri">${c.again}</span></div>`})});
+add({id:'A-V7d', g:'and', os:'and', t:'Занято (.busy)', cap:'Общий пул голоса занят — отдельно от личного лимита (A-V7b). Запись сохранена.',
+  r:(c,x)=>kbScreen(c,x,{},{act:'mic',panel:`<div class="mid">${msg('warn',I.clock,c.busyT,c.busyB)}</div><div class="acts"><span>${c.cancel}</span><span class="pri">${c.retry}</span></div>`})});
 add({id:'A-V8', g:'and', os:'and', t:'Прерывание', cap:'Звонок / потеря аудиофокуса / клавиатура скрыта — запись остановлена, сохранённое не теряется.',
   r:(c,x)=>kbScreen(c,x,{},{act:'mic',panel:`<div class="mid">${msg('info',I.phone,c.intT,c.intCall+' '+fmt(c.intSaved,{sec:'0:37'}))}</div><div class="acts"><span>${I.mic}${c.cont}</span><span class="pri">${c.done}</span></div>`})});
 add({id:'A-K1', g:'and-k', os:'and', t:'Клавиатура целиком', cap:'Продуктовый вид вместо диагностического probe: ряд действий (🎤 🔊 | Улучшить, Перевести), буквы, нижний ряд с языком на пробеле.',

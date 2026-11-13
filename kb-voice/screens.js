@@ -164,7 +164,7 @@ add({id:'K-V5', g:'ios-kb', os:'ios', t:'Голосовое отправлено
   r:(c,x)=>kbScreen(c,x,{sentAudio:true},{chip:'sent'})});
 
 /* ===== iOS: хост, диктовка ===== */
-add({id:'H-D0', g:'ios-d', os:'ios', t:'Согласие на голос', cap:'Один раз, до первого запроса микрофона. Регион ElevenLabs уточняет parrlo-back; формулировки проверит юрист.',
+add({id:'H-D0', g:'ios-d', os:'ios', t:'Согласие на голос', cap:'Один раз, до первого запроса микрофона. ElevenLabs — США (SCC), решение 13.11; формулировки проверит юрист.',
   r:(c,x)=>host(c,x,{title:'',close:c.cLater,body:`<h1 class="h1">${c.cTitle}</h1><p class="p">${c.cLead}</p>
     <ul class="list"><li><span class="dot">${I.mic}</span><div><b>${c.c1t}</b><span>${c.c1}</span></div></li>
     <li><span class="dot">${I.text}</span><div><b>${c.c2t}</b><span>${c.c2}</span></div></li>

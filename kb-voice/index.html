@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Parrlo — голос в клавиатуре</title><meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="../prototype/assets/favicon-64.png">
+<link rel="stylesheet" href="voice.css">
+</head><body><div class="page">
+<h1>Голос в клавиатуре · первый выпуск</h1>
+<p class="s">Макеты для parrlo-keyboard. Решения 13.11: диктовка на iOS — запись в приложении Parrlo Translate (вариант А); голос для голосовых — стандартный мужской / женский, без клона; распознавание — Soniox, регион ЕС. Распознавание идёт <b>на сервере</b>, не на устройстве. Демо-данные, без сети.</p>
+<p class="s">Каждый экран: светлая / тёмная тема, ru / es / en, обычный / самый крупный шрифт (×1.6 к базовому, панели клавиатуры ×1.25), малый / большой экран (iPhone SE 375×667 и Pro Max 440×956; Android 360×760 и 412×915). Переключатели — сверху. <b>Нажмите на любой экран</b> — откроются все 24 варианта сразу.</p>
+<div class="toc"><a href="#ios-kb">iOS · клавиатура</a><a href="#ios-d">iOS · диктовка</a><a href="#ios-g">iOS · голосовое</a><a href="#and">Android · голос</a><a href="#and-k">Android · клавиатура</a><a href="#texts">Тексты ru/es/en</a><a href="#icons">Иконки</a><a href="#flow">Схема</a></div>
+
+<div class="ctl" id="ctl">
+  <div class="g" data-k="theme"><span>Тема</span><button data-v="light">Светлая</button><button data-v="dark">Тёмная</button></div>
+  <div class="g" data-k="lang"><span>Язык</span><button data-v="ru">RU</button><button data-v="es">ES</button><button data-v="en">EN</button></div>
+  <div class="g" data-k="font"><span>Шрифт</span><button data-v="n">Обычный</button><button data-v="b">Самый крупный</button></div>
+  <div class="g" data-k="size"><span>Экран</span><button data-v="s">Малый</button><button data-v="l">Большой</button></div>
+  <div class="g" data-k="zoom"><span>Масштаб</span><button data-v="1">100%</button><button data-v=".75">75%</button><button data-v=".5">50%</button></div>
+</div>
+
+<h2 id="ios-kb">1. iOS · клавиатура</h2>
+<p class="s">В расширении клавиатуры iOS нет микрофона: 🎤 открывает Parrlo Translate, запись идёт там. Назад в чат клавиатура вернуть не может — только системная «◀ &lt;чат&gt;» слева вверху, мы о ней подсказываем. Файл голосового — через системное «Поделиться».</p>
+<div class="grid" data-g="ios-kb"></div>
+
+<h2 id="ios-d">2. iOS · Parrlo Translate · диктовка</h2>
+<p class="s">H-D0 → системный запрос → H-D2 → H-D3 → H-D5 → H-D6 → «◀» → K-V2 «Вставить». Ошибки H-D7, прерывания H-D8.</p>
+<div class="grid" data-g="ios-d"></div>
+
+<h2 id="ios-g">3. iOS · Parrlo Translate · голосовое</h2>
+<p class="s">🔊 → H-G0 → H-G1 → H-G2 → H-G3 → «Поделиться» (H-G4) → «Вернитесь в чат» → K-V5.</p>
+<div class="grid" data-g="ios-g"></div>
+
+<h2 id="and">4. Android · голос в клавиатуре</h2>
+<p class="s">На Android клавиатура пишет сама: все шаги — в панели клавиатуры поверх букв, без перехода в приложение. Экран раскрытия перед разрешением микрофона уже сделан (PR 486).</p>
+<div class="grid" data-g="and"></div>
+
+<h2 id="and-k">5. Android · клавиатура целиком и настройки</h2>
+<div class="grid" data-g="and-k"></div>
+
+<h2 id="texts">6. Тексты ru / es / en</h2>
+<p class="s">Черновик. Согласие на голос проверит юрист. Регион ElevenLabs уточняет parrlo-back — в тексте пока без региона. Ключи совпадают с файлом <code>kb-voice/copy.js</code>.</p>
+<div class="scrollx"><table class="tx" id="tx"></table></div>
+
+<h2 id="icons">7. Иконки 🎤 / 🔊</h2>
+<p class="s">Сетка 24, линия 2, скруглённые концы — как остальные иконки Parrlo. Цвет — основной зелёный темы (#00875C светлая / #2BC48A тёмная); выключенное состояние — 42% непрозрачности. SVG: <a href="icons/mic.svg">mic.svg</a>, <a href="icons/voice.svg">voice.svg</a>.</p>
+<div class="icons" id="icons-box"></div>
+
+<h2 id="flow">8. Схема (iOS)</h2>
+<div class="note">
+<b>Диктовка.</b> Чат → клавиатура K-V0 → 🎤 → Parrlo (H-D0 один раз → микрофон) → H-D2 → H-D3 → H-D5 → H-D6 → «Готово» (подсказка «◀») → «◀ &lt;чат&gt;» → K-V2 «Вставить» → K-V3 (5 с «Вернуть как было») → обычный вид. Через 10 мин без вставки — K-V4.<br><br>
+<b>Голосовое.</b> Чат → 🔊 → Parrlo H-G0 → H-G1 (текст / перевод, голос) → H-G2 → H-G3 → «Поделиться» → чат в листе → H-G4b «Вернитесь в чат» → «◀» → K-V5.<br><br>
+<b>Без доступа.</b> Нет согласия / токена → K-V1a / K-V1c («Открыть» → Parrlo). Нет полного доступа → K-V1b (только путь в Настройках).<br><br>
+<b>Данные.</b> Аудио → сервер Parrlo → Soniox (ЕС); текст → Anthropic; озвучка → ElevenLabs. Аудио на сервере Parrlo не хранится. Ни одно обещание «на устройстве» в текстах не используется.
+</div>
+</div>
+
+<div id="mx" role="dialog" aria-modal="true" aria-label="Все варианты"><header><b id="mxt"></b><button id="mxc">Закрыть</button></header><div class="mg" id="mxg"></div></div>
+
+<script src="copy.js"></script>
+<script src="screens.js"></script>
+<script>
+(function(){
+const DEV = {ios:{s:{w:375,h:667,cls:'se'},l:{w:440,h:956,cls:''}}, and:{s:{w:360,h:760,cls:''},l:{w:412,h:915,cls:''}}};
+const st = {theme:'dark', lang:'ru', font:'n', size:'s', zoom:'.75'};
+try{ const q=new URLSearchParams(location.search); for(const k in st){ if(q.get(k)) st[k]=q.get(k); } if(!q.get('theme') && matchMedia('(prefers-color-scheme: light)').matches) st.theme='light'; }catch(e){}
+
+function phone(scr, o){
+  const d = DEV[scr.os][o.size], x = {os:scr.os, small:o.size==='s', big:o.font==='b', lang:o.lang, theme:o.theme};
+  const c = window.COPY[o.lang];
+  return `<div class="ph ${scr.os} ${d.cls} ${o.theme} ${x.big?'big':''}" style="--w:${d.w}px;--h:${d.h}px" lang="${o.lang}">${scr.r(c,x)}</div>`;
+}
+function fit(html, w, h, z){ return `<div style="width:${w*z}px;height:${h*z}px"><div class="zoomwrap" style="transform:scale(${z});width:${w}px">${html}</div></div>`; }
+
+function render(){
+  document.documentElement.dataset.theme = st.theme;
+  document.querySelectorAll('#ctl .g').forEach(g=>g.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed', String(st[g.dataset.k]===b.dataset.v))));
+  const z = +st.zoom;
+  document.querySelectorAll('.grid[data-g]').forEach(grid=>{
+    grid.innerHTML = window.SCREENS.filter(s=>s.g===grid.dataset.g).map(s=>{
+      const d = DEV[s.os][st.size];
+      return `<figure class="fr" style="--capw:${Math.max(d.w*z,240)}px"><button class="cellbtn" data-id="${s.id}" aria-label="${s.id}: все варианты">${fit(phone(s,st),d.w,d.h,z)}</button><figcaption><span class="id">${s.id}</span><b>${s.t}</b>${s.anim?'· анимация · ':''}${s.cap}</figcaption></figure>`;
+    }).join('');
+  });
+  try{ history.replaceState(null,'','?'+new URLSearchParams(st).toString()+location.hash); }catch(e){}
+}
+document.getElementById('ctl').addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b) return; st[b.closest('.g').dataset.k]=b.dataset.v; render(); });
+
+/* матрица: один экран во всех 24 вариантах */
+const mx=document.getElementById('mx');
+function openMx(id){
+  const s = window.SCREENS.find(s=>s.id===id); if(!s) return;
+  document.getElementById('mxt').textContent = `${s.id} · ${s.t} — 2 темы × 3 языка × 2 шрифта × 2 экрана`;
+  let h=''; for (const size of ['s','l']) for (const font of ['n','b']) for (const theme of ['light','dark']) for (const lang of ['ru','es','en']) {
+    const d = DEV[s.os][size], z = size==='s' ? .5 : .42;
+    h += `<div class="mc">${fit(phone(s,{theme,lang,font,size}),d.w,d.h,z)}<span>${theme==='light'?'светлая':'тёмная'} · ${lang} · ${font==='b'?'крупный':'обычный'} · ${size==='s'?'малый':'большой'}</span></div>`;
+  }
+  document.getElementById('mxg').innerHTML = h; mx.classList.add('open'); document.body.style.overflow='hidden'; document.getElementById('mxc').focus();
+}
+function closeMx(){ mx.classList.remove('open'); document.body.style.overflow=''; document.getElementById('mxg').innerHTML=''; }
+document.addEventListener('click', e=>{ const b=e.target.closest('.cellbtn'); if(b) openMx(b.dataset.id); });
+document.getElementById('mxc').addEventListener('click', closeMx);
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeMx(); });
+
+/* анимации: этапы обработки и таймер записи */
+let tick=0;
+setInterval(()=>{
+  tick++;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.querySelectorAll('ol[data-anim="stages"]').forEach(ol=>{
+    const li=[...ol.children], n=li.length, step=Math.floor(tick/2)%(n+1);
+    li.forEach((l,i)=>{ const cls = i<step?'done':i===step?'now':''; if(l.className!==cls){ l.className=cls; const si=l.querySelector('.si'); si.innerHTML = cls==='done'?window.ICONS.check:''; const sm=l.querySelector('small'); if(cls==='done'&&!sm){ l.insertAdjacentHTML('beforeend',`<small>${window.COPY[l.closest('.ph').lang].stDone}</small>`);} if(cls!=='done'&&sm) sm.remove(); } });
+  });
+  document.querySelectorAll('[data-tick]').forEach(el=>{ const s=(+el.dataset.tick + tick)%120; el.firstChild.nodeValue = `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`; });
+}, 900);
+
+/* тексты */
+const KEYS = [
+ ['Клавиатура',['dict','voice','kbOffT','kbOffConsent','kbOffFull','kbOffToken','kbOpen','insert','insertA11y','dismiss','inserted','undo','voiceSent','voiceSentSub']],
+ ['Согласие на голос',['cTitle','cLead','c1t','c1','c2t','c2','c3t','c3','c4','c5','cPolicy','cAllow','cLater','cNext']],
+ ['Микрофон',['micT','micB','micDeny','micAllow','deniedT','deniedB','openSettings','notNow']],
+ ['Диктовка',['dTitle','speechLang','auto','autoSub','resLang','trNow','trNowSub','tapRec','limitNote','recording','stop','cancel','left15','silenceT','silenceB','procT','st1','st2','st3','procNote','resT','resText','resTr','edit','again','doneBack','backHint']],
+ ['Ошибки и лимиты',['retry','typeInstead','eNetT','eNetB','e429T','e429B','e503T','e503B','eNrT','eNrB','eShortT','eShortB','gLongT','gLongB','gE503T','gE503B','gE429B','gNetB']],
+ ['Прерывание',['intT','intCall','intSiri','intBg','intSaved','cont','done']],
+ ['Голосовое',['gTitle','gFrom','gFromSub','gNext','gEmptyT','gEmptyB','gDictate','gWhich','gMine','gTr','gVoice','male','female','gVoiceNote','gSpeak','gEditHint','gPrep','gPrepSub','gReady','reVoice','share','gShareT','gShareB','gShareSheet']],
+ ['Android',['aSend','aSendNote','aPermT','aPermB','aPermGo','aSettings','sMyLang','sPartner','sGender','sGenderSub','sVoice','sConsent','sVoiceOf','sAbout','sPolicy']],
+];
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+document.getElementById('tx').innerHTML = `<thead><tr><th>Ключ</th><th>RU</th><th>ES</th><th>EN</th></tr></thead><tbody>` + KEYS.map(([g,ks])=>`<tr><th colspan="4" style="background:var(--p-bg)">${g}</th></tr>`+ks.map(k=>`<tr><td class="k">${k}</td>${['ru','es','en'].map(l=>`<td>${esc(window.COPY[l][k]??'—')}</td>`).join('')}</tr>`).join('')).join('') + `</tbody>`;
+
+/* иконки */
+const I = window.ICONS;
+const sz = (svg,n) => svg.replace('<svg',`<svg width="${n}" height="${n}"`);
+document.getElementById('icons-box').innerHTML = [['mic','🎤 Диктовка'],['voice','🔊 Голосовое']].map(([k,t])=>`<div class="it"><b>${t}</b>
+  <div class="sw l">${sz(I[k],24)}${sz(I[k],32)}${sz(I[k],48)}<span class="dis">${sz(I[k],32)}</span></div>
+  <div class="sw d">${sz(I[k],24)}${sz(I[k],32)}${sz(I[k],48)}<span class="dis">${sz(I[k],32)}</span></div><code>24 · 32 · 48 · выключено</code></div>`).join('');
+
+render();
+})();
+</script>
+</body></html>

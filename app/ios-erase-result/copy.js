@@ -74,7 +74,7 @@ en: {
   pendNote: 'Everything else is already deleted. Deleting the voice will finish on its own — you don’t need to do anything.',
   keepLink: 'What We Keep',
   subNote: 'Your subscription isn’t cancelled — you can cancel it in your Apple ID settings.',
-  errB: 'The data on this iPhone has been deleted, but not on the server. Tap “Try Again”. If that doesn’t work, write to us and include this code:',
+  errB: 'The data on this iPhone has been deleted, but the data on the server hasn’t. Tap “Try Again”. If that doesn’t work, write to us and include this code:',
   codeL: 'Code', code: 'ER-7F3A-91C2', copy: 'Copy', copied: 'Copied',
   ok: 'OK', retry: 'Try Again', close: 'Close',
   kpVoiceLog: 'The “My Voice” consent log — as proof of consent',
@@ -84,8 +84,8 @@ en: {
   offT: 'Deleted on This iPhone',
   offB: 'For now, data on the server can only be deleted on request — write to us; the contact is in the Privacy Policy.',
   policy: 'Privacy Policy',
-  errBnc: 'The data on this iPhone has been deleted, but not on the server. Check your connection and tap “Try Again”. If that doesn’t work, write to us.',
-  rejB: 'The data on your iPhone has been deleted, but not on the server. Write to us — the contact is in the Privacy Policy — and we’ll delete it manually.',
+  errBnc: 'The data on this iPhone has been deleted, but the data on the server hasn’t. Check your connection and tap “Try Again”. If that doesn’t work, write to us.',
+  rejB: 'The data on your iPhone has been deleted, but the data on the server hasn’t. Write to us — the contact is in the Privacy Policy — and we’ll delete it manually.',
 },
 };
 (function(){ const NB=' ', SHORT=/(^|[\s(«])(в|во|к|ко|с|со|о|об|и|а|у|на|по|за|из|до|не|от|для|без|при|что|как|через|или|ли|же|бы|вы|мы|я)\s/gi;

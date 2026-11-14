@@ -1,6 +1,7 @@
 /* Parrlo Translate · iOS · «Удалить мои данные» — окно результата (вариант A, PR 618 translator).
    Основа — erase-ui-text.md §7 и тексты Android PR 11 (RG PASS b42e387). Отличие iOS: стирается только согласие клавиатуры на облако (PR 618 FiConversations.deleteAllData);
    согласие на облачный перевод в приложении, возраст и согласие «Мой голос» на телефоне остаются. В результате — без сроков; сроки — по ссылке «Что именно хранится». Проверяет RG. */
+/* errBnc — DP-8/IR-3 без кода (нет сети: кода нет, он только из http-ответа). rejB — 400/403: сервер отказал, «Повторить» не поможет; раскладка DP-8/IR-3, код + одна кнопка «Понятно». */
 window.ER = {
 ru: {
   settings: 'Настройки', title: 'Данные и приватность',
@@ -27,6 +28,8 @@ ru: {
   offT: 'Удалено на этом iPhone',
   offB: 'Удалить данные на сервере пока можно только по запросу — напишите нам, контакт в Политике конфиденциальности.',
   policy: 'Политика конфиденциальности',
+  errBnc: 'На этом iPhone данные удалены, а на сервере — нет. Проверьте интернет и нажмите «Повторить». Если не получится, напишите нам.',
+  rejB: 'Данные на iPhone удалены, а на сервере — нет. Напишите нам — контакт в Политике конфиденциальности, — и мы удалим их вручную.',
 },
 es: {
   settings: 'Ajustes', title: 'Datos y privacidad',
@@ -53,6 +56,8 @@ es: {
   offT: 'Eliminado en este iPhone',
   offB: 'Por ahora, los datos del servidor solo se pueden eliminar a petición: escríbenos; el contacto está en la Política de privacidad.',
   policy: 'Política de privacidad',
+  errBnc: 'Los datos de este iPhone se han eliminado, pero los del servidor no. Comprueba la conexión y toca «Reintentar». Si no funciona, escríbenos.',
+  rejB: 'Los datos del iPhone se han eliminado, pero los del servidor no. Escríbenos —el contacto está en la Política de privacidad— y los eliminaremos manualmente.',
 },
 en: {
   settings: 'Settings', title: 'Data & Privacy',
@@ -79,6 +84,8 @@ en: {
   offT: 'Deleted on This iPhone',
   offB: 'For now, data on the server can only be deleted on request — write to us; the contact is in the Privacy Policy.',
   policy: 'Privacy Policy',
+  errBnc: 'The data on this iPhone has been deleted, but not on the server. Check your connection and tap “Try Again”. If that doesn’t work, write to us.',
+  rejB: 'The data on your iPhone has been deleted, but not on the server. Write to us — the contact is in the Privacy Policy — and we’ll delete it manually.',
 },
 };
 (function(){ const NB=' ', SHORT=/(^|[\s(«])(в|во|к|ко|с|со|о|об|и|а|у|на|по|за|из|до|не|от|для|без|при|что|как|через|или|ли|же|бы|вы|мы|я)\s/gi;

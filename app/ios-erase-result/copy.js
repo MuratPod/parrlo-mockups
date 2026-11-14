@@ -1,6 +1,6 @@
 /* Parrlo Translate · iOS · «Удалить мои данные» — окно результата (вариант A, PR 618 translator).
-   Основа — erase-ui-text.md §7 и тексты Android PR 11 (RG PASS b42e387). Отличие iOS: стирается и согласие клавиатуры,
-   поэтому «Возраст сохранится.» (решение RG). В результате — без сроков; сроки — по ссылке «Что именно хранится». Проверяет RG. */
+   Основа — erase-ui-text.md §7 и тексты Android PR 11 (RG PASS b42e387). Отличие iOS: стирается только согласие клавиатуры на облако (PR 618 FiConversations.deleteAllData);
+   согласие на облачный перевод в приложении, возраст и согласие «Мой голос» на телефоне остаются. В результате — без сроков; сроки — по ссылке «Что именно хранится». Проверяет RG. */
 window.ER = {
 ru: {
   settings: 'Настройки', title: 'Данные и приватность',
@@ -8,7 +8,7 @@ ru: {
   erasedH: 'Удалено', keptH: 'Осталось', pendH: 'Ещё удаляется',
   erPhone: 'История и файлы на этом iPhone',
   erServer: 'Технические данные этой установки и привязка к подписке',
-  erConsent: 'Согласия на этом iPhone, в том числе для клавиатуры',
+  erConsent: 'Согласие клавиатуры на облако на этом iPhone',
   erVoice: 'Ваш «Мой голос»',
   kpAge: 'Возраст',
   kpLimits: 'Счётчики лимитов — удалятся сами в течение 40 дней',
@@ -28,7 +28,7 @@ es: {
   erasedH: 'Eliminado', keptH: 'Se conserva', pendH: 'Todavía se está eliminando',
   erPhone: 'El historial y los archivos de este iPhone',
   erServer: 'Los datos técnicos de esta instalación y la vinculación a la suscripción',
-  erConsent: 'Los consentimientos de este iPhone, también el del teclado',
+  erConsent: 'El consentimiento del teclado para la nube en este iPhone',
   erVoice: 'Tu «Mi voz»',
   kpAge: 'La edad',
   kpLimits: 'Los contadores de límites: se borrarán solos en un plazo de 40 días',
@@ -48,7 +48,7 @@ en: {
   erasedH: 'Deleted', keptH: 'Kept', pendH: 'Still Being Deleted',
   erPhone: 'History and files on this iPhone',
   erServer: 'This installation’s technical data and the link to your subscription',
-  erConsent: 'Consents on this iPhone, including the keyboard one',
+  erConsent: 'The keyboard’s cloud consent on this iPhone',
   erVoice: 'Your “My Voice”',
   kpAge: 'Age',
   kpLimits: 'Limit counters — deleted automatically within 40 days',

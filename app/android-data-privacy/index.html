@@ -66,9 +66,9 @@ h2.s{font-size:19px;margin:28px 0 8px}
 </style></head>
 <body><div class="page">
 <h1>Android Translate · «Данные и приватность»</h1>
-<p>По образцу iOS (прототип: Настройки → Данные и приватность), но только то, что есть в Android (RG сверил с кодом PR 605): без отчётов о сбоях и отметок «Неточно». Material 3 на токенах бренда, тема только тёмная (решение 13.11). Удаление — <b>два варианта, выбирает Мурат</b>: <b>A</b> — с удалением данных установки на сервере (/v1/me/erase), <b>B</b> — только телефон. Тексты — <code>copy.js</code>, проверяет RG.</p>
+<p>По образцу iOS (прототип: Настройки → Данные и приватность), но только то, что есть в Android (RG сверил с кодом PR 605): без отчётов о сбоях и отметок «Неточно». Material 3 на токенах бренда, тема только тёмная (решение 13.11). Удаление — <b>сейчас вариант B</b>: только телефон, без обещаний про сервер. <b>Вариант A</b> (данные установки на сервере, /v1/me/erase) — кадры-варианты, «после решения Мурата». Тексты — <code>copy.js</code>, проверяет RG.</p>
 <div id="ctl">
-  <div class="g" data-k="v"><span>Удаление</span><button data-v="A">A · с сервером</button><button data-v="B">B · только телефон</button></div>
+  <div class="g" data-k="v"><span>Удаление</span><button data-v="B">B · только телефон (сейчас)</button><button data-v="A">A · с сервером — после решения Мурата</button></div>
   <div class="g" data-k="lang"><span>Язык</span><button data-v="ru">RU</button><button data-v="es">ES</button><button data-v="en">EN</button></div>
   <div class="g" data-k="font"><span>Шрифт</span><button data-v="n">Обычный</button><button data-v="b">Самый крупный</button></div>
   <div class="g" data-k="size"><span>Экран</span><button data-v="s">360 dp</button><button data-v="l">412 dp</button></div>
@@ -89,7 +89,7 @@ h2.s{font-size:19px;margin:28px 0 8px}
 <script>
 (function(){
 const DEV={s:{w:360,h:760},l:{w:412,h:915}};
-const st={v:'A',lang:'ru',font:'n',size:'s'};
+const st={v:'B',lang:'ru',font:'n',size:'s'};
 try{const q=new URLSearchParams(location.search);for(const k in st)if(q.get(k))st[k]=q.get(k);}catch(e){}
 const back='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H5M11 5l-7 7 7 7"/></svg>';
 const top=(c)=>`<div class="sb"><span>9:41</span><span class="ic"><i></i></span></div><div class="tab"><span class="bk" role="button" aria-label="${c.back}">${back}</span><h1>${c.title}</h1></div>`;
@@ -119,7 +119,7 @@ window.DPphone=phone;
 function render(){
   document.querySelectorAll('#ctl .g').forEach(g=>g.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(st[g.dataset.k]===b.dataset.v))));
   const z=.75,d=DEV[st.size];
-  document.getElementById('grid').innerHTML=S.filter(s=>!s.only||s.only===st.v).map(s=>`<figure style="width:${Math.max(d.w*z,240)}px"><div style="width:${d.w*z}px;height:${d.h*z}px"><div style="transform:scale(${z});transform-origin:0 0;width:${d.w}px">${phone(s,st)}</div></div><figcaption><span class="id">${s.id}</span><b>${s.t}</b> · ${s.cap}</figcaption></figure>`).join('');
+  document.getElementById('grid').innerHTML=S.filter(s=>!s.only||s.only===st.v).map(s=>`<figure style="width:${Math.max(d.w*z,240)}px"><div style="width:${d.w*z}px;height:${d.h*z}px"><div style="transform:scale(${z});transform-origin:0 0;width:${d.w}px">${phone(s,st)}</div></div><figcaption><span class="id">${s.id}${st.v==='A'?'·A':''}</span>${st.v==='A'?'<b style="color:#B26B00">Вариант A — после решения Мурата.</b> ':''}<b>${s.t}</b> · ${s.cap}</figcaption></figure>`).join('');
   try{history.replaceState(null,'','?'+new URLSearchParams(st));}catch(e){}
 }
 document.getElementById('ctl').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;st[b.parentNode.dataset.k]=b.dataset.v;render();});

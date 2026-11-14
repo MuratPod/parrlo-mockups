@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Android · Данные и приватность</title>
+<style>
+@font-face{font-family:Inter;font-weight:100 900;src:url(../../webdemo-mock/fonts/Inter-Variable.woff2) format("woff2")}
+:root{--p-bg:#F2F5F4;--p-card:#FFFFFF;--p-line:#D5E9DF;--p-tx:#0E1116;--p-sec:#5B6472}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--p-bg:#0B0E12;--p-card:#12161C;--p-line:#2F3742;--p-tx:#E8ECF1;--p-sec:#9AA4B2}}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--p-bg);color:var(--p-tx);font:400 15px/1.45 Inter,system-ui,sans-serif;padding:20px 16px 48px}
+.page h1{font-size:24px;font-weight:800;margin-bottom:6px}.page>p{color:var(--p-sec);max-width:80ch;margin-bottom:14px}
+#ctl{position:sticky;top:0;z-index:20;background:var(--p-bg);display:flex;flex-wrap:wrap;gap:8px 16px;padding:8px 0 12px;border-bottom:1px solid var(--p-line);margin-bottom:16px}
+#ctl .g{display:flex;align-items:center;gap:6px}#ctl .g>span{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--p-sec)}
+#ctl button{font:600 14px Inter,sans-serif;padding:8px 14px;border-radius:999px;border:1px solid var(--p-line);background:var(--p-card);color:var(--p-tx);cursor:pointer;min-height:40px}
+#ctl button[aria-pressed=true]{border-color:#00875C;box-shadow:inset 0 0 0 1px #00875C;color:#00875C}
+.grid{display:flex;flex-wrap:wrap;gap:22px;align-items:flex-start}
+figure{display:flex;flex-direction:column;gap:8px}
+figcaption{font-size:13px;color:var(--p-sec);line-height:1.4}figcaption b{color:var(--p-tx)}figcaption .id{font:700 12px ui-monospace,monospace;background:#00875C;color:#fff;border-radius:6px;padding:2px 6px;margin-right:6px}
+table{border-collapse:collapse;font-size:13px;margin-top:10px}td,th{border:1px solid var(--p-line);padding:6px 8px;text-align:left;vertical-align:top}th{color:var(--p-sec)}
+.scrollx{overflow-x:auto;max-width:100%}
+h2.s{font-size:19px;margin:28px 0 8px}
+
+/* ===== телефон, Material 3, тёмная тема бренда ===== */
+.ph{--fs:1;--bg:#12161C;--sf:#1C2026;--sf2:#242B34;--sf3:#2C333D;--tx:#E8ECF1;--sec:#9AA4B2;--line:#2F3742;--pri:#2BC48A;--onpri:#0E1116;--prictr:#1E3734;--err:#FF6B5E;--inv:#E8ECF1;--oninv:#12161C;
+  position:relative;width:var(--w);height:var(--h);border-radius:28px;overflow:hidden;background:var(--bg);color:var(--tx);font-family:Inter,Roboto,sans-serif;display:flex;flex-direction:column;box-shadow:0 0 0 1px #2F3742,0 18px 48px rgba(14,17,22,.2);text-wrap:pretty;line-height:1.35;-webkit-font-smoothing:antialiased}
+.ph.big{--fs:1.6}
+.sb{flex:none;height:32px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-size:13px;font-weight:600}
+.sb .ic{display:flex;gap:6px}.sb .ic i{display:block;width:16px;height:10px;border-radius:2px;background:var(--tx);opacity:.9}
+.tab{flex:none;display:flex;align-items:center;gap:4px;min-height:64px;padding:0 8px 0 4px}
+.tab .bk{width:48px;height:48px;display:flex;align-items:center;justify-content:center;border-radius:50%}
+.tab .bk svg{width:24px;height:24px}
+.tab h1{font-size:calc(22px*min(var(--fs),1.3));font-weight:400;line-height:1.2;text-wrap:balance}
+.body{flex:1;min-height:0;overflow:hidden;padding:0 0 16px}
+.sh{font-size:calc(14px*var(--fs));font-weight:600;color:var(--pri);padding:16px 16px 4px;letter-spacing:.01em}
+.li{display:flex;align-items:center;gap:16px;min-height:calc(56px*min(var(--fs),1.3));padding:8px 24px 8px 16px}
+.li .tx{flex:1;min-width:0}
+.li .hl{display:block;font-size:calc(16px*var(--fs));line-height:1.4}
+.li .su{display:block;font-size:calc(14px*var(--fs));color:var(--sec);line-height:1.35}
+.li .su.pri{color:var(--pri)}
+.li.dng .hl{color:var(--err)}
+.sw{flex:none;width:52px;height:32px;border-radius:16px;background:var(--pri);position:relative}
+.sw:after{content:"";position:absolute;right:4px;top:4px;width:24px;height:24px;border-radius:50%;background:var(--onpri)}
+.sw.off{background:var(--sf3);box-shadow:inset 0 0 0 2px #7F8996}.sw.off:after{right:auto;left:8px;top:8px;width:16px;height:16px;background:#7F8996}
+.ft{font-size:calc(14px*var(--fs));color:var(--sec);padding:4px 16px 8px;line-height:1.4}
+.dv{height:1px;background:var(--line);margin:8px 16px}
+.gh{flex:none;height:24px;display:flex;justify-content:center;align-items:center}.gh i{width:100px;height:4px;border-radius:2px;background:var(--tx);opacity:.5}
+/* диалог M3 */
+.scrim{position:absolute;inset:0;background:rgba(0,0,0,.55);z-index:5;display:flex;align-items:center;justify-content:center;padding:24px}
+.dlg{width:100%;max-width:min(calc(100% - 0px),560px);min-width:280px;background:var(--sf2);border-radius:28px;padding:24px;display:flex;flex-direction:column;gap:16px;max-height:calc(100% - 48px)}
+.dlg h2{font-size:calc(24px*min(var(--fs),1.3));font-weight:400;line-height:1.3;text-wrap:balance}
+.dlg p{font-size:calc(14px*var(--fs));color:var(--sec);line-height:1.45}
+.dlg .sc{overflow:hidden;display:flex;flex-direction:column;gap:12px;min-height:0}
+.acts{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:8px;margin-top:8px}
+.tb{min-height:40px;padding:10px 12px;border-radius:20px;font-weight:600;font-size:calc(14px*min(var(--fs),1.3));color:var(--pri);line-height:1.2;text-align:center}
+.tb.dng{color:var(--err)}
+.big .acts{flex-direction:column-reverse;align-items:stretch}
+.radio{display:flex;flex-direction:column}
+.radio .r{display:flex;align-items:center;gap:16px;min-height:calc(48px*min(var(--fs),1.3));font-size:calc(16px*var(--fs))}
+.radio .r i{flex:none;width:20px;height:20px;border-radius:50%;box-shadow:inset 0 0 0 2px var(--sec)}
+.radio .r.on i{box-shadow:inset 0 0 0 2px var(--pri),inset 0 0 0 5px var(--sf2),inset 0 0 0 10px var(--pri)}
+.prog{display:flex;align-items:center;gap:16px;font-size:calc(16px*var(--fs))}
+.spin{flex:none;width:40px;height:40px;border-radius:50%;border:4px solid var(--prictr);border-top-color:var(--pri);animation:sp 1s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation:none}}
+.snack{position:absolute;left:16px;right:16px;bottom:40px;z-index:6;background:var(--inv);color:var(--oninv);border-radius:4px;min-height:48px;padding:14px 16px;font-size:calc(14px*var(--fs));display:flex;align-items:center;box-shadow:0 4px 12px rgba(0,0,0,.35)}
+.ic{display:inline-flex}
+</style></head>
+<body><div class="page">
+<h1>Android Translate · «Данные и приватность»</h1>
+<p>Как iOS (прототип: Настройки → Данные и приватность). Material 3 на токенах бренда; тема — только тёмная (решение 13.11: Translate, кроме экранов клавиатуры, тёмный). Тексты — <code>copy.js</code>, проверяет RG. Отличия от iOS: отчёт о сбоях готовит Parrlo (не «iOS»), без фразы про Apple; строка клавиатуры — «Клавиатура Parrlo» вместо «Полного доступа».</p>
+<div id="ctl">
+  <div class="g" data-k="lang"><span>Язык</span><button data-v="ru">RU</button><button data-v="es">ES</button><button data-v="en">EN</button></div>
+  <div class="g" data-k="font"><span>Шрифт</span><button data-v="n">Обычный</button><button data-v="b">Самый крупный</button></div>
+  <div class="g" data-k="size"><span>Экран</span><button data-v="s">360 dp</button><button data-v="l">412 dp</button></div>
+</div>
+<div class="grid" id="grid"></div>
+
+<h2 class="s">Поведение</h2>
+<div class="scrollx"><table>
+<tr><th>Действие</th><th>Что происходит</th></tr>
+<tr><td>«Очистить историю»</td><td>Диалог DP-3 → «Очистить» → история на телефоне удалена сразу → снекбар DP-4 (4 с). Сеть не нужна.</td></tr>
+<tr><td>«Удалить все данные»</td><td>Диалог DP-5 → «Удалить» → DP-6: удаляем на телефоне (история, журнал реплик, жалобы) и отправляем запрос на удаление голоса на сервер → DP-7. Без сети → DP-8: телефон уже очищен, «Повторить» шлёт только запрос на сервер.</td></tr>
+<tr><td>Кнопки диалогов</td><td>Справа: «Отмена» (основной цвет) и действие (цвет ошибки). При самом крупном шрифте — столбиком, действие сверху. Назад / тап по фону = «Отмена» (кроме DP-6).</td></tr>
+<tr><td>TalkBack</td><td>Заголовки разделов — heading; диалог объявляет заголовок и текст; снекбар — liveRegion polite.</td></tr>
+</table></div>
+</div>
+<script src="copy.js"></script>
+<script>
+(function(){
+const DEV={s:{w:360,h:760},l:{w:412,h:915}};
+const st={lang:'ru',font:'n',size:'s'};
+try{const q=new URLSearchParams(location.search);for(const k in st)if(q.get(k))st[k]=q.get(k);}catch(e){}
+const back='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H5M11 5l-7 7 7 7"/></svg>';
+const top=(c)=>`<div class="sb"><span>9:41</span><span class="ic"><i></i></span></div><div class="tab"><span class="bk" role="button" aria-label="${c.back}">${back}</span><h1>${c.title}</h1></div>`;
+const li=(h,o={})=>`<div class="li${o.dng?' dng':''}" role="${o.sw!==undefined?'switch':'button'}"${o.sw!==undefined?` aria-checked="${o.sw}"`:''}><span class="tx"><span class="hl">${h}</span>${o.su?`<span class="su${o.suPri?' pri':''}">${o.su}</span>`:''}</span>${o.sw!==undefined?`<span class="sw${o.sw?'':' off'}" aria-hidden="true"></span>`:''}</div>`;
+const sh=(t)=>`<div class="sh" role="heading" aria-level="2">${t}</div>`;
+const ft=(t)=>`<p class="ft">${t}</p>`;
+const mainTop=(c)=>`${sh(c.hCloud)}${li(c.cloudRow,{su:c.cloudVal,suPri:true})}${li(c.voiceRow,{su:c.voiceSub,sw:true})}${li(c.revokeRow,{dng:true})}
+  <div class="dv"></div>${li(c.diagRow,{sw:false})}${ft(c.diagFoot)}
+  ${sh(c.hHist)}${li(c.keepRow,{sw:true})}${li(c.daysRow,{su:c.d30,suPri:true})}${ft(c.histFoot)}`;
+const mainBot=(c)=>`${sh(c.hMarks)}${ft(c.marksFoot)}${sh(c.hKb)}${li(c.kbRow,{su:c.kbSub})}<div class="dv"></div>${li(c.clearRow,{dng:true})}${li(c.delRow,{dng:true})}${ft(c.delFoot)}`;
+const screen=(c,body,over='')=>`${top(c)}<div class="body">${body}</div><div class="gh"><i></i></div>${over}`;
+const dlg=(t,b,acts,extra='')=>`<div class="scrim"><div class="dlg" role="alertdialog" aria-label="${t}"><h2>${t}</h2><div class="sc">${b?`<p>${b}</p>`:''}${extra}</div>${acts?`<div class="acts">${acts}</div>`:''}</div></div>`;
+const tb=(t,cls='')=>`<span class="tb ${cls}" role="button">${t}</span>`;
+const S=[
+ {id:'DP-1',t:'Экран: верх',cap:'Разделы как на iOS: перевод в облаке, отчёты о сбоях, история. Значения — строкой под заголовком (Material).',r:c=>screen(c,mainTop(c))},
+ {id:'DP-2',t:'Экран: низ',cap:'После прокрутки: отметки «Неточно», клавиатура, «Очистить историю» и «Удалить все данные» — цветом ошибки.',r:c=>screen(c,mainBot(c))},
+ {id:'DP-2b',t:'Срок хранения',cap:'Диалог с переключателями, выбор применяется сразу, без «ОК».',r:c=>screen(c,mainTop(c),dlg(c.daysT,'',tb(c.cancel),`<div class="radio" role="radiogroup">${[c.d7,c.d30,c.d90,c.dAll].map((d,i)=>`<span class="r${i===1?' on':''}" role="radio" aria-checked="${i===1}"><i></i>${d}</span>`).join('')}</div>`))},
+ {id:'DP-3',t:'Очистить историю?',cap:'Подтверждение. «Очистить» — цвет ошибки, «Отмена» — основной.',r:c=>screen(c,mainBot(c),dlg(c.clearT,c.clearB,tb(c.cancel)+tb(c.clearBtn,'dng')))},
+ {id:'DP-4',t:'История очищена',cap:'Снекбар 4 с, без «Отменить»: удаление сразу.',r:c=>screen(c,mainBot(c),`<div class="snack" role="status">${c.cleared}</div>`)},
+ {id:'DP-5',t:'Удалить все данные?',cap:'Подтверждение: что именно удалится, «отменить нельзя».',r:c=>screen(c,mainBot(c),dlg(c.delT,c.delB,tb(c.cancel)+tb(c.delBtn,'dng')))},
+ {id:'DP-6',t:'Удаляем',cap:'Неотменяемый шаг: без кнопок, назад не закрывает. Обычно меньше секунды; показываем, если дольше 300 мс.',r:c=>screen(c,mainBot(c),`<div class="scrim"><div class="dlg" role="alertdialog" aria-busy="true"><div class="prog"><span class="spin" aria-hidden="true"></span>${c.deleting}</div></div></div>`)},
+ {id:'DP-7',t:'Данные удалены',cap:'Результат. После «Понятно» — на экран DP-1, история пустая, голоса нет.',r:c=>screen(c,mainTop(c),dlg(c.doneT,c.doneB,tb(c.ok)))},
+ {id:'DP-8',t:'Ошибка: нет сети',cap:'Телефон очищен, запрос на сервер не ушёл. «Повторить» шлёт только его; если закрыть — повторим при следующем запуске с сетью.',r:c=>screen(c,mainTop(c),dlg(c.errT,c.errB,tb(c.cancel)+tb(c.retry)))},
+];
+window.DPS=S;
+function phone(s,o){const d=DEV[o.size];return `<div class="ph${o.font==='b'?' big':''}" style="--w:${d.w}px;--h:${d.h}px" lang="${o.lang}">${s.r(window.DP[o.lang])}</div>`;}
+window.DPphone=phone;
+function render(){
+  document.querySelectorAll('#ctl .g').forEach(g=>g.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(st[g.dataset.k]===b.dataset.v))));
+  const z=.75,d=DEV[st.size];
+  document.getElementById('grid').innerHTML=S.map(s=>`<figure style="width:${Math.max(d.w*z,240)}px"><div style="width:${d.w*z}px;height:${d.h*z}px"><div style="transform:scale(${z});transform-origin:0 0;width:${d.w}px">${phone(s,st)}</div></div><figcaption><span class="id">${s.id}</span><b>${s.t}</b> · ${s.cap}</figcaption></figure>`).join('');
+  try{history.replaceState(null,'','?'+new URLSearchParams(st));}catch(e){}
+}
+document.getElementById('ctl').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;st[b.parentNode.dataset.k]=b.dataset.v;render();});
+render();
+})();
+</script>
+</body></html>

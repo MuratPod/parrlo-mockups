@@ -149,7 +149,7 @@
 | `cPolicy` | Политика конфиденциальности | Política de privacidad | Privacy Policy |
 | `cAllow` | Разрешить | Permitir | Allow |
 | `cLater` | Не сейчас | Ahora no | Not now |
-| `cNext` | Затем iOS спросит доступ к микрофону. | Después iOS te pedirá acceso al micrófono. | Next, iOS will ask for microphone access. |
+| `cNext` (Android) | Затем Android спросит доступ к микрофону. | Después Android te pedirá acceso al micrófono. | Next, Android will ask for microphone access. |
 | `aSettings` | Клавиатура Parrlo | Teclado Parrlo | Parrlo Keyboard |
 | `sPartner` | Язык собеседника | Idioma de la otra persona | Other person’s language |
 | `sPolicy` | Политика конфиденциальности | Política de privacidad | Privacy Policy |

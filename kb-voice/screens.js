@@ -178,7 +178,7 @@ add({id:'K-V5', g:'ios-kb', os:'ios', t:'Голосовое отправлено
   r:(c,x)=>kbScreen(c,x,{sentAudio:true},{chip:'sent'})});
 
 /* ===== iOS: хост, диктовка ===== */
-add({id:'H-D0', g:'ios-d', os:'ios', t:'Согласие на голос', cap:'Один раз, до первого запроса микрофона. Две равные кнопки в конце текста. Anthropic и ElevenLabs — США (SCC); c4 (Soniox, удаление ≤ 30 мин) — окончательно после DPA Soniox (Мурат). Формулировки — через RG.',
+add({id:'H-D0', g:'ios-d', os:'ios', t:'Согласие на голос', cap:'Один раз, до первого запроса микрофона. Две равные кнопки в конце текста. Anthropic и ElevenLabs — США (SCC); c4 (Soniox, удаление ≤ 30 мин) — окончательно после DPA Soniox и ЕС на prod (Мурат). Формулировки — через RG.',
   r:(c,x)=>host(c,x,{title:'',body:`<h1 class="h1">${c.cTitle}</h1><p class="p">${c.cLead}</p>
     <ul class="list"><li><span class="dot">${I.mic}</span><div><b>${c.c1t}</b><span>${c.c1}</span></div></li>
     <li><span class="dot">${I.text}</span><div><b>${c.c2t}</b><span>${c.c2}</span></div></li>
@@ -294,7 +294,7 @@ add({id:'A-V1', g:'and', os:'and', t:'Голос недоступен: приг�
  ['A-V1d','503 keyboard_unavailable',I.alert,'rKbT','rKbB',0],['A-V1e','повторный 401',I.lock,'r401T','r401B',1]].forEach(([id,why,ic,T,B,open])=>
   add({id, g:'and', os:'and', t:`Недоступен: ${why}`, cap: open ? '«Открыть Parrlo» → нужный экран Parrlo (возраст / согласие A-V1f / вход). После него — обратно в чат, голос включён.' : 'Без кнопки «Открыть»: чинить пользователю нечего. Строка скрывается крестиком или при наборе.',
     r:(c,x)=>kbScreen(c,x,{},{off:true,banner:c[B],banT:c[T],bannerBtn:open?c.openParrlo:false})}));
-add({id:'A-V1f', g:'and', os:'and', t:'Раскрытие и согласие (Parrlo)', cap:'Экран Parrlo (Activity), вход из A-V1b/c. Две равные кнопки «Не сейчас» / «Разрешить» — в конце текста, после всех пунктов и политики (без навязывания выбора). c4 (Soniox, удаление ≤ 30 мин) — окончательно после DPA Soniox (Мурат). Тексты — через RG.',
+add({id:'A-V1f', g:'and', os:'and', t:'Раскрытие и согласие (Parrlo)', cap:'Экран Parrlo (Activity), вход из A-V1b/c. Две равные кнопки «Не сейчас» / «Разрешить» — в конце текста, после всех пунктов и политики (без навязывания выбора). c4 (Soniox, удаление ≤ 30 мин) — окончательно после DPA Soniox и ЕС на prod (Мурат). Тексты — через RG.',
   r:(c,x)=>host(c,x,{nav:true,title:c.cTitle,body:`<p class="p">${c.cLead}</p>
     <div class="grp"><div class="rowi"><span class="t">${c.c1t}<small>${c.c1}</small></span></div><div class="rowi"><span class="t">${c.c2t}<small>${c.c2}</small></span></div><div class="rowi"><span class="t">${c.c3t}<small>${c.c3}</small></span></div></div>
     <p class="small">${c.c4} ${c.c5}</p><span class="small lnk">${c.cPolicy}</span><div class="eqbtn">${btn(c.cLater,'eq')}${btn(c.cAllow,'eq')}</div><span class="small" style="text-align:center">${c.cNext.replace('iOS','Android')}</span>`})});

@@ -66,8 +66,9 @@ h2.s{font-size:19px;margin:28px 0 8px}
 </style></head>
 <body><div class="page">
 <h1>Android Translate · «Данные и приватность»</h1>
-<p>Как iOS (прототип: Настройки → Данные и приватность). Material 3 на токенах бренда; тема — только тёмная (решение 13.11: Translate, кроме экранов клавиатуры, тёмный). Тексты — <code>copy.js</code>, проверяет RG. Отличия от iOS: отчёт о сбоях готовит Parrlo (не «iOS»), без фразы про Apple; строка клавиатуры — «Клавиатура Parrlo» вместо «Полного доступа».</p>
+<p>По образцу iOS (прототип: Настройки → Данные и приватность), но только то, что есть в Android (RG сверил с кодом PR 605): без отчётов о сбоях и отметок «Неточно». Material 3 на токенах бренда, тема только тёмная (решение 13.11). Удаление — <b>два варианта, выбирает Мурат</b>: <b>A</b> — с удалением данных установки на сервере (/v1/me/erase), <b>B</b> — только телефон. Тексты — <code>copy.js</code>, проверяет RG.</p>
 <div id="ctl">
+  <div class="g" data-k="v"><span>Удаление</span><button data-v="A">A · с сервером</button><button data-v="B">B · только телефон</button></div>
   <div class="g" data-k="lang"><span>Язык</span><button data-v="ru">RU</button><button data-v="es">ES</button><button data-v="en">EN</button></div>
   <div class="g" data-k="font"><span>Шрифт</span><button data-v="n">Обычный</button><button data-v="b">Самый крупный</button></div>
   <div class="g" data-k="size"><span>Экран</span><button data-v="s">360 dp</button><button data-v="l">412 dp</button></div>
@@ -78,7 +79,8 @@ h2.s{font-size:19px;margin:28px 0 8px}
 <div class="scrollx"><table>
 <tr><th>Действие</th><th>Что происходит</th></tr>
 <tr><td>«Очистить историю»</td><td>Диалог DP-3 → «Очистить» → история на телефоне удалена сразу → снекбар DP-4 (4 с). Сеть не нужна.</td></tr>
-<tr><td>«Удалить все данные»</td><td>Диалог DP-5 → «Удалить» → DP-6: удаляем на телефоне (история, журнал реплик, жалобы) и отправляем запрос на удаление голоса на сервер → DP-7. Без сети → DP-8: телефон уже очищен, «Повторить» шлёт только запрос на сервер.</td></tr>
+<tr><td>A · «Удалить все данные»</td><td>DP-5 → «Удалить» → DP-6: стираем на телефоне историю, звук «Отправить голосом» в кэше и ждущий входящий файл, затем /v1/me/erase (данные установки на сервере, включая «Мой голос»; возраст и согласие остаются) → DP-7. Без сети → DP-8: телефон уже очищен, «Повторить» шлёт только запрос на сервер.</td></tr>
+<tr><td>B · «Удалить данные на телефоне»</td><td>DP-5 → «Удалить» → DP-6: стираем на телефоне историю, звук «Отправить голосом» и полученный файл → DP-7. Сеть не нужна. Данные на сервере — по запросу пользователя (контакт в Политике).</td></tr>
 <tr><td>Кнопки диалогов</td><td>Справа: «Отмена» (основной цвет) и действие (цвет ошибки). При самом крупном шрифте — столбиком, действие сверху. Назад / тап по фону = «Отмена» (кроме DP-6).</td></tr>
 <tr><td>TalkBack</td><td>Заголовки разделов — heading; диалог объявляет заголовок и текст; снекбар — liveRegion polite.</td></tr>
 </table></div>
@@ -87,7 +89,7 @@ h2.s{font-size:19px;margin:28px 0 8px}
 <script>
 (function(){
 const DEV={s:{w:360,h:760},l:{w:412,h:915}};
-const st={lang:'ru',font:'n',size:'s'};
+const st={v:'A',lang:'ru',font:'n',size:'s'};
 try{const q=new URLSearchParams(location.search);for(const k in st)if(q.get(k))st[k]=q.get(k);}catch(e){}
 const back='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H5M11 5l-7 7 7 7"/></svg>';
 const top=(c)=>`<div class="sb"><span>9:41</span><span class="ic"><i></i></span></div><div class="tab"><span class="bk" role="button" aria-label="${c.back}">${back}</span><h1>${c.title}</h1></div>`;
@@ -95,30 +97,29 @@ const li=(h,o={})=>`<div class="li${o.dng?' dng':''}" role="${o.sw!==undefined?'
 const sh=(t)=>`<div class="sh" role="heading" aria-level="2">${t}</div>`;
 const ft=(t)=>`<p class="ft">${t}</p>`;
 const mainTop=(c)=>`${sh(c.hCloud)}${li(c.cloudRow,{su:c.cloudVal,suPri:true})}${li(c.voiceRow,{su:c.voiceSub,sw:true})}${li(c.revokeRow,{dng:true})}
-  <div class="dv"></div>${li(c.diagRow,{sw:false})}${ft(c.diagFoot)}
   ${sh(c.hHist)}${li(c.keepRow,{sw:true})}${li(c.daysRow,{su:c.d30,suPri:true})}${ft(c.histFoot)}`;
-const mainBot=(c)=>`${sh(c.hMarks)}${ft(c.marksFoot)}${sh(c.hKb)}${li(c.kbRow,{su:c.kbSub})}<div class="dv"></div>${li(c.clearRow,{dng:true})}${li(c.delRow,{dng:true})}${ft(c.delFoot)}`;
+const mainBot=(c,v)=>`${sh(c.hKb)}${li(c.kbRow,{su:c.kbSub})}<div class="dv"></div>${li(c.clearRow,{dng:true})}${li(c['delRow'+v],{dng:true})}${v==='B'?ft(c.srvFootB):''}${ft(c.delFoot)}`;
 const screen=(c,body,over='')=>`${top(c)}<div class="body">${body}</div><div class="gh"><i></i></div>${over}`;
 const dlg=(t,b,acts,extra='')=>`<div class="scrim"><div class="dlg" role="alertdialog" aria-label="${t}"><h2>${t}</h2><div class="sc">${b?`<p>${b}</p>`:''}${extra}</div>${acts?`<div class="acts">${acts}</div>`:''}</div></div>`;
 const tb=(t,cls='')=>`<span class="tb ${cls}" role="button">${t}</span>`;
 const S=[
- {id:'DP-1',t:'Экран: верх',cap:'Разделы как на iOS: перевод в облаке, отчёты о сбоях, история. Значения — строкой под заголовком (Material).',r:c=>screen(c,mainTop(c))},
- {id:'DP-2',t:'Экран: низ',cap:'После прокрутки: отметки «Неточно», клавиатура, «Очистить историю» и «Удалить все данные» — цветом ошибки.',r:c=>screen(c,mainBot(c))},
- {id:'DP-2b',t:'Срок хранения',cap:'Диалог с переключателями, выбор применяется сразу, без «ОК».',r:c=>screen(c,mainTop(c),dlg(c.daysT,'',tb(c.cancel),`<div class="radio" role="radiogroup">${[c.d7,c.d30,c.d90,c.dAll].map((d,i)=>`<span class="r${i===1?' on':''}" role="radio" aria-checked="${i===1}"><i></i>${d}</span>`).join('')}</div>`))},
- {id:'DP-3',t:'Очистить историю?',cap:'Подтверждение. «Очистить» — цвет ошибки, «Отмена» — основной.',r:c=>screen(c,mainBot(c),dlg(c.clearT,c.clearB,tb(c.cancel)+tb(c.clearBtn,'dng')))},
- {id:'DP-4',t:'История очищена',cap:'Снекбар 4 с, без «Отменить»: удаление сразу.',r:c=>screen(c,mainBot(c),`<div class="snack" role="status">${c.cleared}</div>`)},
- {id:'DP-5',t:'Удалить все данные?',cap:'Подтверждение: что именно удалится, «отменить нельзя».',r:c=>screen(c,mainBot(c),dlg(c.delT,c.delB,tb(c.cancel)+tb(c.delBtn,'dng')))},
- {id:'DP-6',t:'Удаляем',cap:'Неотменяемый шаг: без кнопок, назад не закрывает. Обычно меньше секунды; показываем, если дольше 300 мс.',r:c=>screen(c,mainBot(c),`<div class="scrim"><div class="dlg" role="alertdialog" aria-busy="true"><div class="prog"><span class="spin" aria-hidden="true"></span>${c.deleting}</div></div></div>`)},
- {id:'DP-7',t:'Данные удалены',cap:'Результат. После «Понятно» — на экран DP-1, история пустая, голоса нет.',r:c=>screen(c,mainTop(c),dlg(c.doneT,c.doneB,tb(c.ok)))},
- {id:'DP-8',t:'Ошибка: нет сети',cap:'Телефон очищен, запрос на сервер не ушёл. «Повторить» шлёт только его; если закрыть — повторим при следующем запуске с сетью.',r:c=>screen(c,mainTop(c),dlg(c.errT,c.errB,tb(c.cancel)+tb(c.retry)))},
+ {id:'DP-1',t:'Экран: верх',cap:'Перевод в облаке и история. Значения — строкой под заголовком (Material).',r:(c,v)=>screen(c,mainTop(c))},
+ {id:'DP-2',t:'Экран: низ',cap:'После прокрутки: клавиатура, «Очистить историю» и удаление цветом ошибки. B: строка «Удалить данные на телефоне» и подпись, как удалить данные на сервере.',r:(c,v)=>screen(c,mainBot(c,v))},
+ {id:'DP-2b',t:'Срок хранения',cap:'Диалог с переключателями, выбор применяется сразу, без «ОК».',r:(c,v)=>screen(c,mainTop(c),dlg(c.daysT,'',tb(c.cancel),`<div class="radio" role="radiogroup">${[c.d7,c.d30,c.d90,c.dAll].map((d,i)=>`<span class="r${i===1?' on':''}" role="radio" aria-checked="${i===1}"><i></i>${d}</span>`).join('')}</div>`))},
+ {id:'DP-3',t:'Очистить историю?',cap:'Подтверждение. «Очистить» — цвет ошибки, «Отмена» — основной.',r:(c,v)=>screen(c,mainBot(c,v),dlg(c.clearT,c.clearB,tb(c.cancel)+tb(c.clearBtn,'dng')))},
+ {id:'DP-4',t:'История очищена',cap:'Снекбар 4 с, без «Отменить»: удаление сразу.',r:(c,v)=>screen(c,mainBot(c,v),`<div class="snack" role="status">${c.cleared}</div>`)},
+ {id:'DP-5',t:'Удалить данные?',cap:'A: телефон и данные установки на сервере, включая «Мой голос»; возраст и согласие остаются. B: только телефон — история, звук «Отправить голосом», полученный файл.',r:(c,v)=>screen(c,mainBot(c,v),dlg(c['delT'+v],c['delB'+v],tb(c.cancel)+tb(c.delBtn,'dng')))},
+ {id:'DP-6',t:'Удаляем',cap:'Неотменяемый шаг: без кнопок, «Назад» не закрывает. Показываем, если дольше 300 мс.',r:(c,v)=>screen(c,mainBot(c,v),`<div class="scrim"><div class="dlg" role="alertdialog" aria-busy="true"><div class="prog"><span class="spin" aria-hidden="true"></span>${c.deleting}</div></div></div>`)},
+ {id:'DP-7',t:'Данные удалены',cap:'Результат. После «Понятно» — на DP-1, история пустая.',r:(c,v)=>screen(c,mainTop(c),dlg(c.doneT,c['doneB'+v],tb(c.ok)))},
+ {id:'DP-8',t:'Ошибка: нет сети (только A)',cap:'Телефон очищен, запрос /v1/me/erase не ушёл. «Повторить» шлёт только его; если закрыть — повторим при следующем запуске с сетью. В варианте B этого состояния нет.',only:'A',r:(c,v)=>screen(c,mainTop(c),dlg(c.errT,c.errB,tb(c.cancel)+tb(c.retry)))},
 ];
 window.DPS=S;
-function phone(s,o){const d=DEV[o.size];return `<div class="ph${o.font==='b'?' big':''}" style="--w:${d.w}px;--h:${d.h}px" lang="${o.lang}">${s.r(window.DP[o.lang])}</div>`;}
+function phone(s,o){const d=DEV[o.size];return `<div class="ph${o.font==='b'?' big':''}" style="--w:${d.w}px;--h:${d.h}px" lang="${o.lang}">${s.r(window.DP[o.lang],o.v||'A')}</div>`;}
 window.DPphone=phone;
 function render(){
   document.querySelectorAll('#ctl .g').forEach(g=>g.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(st[g.dataset.k]===b.dataset.v))));
   const z=.75,d=DEV[st.size];
-  document.getElementById('grid').innerHTML=S.map(s=>`<figure style="width:${Math.max(d.w*z,240)}px"><div style="width:${d.w*z}px;height:${d.h*z}px"><div style="transform:scale(${z});transform-origin:0 0;width:${d.w}px">${phone(s,st)}</div></div><figcaption><span class="id">${s.id}</span><b>${s.t}</b> · ${s.cap}</figcaption></figure>`).join('');
+  document.getElementById('grid').innerHTML=S.filter(s=>!s.only||s.only===st.v).map(s=>`<figure style="width:${Math.max(d.w*z,240)}px"><div style="width:${d.w*z}px;height:${d.h*z}px"><div style="transform:scale(${z});transform-origin:0 0;width:${d.w}px">${phone(s,st)}</div></div><figcaption><span class="id">${s.id}</span><b>${s.t}</b> · ${s.cap}</figcaption></figure>`).join('');
   try{history.replaceState(null,'','?'+new URLSearchParams(st));}catch(e){}
 }
 document.getElementById('ctl').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;st[b.parentNode.dataset.k]=b.dataset.v;render();});

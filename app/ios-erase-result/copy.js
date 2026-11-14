@@ -21,6 +21,12 @@ ru: {
   codeL: 'Код', code: 'ER-7F3A-91C2', copy: 'Скопировать', copied: 'Скопировано',
   ok: 'Понятно', retry: 'Повторить', close: 'Закрыть',
   kpVoiceLog: 'Журнал согласий на «Мой голос» — как доказательство согласия',
+  e429T: 'Слишком много запросов',
+  e429B: 'На этом iPhone данные удалены. На сервере удалим, когда вы повторите — попробуйте через {n}.',
+  n5min: '5 мин',
+  offT: 'Удалено на этом iPhone',
+  offB: 'Удалить данные на сервере пока можно только по запросу — напишите нам, контакт в Политике конфиденциальности.',
+  policy: 'Политика конфиденциальности',
 },
 es: {
   settings: 'Ajustes', title: 'Datos y privacidad',
@@ -41,6 +47,12 @@ es: {
   codeL: 'Código', code: 'ER-7F3A-91C2', copy: 'Copiar', copied: 'Copiado',
   ok: 'Entendido', retry: 'Reintentar', close: 'Cerrar',
   kpVoiceLog: 'El registro de consentimientos de «Mi voz»: como prueba del consentimiento',
+  e429T: 'Demasiadas solicitudes',
+  e429B: 'Los datos de este iPhone se han eliminado. Los del servidor los eliminaremos cuando vuelvas a intentarlo: prueba dentro de {n}.',
+  n5min: '5 min',
+  offT: 'Eliminado en este iPhone',
+  offB: 'Por ahora, los datos del servidor solo se pueden eliminar a petición: escríbenos; el contacto está en la Política de privacidad.',
+  policy: 'Política de privacidad',
 },
 en: {
   settings: 'Settings', title: 'Data & Privacy',
@@ -61,6 +73,12 @@ en: {
   codeL: 'Code', code: 'ER-7F3A-91C2', copy: 'Copy', copied: 'Copied',
   ok: 'OK', retry: 'Try Again', close: 'Close',
   kpVoiceLog: 'The “My Voice” consent log — as proof of consent',
+  e429T: 'Too Many Requests',
+  e429B: 'The data on this iPhone has been deleted. We’ll delete it on the server when you try again — try in {n}.',
+  n5min: '5 min',
+  offT: 'Deleted on This iPhone',
+  offB: 'For now, data on the server can only be deleted on request — write to us; the contact is in the Privacy Policy.',
+  policy: 'Privacy Policy',
 },
 };
 (function(){ const NB=' ', SHORT=/(^|[\s(«])(в|во|к|ко|с|со|о|об|и|а|у|на|по|за|из|до|не|от|для|без|при|что|как|через|или|ли|же|бы|вы|мы|я)\s/gi;

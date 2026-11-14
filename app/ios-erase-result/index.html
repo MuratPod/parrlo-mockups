@@ -51,7 +51,7 @@ h2.s{font-size:19px;margin:28px 0 8px}
 .hero{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;padding:0 8px 2px}
 .hero .ic{width:calc(56px*min(var(--fs),1.2));height:calc(56px*min(var(--fs),1.2));border-radius:50%;display:flex;align-items:center;justify-content:center}
 .hero .ic svg{width:52%;height:52%}
-.hero .ic.ok{background:var(--okBg);color:var(--ok)}.hero .ic.wait{background:var(--warnBg);color:var(--warnInk)}.hero .ic.err{background:var(--dangerBg);color:var(--danger)}
+.hero .ic.ok{background:var(--okBg);color:var(--ok)}.hero .ic.wait{background:var(--warnBg);color:var(--warnInk)}.hero .ic.info{background:var(--fill);color:var(--nav)}.hero .ic.err{background:var(--dangerBg);color:var(--danger)}
 .hero h2{font-size:calc(28px*var(--fs));font-weight:800;line-height:1.2;letter-spacing:-.01em;text-wrap:balance}
 .hero p{font-size:calc(15px*var(--fs));color:var(--sec);line-height:1.4}
 .sh{font-size:calc(12px*var(--fs));font-weight:600;color:var(--sec);text-transform:uppercase;letter-spacing:.05em;padding:0 16px 6px}
@@ -91,6 +91,8 @@ h2.s{font-size:19px;margin:28px 0 8px}
 <tr><td>200, voice = deleted / none</td><td>IR-1 «Готово». «Удалено» и «Осталось» — из erased / kept. «Ваш «Мой голос»» — только при voice = deleted. «Понятно» закрывает лист, экран показывает пустую историю.</td></tr>
 <tr><td>200, voice = pending_upstream</td><td>IR-2 «Принято». Голос — в разделе «Ещё удаляется»; не пишем «Голос удалён» и не показываем «Готово».</td></tr>
 <tr><td>Нет сети, 5xx (erase_failed, upstream_complaints)</td><td>IR-3. Телефон уже очищен (по §7). «Повторить» шлёт запрос на сервер ещё раз. Код — выделяемый (долгое нажатие → «Скопировать»), есть кнопка «Скопировать» с подтверждением «Скопировано». Код = id запроса, чтобы найти его в логах.</td></tr>
+<tr><td>429</td><td>IR-4. Телефон уже очищен; «Попробуйте через N» из retry_after_s.</td></tr>
+<tr><td>404 (ERASE_ENABLED выключен)</td><td>IR-5. Телефон очищен, сервер — только по письму, ссылка на Политику.</td></tr>
 <tr><td>VoiceOver</td><td>Лист объявляет заголовок; разделы — заголовки; код читается по символам.</td></tr>
 </table>
 </div>
@@ -104,6 +106,7 @@ const SW='fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="rou
 const I={check:`<svg viewBox="0 0 24 24" ${SW} stroke-width="2.6"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>`,
  clock:`<svg viewBox="0 0 24 24" ${SW}><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>`,
  alert:`<svg viewBox="0 0 24 24" ${SW}><path d="M12 3.5l9.5 16.5h-19z"/><path d="M12 10v4.5"/><path d="M12 17.5v.01"/></svg>`,
+ info:`<svg viewBox="0 0 24 24" ${SW}><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><path d="M12 7.5v.01"/></svg>`,
  keep:`<svg viewBox="0 0 24 24" ${SW}><rect x="4" y="5" width="16" height="15" rx="2.5"/><path d="M4 10h16"/><path d="M10 14h4"/></svg>`,
  x:`<svg viewBox="0 0 24 24" ${SW} stroke-width="2.6"><path d="M6 6l12 12M18 6L6 18"/></svg>`,
  copy:`<svg viewBox="0 0 24 24" ${SW}><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/></svg>`,
@@ -127,6 +130,12 @@ const S=[
   r:(c,x)=>frame(c,x,`<div class="hero"><span class="ic err">${I.alert}</span><h2>${c.errT}</h2><p>${c.errB}</p></div>
    <div class="grp"><div class="code"><span class="cv" aria-label="${c.codeL}: ${c.code.split('').join(' ')}"><span class="cl">${c.codeL}</span>${c.code}</span><span class="cp" role="button">${I.copy}${c.copy}</span></div></div>`,
    `<span class="btn pri" role="button">${c.retry}</span><span class="btn pl" role="button">${c.close}</span>`)},
+ {id:'IR-4',t:'429: слишком много запросов',cap:'Телефон уже очищен, серверный вызов ждёт повтора (лимит 10 в сутки). Значок часов, «через N» из retry_after_s. Одна кнопка.',
+  r:(c,x)=>frame(c,x,`<div class="hero"><span class="ic wait">${I.clock}</span><h2>${c.e429T}</h2><p>${c.e429B.replace('{n}',c.n5min)}</p></div>
+   ${sec(c.erasedH,[c.erPhone,c.erConsent].map(t=>row(I.check,'ok',t)).join(''))}`,`<span class="btn pri" role="button">${c.ok}</span>`)},
+ {id:'IR-5',t:'404: удаление на сервере выключено',cap:'ERASE_ENABLED выключен (сейчас так на prod). Телефон очищен, на сервере данные остались — только по письму. Нейтральный значок «i»: это не ошибка и не ожидание. Ссылка — на Политику (контакт).',
+  r:(c,x)=>frame(c,x,`<div class="hero"><span class="ic info">${I.info}</span><h2>${c.offT}</h2><p>${c.offB}</p></div>
+   ${sec(c.erasedH,[c.erPhone,c.erConsent].map(t=>row(I.check,'ok',t)).join(''))}<div class="grp"><div class="row lnk" role="link"><span>${c.policy}</span><span class="chev">${I.chev}</span></div></div>`,`<span class="btn pri" role="button">${c.ok}</span>`)},
 ];
 window.IRS=S;
 function phone(s,o){const d=DEV[o.size];return `<div class="ph ${d.cls}${o.font==='b'?' big':''}" style="--w:${d.w}px;--h:${d.h}px" lang="${o.lang}">${s.r(window.ER[o.lang],o)}</div>`;}

@@ -111,7 +111,7 @@ const S=[
  {id:'DP-5',t:'Удалить данные?',cap:'A: телефон и данные установки на сервере, включая «Мой голос»; возраст и согласие остаются. B: только телефон — история, звук «Отправить голосом», полученный файл.',r:(c,v)=>screen(c,mainBot(c,v),dlg(c['delT'+v],c['delB'+v],tb(c.cancel)+tb(c.delBtn,'dng')))},
  {id:'DP-6',t:'Удаляем',cap:'Неотменяемый шаг: без кнопок, «Назад» не закрывает. Показываем, если дольше 300 мс.',r:(c,v)=>screen(c,mainBot(c,v),`<div class="scrim"><div class="dlg" role="alertdialog" aria-busy="true"><div class="prog"><span class="spin" aria-hidden="true"></span>${c.deleting}</div></div></div>`)},
  {id:'DP-7',t:'Данные удалены',cap:'Результат. После «Понятно» — на DP-1, история пустая.',r:(c,v)=>screen(c,mainTop(c),dlg(c.doneT,c['doneB'+v],tb(c.ok)))},
- {id:'DP-8',t:'Ошибка: нет сети (только A)',cap:'Телефон очищен, запрос /v1/me/erase не ушёл. «Повторить» шлёт только его; если закрыть — повторим при следующем запуске с сетью. В варианте B этого состояния нет.',only:'A',r:(c,v)=>screen(c,mainTop(c),dlg(c.errT,c.errB,tb(c.cancel)+tb(c.retry)))},
+ {id:'DP-8',t:'Ошибка сервера (только A)',cap:'Телефон очищен, запрос /v1/me/erase не прошёл (нет сети или ошибка сервера). «Повторить» шлёт только его; если закрыть — повторим при следующем запуске с сетью. В варианте B этого состояния нет.',only:'A',r:(c,v)=>screen(c,mainTop(c),dlg(c.errT,c.errB,tb(c.cancel)+tb(c.retry)))},
 ];
 window.DPS=S;
 function phone(s,o){const d=DEV[o.size];return `<div class="ph${o.font==='b'?' big':''}" style="--w:${d.w}px;--h:${d.h}px" lang="${o.lang}">${s.r(window.DP[o.lang],o.v||'A')}</div>`;}

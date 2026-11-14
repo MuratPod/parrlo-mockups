@@ -80,7 +80,9 @@ h2.s{font-size:19px;margin:28px 0 8px}
 <tr><th>Действие</th><th>Что происходит</th></tr>
 <tr><td>«Очистить историю»</td><td>Диалог DP-3 → «Очистить» → история на телефоне удалена сразу → снекбар DP-4 (4 с). Сеть не нужна.</td></tr>
 <tr><td>A · «Удалить все данные»</td><td>DP-5 → «Удалить» → DP-6: стираем на телефоне историю, звук «Отправить голосом» в кэше и ждущий входящий файл, затем /v1/me/erase (данные установки на сервере, включая «Мой голос»; возраст и согласие остаются) → DP-7. Без сети → DP-8: телефон уже очищен, «Повторить» шлёт только запрос на сервер.</td></tr>
-<tr><td>B · «Удалить данные на телефоне»</td><td>DP-5 → «Удалить» → DP-6: стираем на телефоне историю, звук «Отправить голосом» и полученный файл → DP-7. Сеть не нужна. Данные на сервере — по запросу пользователя (контакт в Политике).</td></tr>
+<tr><td>B · «Удалить данные на телефоне»</td><td>DP-5 → «Удалить» → DP-6: стираем на телефоне историю, звук «Отправить голосом» и полученный файл → DP-7. Если что-то не удалилось → DP-7p (что осталось, «Повторить» — только остаток). Сеть не нужна. Данные на сервере — по запросу пользователя (контакт в Политике).</td></tr>
+<tr><td>Перевод в облаке</td><td>Одно согласие (VOICE_TEXT / NONE). Включён: статус «Включён» и «Выключить перевод в облаке» (подтверждение — как на экране согласия). Выключен: статус «Выключен», тап → экран согласия → после включения — обратно сюда, не в Настройки.</td></tr>
+<tr><td>История выключена</td><td>«Срок хранения» скрыт; при включении появляется со значением по умолчанию (30 дней).</td></tr>
 <tr><td>Кнопки диалогов</td><td>Справа: «Отмена» (основной цвет) и действие (цвет ошибки). При самом крупном шрифте — столбиком, действие сверху. Назад / тап по фону = «Отмена» (кроме DP-6).</td></tr>
 <tr><td>TalkBack</td><td>Заголовки разделов — heading; диалог объявляет заголовок и текст; снекбар — liveRegion polite.</td></tr>
 </table></div>
@@ -96,22 +98,25 @@ const top=(c)=>`<div class="sb"><span>9:41</span><span class="ic"><i></i></span>
 const li=(h,o={})=>`<div class="li${o.dng?' dng':''}" role="${o.sw!==undefined?'switch':'button'}"${o.sw!==undefined?` aria-checked="${o.sw}"`:''}><span class="tx"><span class="hl">${h}</span>${o.su?`<span class="su${o.suPri?' pri':''}">${o.su}</span>`:''}</span>${o.sw!==undefined?`<span class="sw${o.sw?'':' off'}" aria-hidden="true"></span>`:''}</div>`;
 const sh=(t)=>`<div class="sh" role="heading" aria-level="2">${t}</div>`;
 const ft=(t)=>`<p class="ft">${t}</p>`;
-const mainTop=(c)=>`${sh(c.hCloud)}${li(c.cloudRow,{su:c.cloudVal,suPri:true})}${li(c.voiceRow,{su:c.voiceSub,sw:true})}${li(c.revokeRow,{dng:true})}
-  ${sh(c.hHist)}${li(c.keepRow,{sw:true})}${li(c.daysRow,{su:c.d30,suPri:true})}${ft(c.histFoot)}`;
-const mainBot=(c,v)=>`${sh(c.hKb)}${li(c.kbRow,{su:c.kbSub})}<div class="dv"></div>${li(c.clearRow,{dng:true})}${li(c['delRow'+v],{dng:true})}${v==='B'?ft(c.srvFootB):''}${ft(c.delFoot)}`;
+const mainTop=(c,o={})=>`${sh(c.hCloud)}${li(c.cloudRow,{su:o.off?c.cloudOff:c.cloudOn,suPri:!o.off})}${o.off?'':li(c.revokeRow,{dng:true})}${ft(c.cloudFoot)}
+  ${sh(c.hHist)}${li(c.keepRow,{sw:!o.histOff})}${o.histOff?'':li(c.daysRow,{su:c.d30,suPri:true})}${ft(c.histFoot)}`;
+const mainBot=(c,v)=>`<div class="dv"></div>${li(c.clearRow,{dng:true})}${li(c['delRow'+v],{dng:true})}${v==='B'?ft(c.srvFootB):''}${ft(c.delFoot)}`;
+const full=(c,v,o={})=>`${mainTop(c,o)}${mainBot(c,v)}`;
 const screen=(c,body,over='')=>`${top(c)}<div class="body">${body}</div><div class="gh"><i></i></div>${over}`;
 const dlg=(t,b,acts,extra='')=>`<div class="scrim"><div class="dlg" role="alertdialog" aria-label="${t}"><h2>${t}</h2><div class="sc">${b?`<p>${b}</p>`:''}${extra}</div>${acts?`<div class="acts">${acts}</div>`:''}</div></div>`;
 const tb=(t,cls='')=>`<span class="tb ${cls}" role="button">${t}</span>`;
 const S=[
- {id:'DP-1',t:'Экран: верх',cap:'Перевод в облаке и история. Значения — строкой под заголовком (Material).',r:(c,v)=>screen(c,mainTop(c))},
- {id:'DP-2',t:'Экран: низ',cap:'После прокрутки: клавиатура, «Очистить историю» и удаление цветом ошибки. B: строка «Удалить данные на телефоне» и подпись, как удалить данные на сервере.',r:(c,v)=>screen(c,mainBot(c,v))},
- {id:'DP-2b',t:'Срок хранения',cap:'Диалог с переключателями, выбор применяется сразу, без «ОК».',r:(c,v)=>screen(c,mainTop(c),dlg(c.daysT,'',tb(c.cancel),`<div class="radio" role="radiogroup">${[c.d7,c.d30,c.d90,c.dAll].map((d,i)=>`<span class="r${i===1?' on':''}" role="radio" aria-checked="${i===1}"><i></i>${d}</span>`).join('')}</div>`))},
- {id:'DP-3',t:'Очистить историю?',cap:'Подтверждение. «Очистить» — цвет ошибки, «Отмена» — основной.',r:(c,v)=>screen(c,mainBot(c,v),dlg(c.clearT,c.clearB,tb(c.cancel)+tb(c.clearBtn,'dng')))},
- {id:'DP-4',t:'История очищена',cap:'Снекбар 4 с, без «Отменить»: удаление сразу.',r:(c,v)=>screen(c,mainBot(c,v),`<div class="snack" role="status">${c.cleared}</div>`)},
- {id:'DP-5',t:'Удалить данные?',cap:'A: телефон и данные установки на сервере, включая «Мой голос»; возраст и согласие остаются. B: только телефон — история, звук «Отправить голосом», полученный файл.',r:(c,v)=>screen(c,mainBot(c,v),dlg(c['delT'+v],c['delB'+v],tb(c.cancel)+tb(c.delBtn,'dng')))},
- {id:'DP-6',t:'Удаляем',cap:'Неотменяемый шаг: без кнопок, «Назад» не закрывает. Показываем, если дольше 300 мс.',r:(c,v)=>screen(c,mainBot(c,v),`<div class="scrim"><div class="dlg" role="alertdialog" aria-busy="true"><div class="prog"><span class="spin" aria-hidden="true"></span>${c.deleting}</div></div></div>`)},
- {id:'DP-7',t:'Данные удалены',cap:'Результат. После «Понятно» — на DP-1, история пустая.',r:(c,v)=>screen(c,mainTop(c),dlg(c.doneT,c['doneB'+v],tb(c.ok)))},
- {id:'DP-8',t:'Ошибка сервера (только A)',cap:'Телефон очищен, запрос /v1/me/erase не прошёл (нет сети или ошибка сервера). «Повторить» шлёт только его; если закрыть — повторим при следующем запуске с сетью. В варианте B этого состояния нет.',only:'A',r:(c,v)=>screen(c,mainTop(c),dlg(c.errT,c.errB,tb(c.cancel)+tb(c.retry)))},
+ {id:'DP-1',t:'Экран',cap:'Одно согласие на облако (Android: VOICE_TEXT / NONE): строка со статусом и «Выключить перевод в облаке». История и удаление. При самом крупном шрифте экран прокручивается (DP-2 — низ).',r:(c,v)=>screen(c,full(c,v))},
+ {id:'DP-1b',t:'Облако и история выключены',cap:'Перевод в облаке выключен: статус «Выключен», тап по строке → экран согласия → после включения возвращаемся сюда. История выключена: «Срок хранения» скрыт (как на iOS).',r:(c,v)=>screen(c,full(c,v,{off:true,histOff:true}))},
+ {id:'DP-2',t:'Экран: низ',cap:'После прокрутки (нужна при крупном шрифте): «Очистить историю» и удаление цветом ошибки. B: подпись, как удалить данные на сервере.',r:(c,v)=>screen(c,mainBot(c,v))},
+ {id:'DP-2b',t:'Срок хранения',cap:'Диалог с переключателями, выбор применяется сразу, без «ОК».',r:(c,v)=>screen(c,full(c,v),dlg(c.daysT,'',tb(c.cancel),`<div class="radio" role="radiogroup">${[c.d7,c.d30,c.d90,c.dAll].map((d,i)=>`<span class="r${i===1?' on':''}" role="radio" aria-checked="${i===1}"><i></i>${d}</span>`).join('')}</div>`))},
+ {id:'DP-3',t:'Очистить историю?',cap:'Подтверждение. «Очистить» — цвет ошибки, «Отмена» — основной.',r:(c,v)=>screen(c,full(c,v),dlg(c.clearT,c.clearB,tb(c.cancel)+tb(c.clearBtn,'dng')))},
+ {id:'DP-4',t:'История очищена',cap:'Снекбар 4 с, без «Отменить»: удаление сразу.',r:(c,v)=>screen(c,full(c,v),`<div class="snack" role="status">${c.cleared}</div>`)},
+ {id:'DP-5',t:'Удалить данные?',cap:'A: телефон и данные установки на сервере, включая «Мой голос»; возраст и согласие остаются. B: только телефон — история, звук «Отправить голосом», полученный файл.',r:(c,v)=>screen(c,full(c,v),dlg(c['delT'+v],c['delB'+v],tb(c.cancel)+tb(c.delBtn,'dng')))},
+ {id:'DP-6',t:'Удаляем',cap:'Неотменяемый шаг: без кнопок, «Назад» не закрывает. Показываем, если дольше 300 мс.',r:(c,v)=>screen(c,full(c,v),`<div class="scrim"><div class="dlg" role="alertdialog" aria-busy="true"><div class="prog"><span class="spin" aria-hidden="true"></span>${c.deleting}</div></div></div>`)},
+ {id:'DP-7',t:'Данные удалены',cap:'Результат. После «Понятно» — на DP-1, история пустая.',r:(c,v)=>screen(c,full(c,v),dlg(c.doneT,c['doneB'+v],tb(c.ok)))},
+ {id:'DP-7p',t:'Удалилось не всё',cap:'Часть файлов не удалилась (файл занят, ошибка диска). Перечисляем, что осталось; «Повторить» удаляет только остаток. Удалённое не восстанавливается.',r:(c,v)=>screen(c,full(c,v),dlg(c.partT,c.partB.replace('{items}',c.itFile),tb(c.cancel)+tb(c.retry)))},
+ {id:'DP-8',t:'Ошибка сервера (только A)',cap:'Телефон очищен, запрос /v1/me/erase не прошёл (нет сети или ошибка сервера). «Повторить» шлёт только его; если закрыть — повторим при следующем запуске с сетью. В варианте B этого состояния нет.',only:'A',r:(c,v)=>screen(c,full(c,v),dlg(c.errT,c.errB,tb(c.cancel)+tb(c.retry)))},
 ];
 window.DPS=S;
 function phone(s,o){const d=DEV[o.size];return `<div class="ph${o.font==='b'?' big':''}" style="--w:${d.w}px;--h:${d.h}px" lang="${o.lang}">${s.r(window.DP[o.lang],o.v||'A')}</div>`;}

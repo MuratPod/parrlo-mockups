@@ -1,5 +1,5 @@
 /* Parrlo Translate · Android · «Данные и приватность» — тексты ru/es/en.
-   Основа — iOS (prototype/js/app-c.js, «Data & privacy»), сверено RG с кодом Android (PR 605). Удаление: сейчас B (только телефон); A (с сервером, /v1/me/erase) — после решения Мурата.
+   Основа — iOS (prototype/js/app-c.js, «Data & privacy»), сверено RG с кодом Android (PR 605). Удаление: сейчас B (только телефон); A (с сервером, /v1/me/erase) — после решения Мурата. Тексты A (delRowA, delBA, doneBA, pendB, errT/errB) — черновик, заменить текстами из parrlo-app docs/legal-drafts/erase-ui-text.md.
    delFoot — тот же текст и для iOS (сейчас там «Звук никогда не сохраняется» / в прототипе «Parrlo не сохраняет запись вашего голоса…») — заменить. Проверяет RG. */
 window.DP = {
 ru: {
@@ -15,7 +15,7 @@ ru: {
   cleared: 'История очищена', delBtn: 'Удалить',
   deleting: 'Удаляем данные…',
   doneT: 'Данные удалены',
-  errT: 'Не получилось удалить данные на сервере', errB: 'Данные на телефоне уже удалены. Проверьте интернет и нажмите «Повторить».',
+  errT: 'Не получилось удалить данные на сервере', errB: 'На телефоне и на сервере ничего не удалено. Проверьте интернет и нажмите «Повторить».',
   daysT: 'Срок хранения',
   delRowA: 'Удалить все данные',
   delTA: 'Удалить все данные?',
@@ -34,6 +34,7 @@ ru: {
   itHist: 'историю',
   itAudio: 'звук для «Отправить голосом»',
   itFile: 'полученный файл',
+  pendB: 'Данные на телефоне и на сервере удалены. «Мой голос» ещё удаляется у партнёра, мы сообщим, когда закончим.',
 },
 es: {
   title: 'Datos y privacidad', back: 'Atrás', settings: 'Ajustes',
@@ -48,7 +49,7 @@ es: {
   cleared: 'Historial borrado', delBtn: 'Eliminar',
   deleting: 'Eliminando los datos…',
   doneT: 'Datos eliminados',
-  errT: 'No se han podido eliminar los datos del servidor', errB: 'Los datos del teléfono ya están eliminados. Comprueba la conexión y toca «Reintentar».',
+  errT: 'No se han podido eliminar los datos del servidor', errB: 'No se ha eliminado nada del teléfono ni del servidor. Comprueba la conexión y toca «Reintentar».',
   daysT: 'Conservar',
   delRowA: 'Eliminar todos los datos',
   delTA: '¿Eliminar todos los datos?',
@@ -67,6 +68,7 @@ es: {
   itHist: 'el historial',
   itAudio: 'el audio de «Enviar con voz»',
   itFile: 'el archivo recibido',
+  pendB: 'Se han eliminado los datos del teléfono y del servidor. «Mi voz» todavía se está eliminando en el proveedor; te avisaremos cuando termine.',
 },
 en: {
   title: 'Data & privacy', back: 'Back', settings: 'Settings',
@@ -81,7 +83,7 @@ en: {
   cleared: 'History cleared', delBtn: 'Delete',
   deleting: 'Deleting your data…',
   doneT: 'Data deleted',
-  errT: 'Couldn’t delete the data on the server', errB: 'The data on your phone is already deleted. Check your connection and tap “Try again”.',
+  errT: 'Couldn’t delete the data on the server', errB: 'Nothing was deleted from the phone or the server. Check your connection and tap “Try again”.',
   daysT: 'Keep for',
   delRowA: 'Delete all data',
   delTA: 'Delete all data?',
@@ -100,6 +102,7 @@ en: {
   itHist: 'history',
   itAudio: 'the audio for “Send as voice”',
   itFile: 'the received file',
+  pendB: 'Data on the phone and on the server has been deleted. “My Voice” is still being deleted by our provider — we’ll let you know when it’s done.',
 },
 };
 /* типографика: как в kb-voice — неразрывные пробелы в ru, перед «—», между двумя последними словами фразы */

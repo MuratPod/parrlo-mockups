@@ -101,14 +101,14 @@ const I={check:`<svg viewBox="0 0 24 24" ${SW} stroke-width="2.6"><path d="M5 12
  chev:`<svg viewBox="0 0 24 24" ${SW} style="width:14px;height:14px"><path d="M9 5l7 7-7 7"/></svg>`};
 const row=(ic,cls,t)=>`<div class="row"><span class="ri ${cls}">${ic}</span><span>${t}</span></div>`;
 const sec=(h,rows)=>`<div><div class="sh" role="heading" aria-level="3">${h}</div><div class="grp">${rows}</div></div>`;
-const kept=c=>sec(c.keptH,[c.kpAge,c.kpLimits,c.kpSub].map(t=>row(I.keep,'keep',t)).join(''));
+const kept=c=>sec(c.keptH,[c.kpAge,c.kpVoiceLog,c.kpLimits,c.kpSub].map(t=>row(I.keep,'keep',t)).join(''));
 const link=c=>`<div class="grp"><div class="row lnk" role="link"><span>${c.keepLink}</span><span class="chev">${I.chev}</span></div></div>`;
 const frame=(c,x,body,foot)=>`<div class="sb">${x.size==='s'?'9:41':'<span>9:41</span><span></span>'}</div>
   <div class="under"><div class="nv">‹ ${c.settings}</div><h1>${c.title}</h1><div class="grp"></div><div class="grp"></div></div>
   <div class="sheet" role="dialog" aria-modal="true"><div class="grab"><i></i></div><div class="shead"><span class="x" role="button" aria-label="${c.close}">${I.x}</span></div>
   <div class="cont">${body}</div><div class="foot">${foot}</div></div><div class="hi"><i></i></div>`;
 const S=[
- {id:'IR-1',t:'Готово',cap:'Ответ 200. «Удалено» — что стёрли (голос — только при voice = deleted), «Осталось» — без сроков, сроки по ссылке «Что именно хранится» (Политика, раздел «Сроки»). Под списком — про подписку.',
+ {id:'IR-1',t:'Готово',cap:'Ответ 200. «Удалено» — что стёрли (голос — только при voice = deleted; «Согласия на этом iPhone» — если PR 618 их сбрасывает), «Осталось» — из kept ответа /v1/me/erase; «Журнал согласий на «Мой голос»» — только если голос был; счётчики — с верхней границей 40 дней, остальные сроки по ссылке «Что именно хранится» (Политика, раздел «Сроки»). Под списком — про подписку.',
   r:(c,x)=>frame(c,x,`<div class="hero"><span class="ic ok">${I.check}</span><h2>${c.doneT}</h2></div>
    ${sec(c.erasedH,[c.erPhone,c.erServer,c.erConsent,c.erVoice].map(t=>row(I.check,'ok',t)).join(''))}${kept(c)}${link(c)}<p class="note">${c.subNote}</p>`,`<span class="btn pri" role="button">${c.ok}</span>`)},
  {id:'IR-2',t:'Принято: голос ещё удаляется',cap:'Ответ 200 с voice = pending_upstream. Заголовок «Принято», голос — в «Ещё удаляется», пояснение: делать ничего не нужно.',

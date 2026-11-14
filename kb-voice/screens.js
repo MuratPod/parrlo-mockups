@@ -33,11 +33,14 @@ const I = {
   chevL: `<svg viewBox="0 0 24 24" ${SW} aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>`,
   gear: `<svg viewBox="0 0 24 24" ${SW} aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg>`,
 };
+I.swap = `<svg viewBox="0 0 24 24" ${SW} aria-hidden="true"><path d="M4 8h14l-3.5-3.5"/><path d="M20 16H6l3.5 3.5"/></svg>`;
+I.trash = `<svg viewBox="0 0 24 24" ${SW} aria-hidden="true"><path d="M4 7h16"/><path d="M9.5 7V4.5h5V7"/><path d="M6.5 7l1 13h9l1-13"/></svg>`;
+I.lock = `<svg viewBox="0 0 24 24" ${SW} aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8.5 10.5V7.5a3.5 3.5 0 0 1 7 0v3"/></svg>`;
 window.ICONS = I;
 const MARK = (theme) => `<img src="../brandbook/assets/logo/${theme==='dark'?'mark-color-dark':'mark-color'}.svg" alt="" width="30" height="30" class="bm">`;
 const MASCOT = (pose, theme) => `<img src="../brandbook/assets/mascot/mascot-${pose}-${theme}.svg" alt="" style="width:calc(132px*min(var(--fs),1.2));height:auto">`;
 const fmt = (s, o={}) => s.replace(/\{(\w+)\}/g, (_,k) => o[k] ?? `{${k}}`);
-const LEFT = {ru:'2 ч 15 мин', es:'2 h 15 min', en:'2 h 15 min'};
+const LEFT = {ru:'2\u00A0ч\u00A015\u00A0мин', es:'2\u00A0h\u00A015\u00A0min', en:'2\u00A0h\u00A015\u00A0min'};
 const A11Y = (s) => s.replace(/"/g,'&quot;');
 
 /* ---------- общие куски ---------- */
@@ -86,7 +89,17 @@ function keys(c, x) {
     <div class="r">${bottom}</div></div>`;
 }
 /* панель инструментов: 🎤 🔊 | Улучшить Перевести */
+function andTbar(c, x, o={}) {
+  const off = o.off ? ' off' : '';
+  const pl = (ic, t) => `<span class="pill ap" role="button" aria-label="${A11Y(t)}">${ic.replace('<svg','<svg class="pi"')}<span class="pt">${t}</span></span>`;
+  const ib = (ic, t, act) => `<span class="ib${off}${act?' act':''}" role="button" aria-label="${A11Y(t)}">${ic}</span>`;
+  const pc = x.lang==='es' ? 'RU' : 'ES', pn = x.lang==='es' ? 'Русский' : 'Español';
+  const chip = `<span class="lchip"><span class="lc" role="button" aria-label="${A11Y(fmt(c.partnerA11y,{lang:pn}))}">${pc}</span><span class="sw" role="button" aria-label="${A11Y(c.swapA11y)}">${I.swap}</span></span>`;
+  const voice = o.noVoice ? '' : `${ib(I.mic,c.dict,o.act==='mic')}${ib(I.voice,c.voice,o.act==='voice')}`;
+  return `<div class="tbar atb">${chip}<span class="sp"></span>${pl(I.spark,c.improve)}${pl(I.tr,c.translate)}${voice}</div>`;
+}
 function tbar(c, x, o={}) {
+  if (x.os === 'and') return andTbar(c, x, o);
   const lab = false;                         // 🎤/🔊 — только иконки 44×40: подписи не помещаются в es/ru рядом с «Улучшить»/«Перевести»
   const off = o.off ? ' off' : '';
   const ib = (ic, t, act) => `<span class="ib${off}${act?' act':''}" role="button" aria-label="${A11Y(t)}">${ic}${lab?`<span>${t}</span>`:''}</span>`;
@@ -95,10 +108,11 @@ function tbar(c, x, o={}) {
 }
 function kb(c, x, o={}) {
   let top = '';
-  if (o.banner) top = `<div class="ban">${MARK(x.theme)}<div class="bt"><b>${c.kbOffT}</b><span>${o.banner}</span></div>${o.bannerBtn===false?'':`<span class="bo">${c.kbOpen}</span>`}</div>`;
+  if (o.banner) top = `<div class="ban">${MARK(x.theme)}<div class="bt"><b>${o.banT||c.kbOffT}</b><span>${o.banner}</span></div>${o.bannerBtn===false?'':`<span class="bo">${o.bannerBtn||c.kbOpen}</span>`}</div>`;
   if (o.chip === 'ready') top = `<div class="chiprow"><span class="chip" role="button" aria-label="${A11Y(c.insertA11y)}">${I.mic}<span class="ct"><b>${c.insert}:</b>«${c.lit.first}»</span><span class="cx" role="button" aria-label="${A11Y(c.dismiss)}">${I.x.replace('<svg','<svg style="width:18px;height:18px;color:var(--sec)"')}</span></span></div>`;
   if (o.chip === 'inserted') top = `<div class="chiprow"><span class="chip done">${I.check.replace('<svg','<svg style="color:var(--pri)"')}<span class="ct"><b>${c.inserted}</b></span><span class="undo"><svg class="ring" viewBox="0 0 18 18"><circle class="bg" cx="9" cy="9" r="7"/><circle class="fg" cx="9" cy="9" r="7"/></svg>${c.undo}</span></span></div>`;
   if (o.chip === 'sent') top = `<div class="chiprow"><span class="chip done">${I.check.replace('<svg','<svg style="color:var(--pri)"')}<span class="ct"><b>${c.voiceSent}</b> <span class="muted">${c.voiceSentSub}</span></span></span></div>`;
+  if (o.chip === 'sent2') top = `<div class="chiprow"><span class="chip done two">${I.check.replace('<svg','<svg style="color:var(--pri)"')}<span class="ct"><b>${o.chipT}</b> <span class="muted">${o.chipS}</span></span></span></div>`;
   if (o.tip) top = `<div style="position:relative;height:0"><div style="position:absolute;left:6px;bottom:-4px;z-index:4;background:var(--tx);color:var(--bg);border-radius:12px;padding:8px 12px;font-size:calc(14px*var(--kfs));line-height:1.35;box-shadow:0 8px 24px rgba(0,0,0,.25);max-width:calc(100% - 12px)"><div style="display:flex;gap:6px;align-items:center"><span style="width:18px;height:18px;display:inline-flex">${I.mic}</span><b>${c.dict}</b></div><div style="display:flex;gap:6px;align-items:center"><span style="width:18px;height:18px;display:inline-flex">${I.voice}</span><b>${c.voice}</b></div><span style="position:absolute;left:24px;bottom:-6px;width:12px;height:12px;background:var(--tx);transform:rotate(45deg)"></span></div></div>`;
   const body = o.panel ? `<div class="andpanel">${o.panel}</div>` : keys(c, x);
   const glob = x.os==='ios' && !x.small ? `<div class="glob">${I.globe}<span></span></div>` : '';
@@ -164,15 +178,14 @@ add({id:'K-V5', g:'ios-kb', os:'ios', t:'Голосовое отправлено
   r:(c,x)=>kbScreen(c,x,{sentAudio:true},{chip:'sent'})});
 
 /* ===== iOS: хост, диктовка ===== */
-add({id:'H-D0', g:'ios-d', os:'ios', t:'Согласие на голос', cap:'Один раз, до первого запроса микрофона. ElevenLabs — США (SCC), решение 13.11; формулировки проверит юрист.',
-  r:(c,x)=>host(c,x,{title:'',close:c.cLater,body:`<h1 class="h1">${c.cTitle}</h1><p class="p">${c.cLead}</p>
+add({id:'H-D0', g:'ios-d', os:'ios', t:'Согласие на голос', cap:'Один раз, до первого запроса микрофона. Две равные кнопки в конце текста. Anthropic и ElevenLabs — США (SCC); c4 (Soniox, удаление ≤ 30 мин) — окончательно после DPA Soniox и ЕС на prod (Мурат). Формулировки — через RG.',
+  r:(c,x)=>host(c,x,{title:'',body:`<h1 class="h1">${c.cTitle}</h1><p class="p">${c.cLead}</p>
     <ul class="list"><li><span class="dot">${I.mic}</span><div><b>${c.c1t}</b><span>${c.c1}</span></div></li>
     <li><span class="dot">${I.text}</span><div><b>${c.c2t}</b><span>${c.c2}</span></div></li>
     <li><span class="dot">${I.voice}</span><div><b>${c.c3t}</b><span>${c.c3}</span></div></li>
     <li><span class="dot">${I.shield}</span><div><span style="color:var(--tx)">${c.c4}</span></div></li>
     <li><span class="dot">${I.gear}</span><div><span>${c.c5}</span></div></li></ul>
-    <span class="lnk">${c.cPolicy} ›</span>`,
-    foot:`${btn(c.cAllow)}<span class="small" style="text-align:center">${c.cNext}</span>`})});
+    <span class="lnk">${c.cPolicy} ›</span><div class="eqbtn">${btn(c.cLater,'eq')}${btn(c.cAllow,'eq')}</div><span class="small" style="text-align:center">${c.cNext}</span>`})});
 add({id:'H-D0b', g:'ios-d', os:'ios', t:'Системный запрос микрофона', cap:'Сразу после «Разрешить». Текст — строка NSMicrophoneUsageDescription.',
   r:(c,x)=>host(c,x,{title:c.dTitle,close:c.cancel,body:settingsGroup(c,x),foot:`<div style="display:flex;justify-content:center"><span class="recbtn">${I.mic}</span></div>`,
     overlay:`<div class="scrim"></div><div class="alert"><div class="at"><b>${c.micT}</b><p>${c.micB}</p></div><div class="ab"><span>${c.micDeny}</span><span>${c.micAllow}</span></div></div>`})});
@@ -254,50 +267,114 @@ add({id:'H-G5d', g:'ios-g', os:'ios', t:'Ошибка: 503', cap:'ElevenLabs и�
 add({id:'H-G5e', g:'ios-g', os:'ios', t:'Занято (.busy)', cap:'Общий пул озвучки занят (429 kbd_usd_*/stt_cap_minute). Текст сохранён, «Повторить». Без цифр.',
   r:(c,x)=>host(c,x,{title:c.gTitle,close:c.cancel,center:true,body:`<span class="recbtn" style="background:var(--warnbg);color:var(--warn);box-shadow:none">${I.clock}</span><h2 class="h2">${c.busyT}</h2><p class="p">${c.gBusyB}</p>`,foot:btn(c.retry)})});
 
-/* ===== Android ===== */
-const andRec = (c,x,o={}) => `${andTop(c,`<span class="rdot"></span>${c.recording}`,`<span class="b7" style="color:var(--tx);font-variant-numeric:tabular-nums">${o.t||'0:42'}</span> ${c.of} 2:00`)}
-  <div class="mid"><div class="wave${o.flat?' flat':''}" style="height:${o.msg?56:84}px">${waveBars(x.small?24:30,o.seed||3)}</div>${o.msg||''}<div class="pbar${o.w?' w':''}"><i style="width:${o.p||35}%"></i></div></div>
-  <div class="acts"><span>${c.cancel}</span><span class="err"><span style="width:12px;height:12px;border-radius:3px;background:currentColor;display:block"></span>${c.stop}</span></div>`;
-add({id:'A-V0', g:'and', os:'and', t:'Голос в панели', cap:'Android: клавиатура пишет сама (разрешение RECORD_AUDIO у клавиатуры), в приложение не переключаемся.',
-  r:(c,x)=>kbScreen(c,x,{},{})});
-add({id:'A-V1', g:'and', os:'and', t:'Нет разрешения', cap:'Вход на экран раскрытия (уже есть, PR 486), затем системный запрос. Здесь — только вход из панели.',
-  r:(c,x)=>kbScreen(c,x,{},{act:'mic',panel:`${andTop(c,c.dict,'')}<div class="mid">${msg('info',I.micOff,c.aPermT,c.aPermB)}</div><div class="acts"><span>${c.cancel}</span><span class="pri">${c.aPermGo}</span></div>`})});
-add({id:'A-V2', g:'and', os:'and', t:'Запись', cap:'Панель записи поверх букв, высота клавиатуры та же — чат не прыгает. Анимация: волна.', anim:true,
-  r:(c,x)=>kbScreen(c,x,{},{act:'mic',panel:andRec(c,x)})});
-add({id:'A-V2b', g:'and', os:'and', t:'Запись: осталось 15 с', cap:'Как iOS H-D3b.',
-  r:(c,x)=>kbScreen(c,x,{},{act:'mic',panel:andRec(c,x,{t:'1:45',p:87.5,w:true,msg:msg('warn',I.clock,c.left15,''),seed:7})})});
-add({id:'A-V3', g:'and', os:'and', t:'Тишина', cap:'Подсказка, запись продолжается.',
-  r:(c,x)=>kbScreen(c,x,{},{act:'mic',panel:andRec(c,x,{t:'0:06',p:5,flat:true,msg:msg('warn',I.ear,c.silenceT,'')})})});
-add({id:'A-V4', g:'and', os:'and', t:'Обработка', cap:'Компактно: те же честные этапы в одну колонку.', anim:true,
-  r:(c,x)=>kbScreen(c,x,{},{act:'mic',panel:`${andTop(c,c.procT,'')}<div class="mid" style="align-items:stretch">${stages(c,'anim').replace('class="stages"','class="stages" style="--fs:var(--kfs);gap:10px"')}</div><div class="acts"><span>${c.cancel}</span></div>`})});
-add({id:'A-V5', g:'and', os:'and', t:'Результат', cap:'Превью текста; «Вставить» — в поле, «Перевести» — добавляет перевод в превью, «Заново» — новая запись.',
-  r:(c,x)=>kbScreen(c,x,{},{act:'mic',panel:`<div class="prev"><small>${c.resText}</small>${c.lit.text}</div><div class="mid"></div><div class="acts"><span>${I.redo}${c.again}</span><span>${I.tr}${c.translate}</span><span class="pri">${c.insert}</span></div>`})});
-add({id:'A-V5b', g:'and', os:'and', t:'Результат + перевод', cap:'После «Перевести»: вставляется перевод.',
-  r:(c,x)=>kbScreen(c,x,{},{act:'mic',panel:`<div class="prev"><small>${c.resTr}</small>${c.lit.tr}</div><div class="mid"></div><div class="acts"><span>${I.redo}${c.again}</span><span class="pri">${c.insert}</span></div>`})});
-add({id:'A-V6a', g:'and', os:'and', t:'Голосовое: превью', cap:'Текст из поля или перевод; голос «Мужской / Женский».',
-  r:(c,x)=>kbScreen(c,x,{field:c.lit.text},{act:'voice',panel:`<div class="seg"><span>${c.gMine}</span><span class="on">${c.gTr}</span></div><div class="prev">${c.lit.tr}</div><div class="seg"><span class="on">${c.female}</span><span>${c.male}</span></div><div class="acts"><span>${c.cancel}</span><span class="pri">${I.voice}${c.gSpeak}</span></div>`})});
-add({id:'A-V6b', g:'and', os:'and', t:'Голосовое: готовим', cap:'Один этап.', anim:true,
-  r:(c,x)=>kbScreen(c,x,{field:c.lit.text},{act:'voice',panel:`${andTop(c,c.gPrep,'')}<div class="mid"><div class="wave small" style="max-width:180px">${waveBars(16,2)}</div><span class="small">${c.gPrepSub}</span></div><div class="acts"><span>${c.cancel}</span></div>`})});
-add({id:'A-V6c', g:'and', os:'and', t:'Голосовое: плеер', cap:'«Отправить» — commitContent аудио, если чат принимает; иначе «Поделиться» (системный лист).',
-  r:(c,x)=>kbScreen(c,x,{field:c.lit.text},{act:'voice',panel:`<div class="player"><span class="pp">${I.play}</span><span class="wv">${staticWave(x.small?28:34,10)}</span><span class="tm">0:06</span></div><span class="small">${c.aSendNote}</span><div class="mid"></div><div class="acts"><span>${I.redo}${c.reVoice}</span><span>${I.share}${c.share}</span><span class="pri">${I.send}${c.aSend}</span></div>`})});
-add({id:'A-V7a', g:'and', os:'and', t:'Ошибка: нет сети', cap:'Те же тексты, что iOS H-D7 (503, «не распознано», «< 1 с» — аналогично).',
-  r:(c,x)=>kbScreen(c,x,{},{act:'mic',panel:`<div class="mid">${msg('warn',I.wifiOff,c.eNetT,c.eNetB)}</div><div class="acts"><span>${c.cancel}</span><span class="pri">${c.retry}</span></div>`})});
-add({id:'A-V7b', g:'and', os:'and', t:'Ошибка: лимит 429', cap:'Время сброса — местное.',
-  r:(c,x)=>kbScreen(c,x,{},{act:'mic',panel:`<div class="mid">${msg('warn',I.clock,c.e429T,fmt(c.e429B,{time:'18:40',left:LEFT[x.lang]}))}</div><div class="acts"><span class="pri">${c.typeInstead}</span></div>`})});
-add({id:'A-V7c', g:'and', os:'and', t:'Ошибка: не распознано', cap:'',
-  r:(c,x)=>kbScreen(c,x,{},{act:'mic',panel:`<div class="mid">${msg('warn',I.ear,c.eNrT,c.eNrB)}</div><div class="acts"><span>${c.cancel}</span><span class="pri">${c.again}</span></div>`})});
-add({id:'A-V7d', g:'and', os:'and', t:'Занято (.busy)', cap:'Общий пул голоса занят — отдельно от личного лимита (A-V7b). Запись сохранена.',
-  r:(c,x)=>kbScreen(c,x,{},{act:'mic',panel:`<div class="mid">${msg('warn',I.clock,c.busyT,c.busyB)}</div><div class="acts"><span>${c.cancel}</span><span class="pri">${c.retry}</span></div>`})});
-add({id:'A-V8', g:'and', os:'and', t:'Прерывание', cap:'Звонок / потеря аудиофокуса / клавиатура скрыта — запись остановлена, сохранённое не теряется.',
-  r:(c,x)=>kbScreen(c,x,{},{act:'mic',panel:`<div class="mid">${msg('info',I.phone,c.intT,c.intCall+' '+fmt(c.intSaved,{sec:'0:37'}))}</div><div class="acts"><span>${I.mic}${c.cont}</span><span class="pri">${c.done}</span></div>`})});
-add({id:'A-K1', g:'and-k', os:'and', t:'Клавиатура целиком', cap:'Продуктовый вид вместо диагностического probe: ряд действий (🎤 🔊 | Улучшить, Перевести), буквы, нижний ряд с языком на пробеле.',
+/* ===== Android v2 (заказ parrlo-keyboard 14.11) =====
+   Панель голоса занимает место букв и не выше их (--kbody). Ряд действий с чипом «ES ⇄» виден всегда.
+   При самом крупном шрифте содержимое панели прокручивается, кнопки закреплены внизу. */
+const xBtn = (c) => `<span class="px" role="button" aria-label="${A11Y(c.closeA11y)}">${I.x}</span>`;
+const pan = (body, acts) => { let note=''; acts=(acts||'').replace(/<span class="anote[^"]*">[\s\S]*?<\/span>/,m=>{note=m;return ''}); return `<div class="sc">${body}</div>${note}${acts?`<div class="acts">${acts}</div>`:''}`; };
+const sp = (t, cls='', ic='') => `<span class="${cls}" role="button">${ic}${t}</span>`;
+const spA = (t, a, cls='', ic='') => `<span class="${cls}" role="button" aria-label="${A11Y(a)}">${ic}${t}</span>`;
+const andRec = (c,x,o={}) => pan(`${andTop(c,`<span class="rdot"></span>${c.recording}`,`<span class="b7" style="color:var(--tx);font-variant-numeric:tabular-nums">${o.t||'0:42'}</span> ${c.of} 2:00`)}
+  <div class="mid">${o.msg?'':`<div class="wave${o.flat?' flat':''}">${waveBars(x.small?24:30,o.seed||3)}</div>`}${o.msg||''}<div class="pbar${o.w?' w':''}"><i style="width:${o.p||35}%"></i></div></div>`,
+  `${sp(c.cancel)}${sp(c.stop,'err','<span style="width:12px;height:12px;border-radius:3px;background:currentColor;display:block"></span>')}`);
+const P = (c,x,body,acts,o={}) => kbScreen(c,x,o.m||{},{act:o.act||'mic',panel:pan(body,acts)});
+const ln = (kind, ic, t, b) => msg(kind, ic, t, b||'');
+const LANGS = {ru:'Español', es:'Русский', en:'Español'};
+
+/* ---- A-K1 / A-V0 ---- */
+add({id:'A-K1', g:'and-k', os:'and', t:'Клавиатура целиком', cap:'Ряд действий: чип языка собеседника «ES ⇄» (тап — выбор языка, ⇄ — поменять местами), «Улучшить», «Перевести», 🎤 «Диктовка», 🔊 «Голосовое» (подписи — в TalkBack и подсказке по долгому нажатию). При самом крупном шрифте «Улучшить»/«Перевести» — только значки. Буквы ru/es/en, язык на пробеле.',
   r:(c,x)=>kbScreen(c,x,{field:c.lit.text},{})});
-add({id:'A-K2', g:'and-k', os:'and', t:'Настройки клавиатуры', cap:'Язык собеседника, мой род, согласие на голос, голос голосовых, политика.',
-  r:(c,x)=>`${sb(c,x)}<div class="nv"><span class="bk">${I.chevL.replace('<svg','<svg style="width:24px;height:24px"')}</span><span class="tt" style="text-align:left;left:56px">${c.aSettings}</span></div>
-    <div class="body"><div class="grp"><div class="rowi"><span class="t">${c.sMyLang}</span><span class="v">${c.langName}</span></div><div class="rowi"><span class="t">${c.sPartner}</span><span class="v">${x.lang==='es'?'Русский':'Español'}</span></div>
-    <div class="rowi"><span class="t">${c.sGender}<small>${c.sGenderSub}</small></span><span class="v">${c.female}</span></div></div>
-    <span class="small b6" style="padding:0 4px;text-transform:uppercase;letter-spacing:.04em">${c.sVoice}</span>
-    <div class="grp"><div class="rowi"><span class="t">${c.sConsent}</span><span class="tog"></span></div><div class="rowi"><span class="t">${c.sVoiceOf}</span><span class="v">${c.female}</span></div><div class="rowi"><span class="t">${c.sAbout}</span><span class="v">›</span></div><div class="rowi"><span class="t lnk">${c.sPolicy}</span><span class="v">›</span></div></div></div>${hm()}`});
+add({id:'A-V0', g:'and', os:'and', t:'Голос доступен', cap:'Клавиатура пишет голос сама (RECORD_AUDIO у клавиатуры), в Parrlo не переключаемся. 🎤 и 🔊 — активный цвет.',
+  r:(c,x)=>kbScreen(c,x,{},{})});
+
+/* ---- A-V1 недоступен ---- */
+add({id:'A-V1', g:'and', os:'and', t:'Голос недоступен: приглушено', cap:'🎤 и 🔊 приглушены (42%), но нажимаются. Тап → строка с причиной (A-V1a…e). Буквы не прячем.',
+  r:(c,x)=>kbScreen(c,x,{},{off:true})});
+[['A-V1a','нет 16+',I.lock,'r16T','r16B',1],['A-V1b','нет согласия',I.shield,'rConsT','rConsB',1],['A-V1c','нет микрофона',I.micOff,'rMicT','rMicB',1],
+ ['A-V1d','503 keyboard_unavailable',I.alert,'rKbT','rKbB',0],['A-V1e','повторный 401',I.lock,'r401T','r401B',1]].forEach(([id,why,ic,T,B,open])=>
+  add({id, g:'and', os:'and', t:`Недоступен: ${why}`, cap: open ? '«Открыть Parrlo» → нужный экран Parrlo (возраст / согласие A-V1f / вход). После него — обратно в чат, голос включён.' : 'Без кнопки «Открыть»: чинить пользователю нечего. Строка скрывается крестиком или при наборе.',
+    r:(c,x)=>kbScreen(c,x,{},{off:true,banner:c[B],banT:c[T],bannerBtn:open?c.openParrlo:false})}));
+add({id:'A-V1f', g:'and', os:'and', t:'Раскрытие и согласие (Parrlo)', cap:'Экран Parrlo (Activity), вход из A-V1b/c. Две равные кнопки «Не сейчас» / «Разрешить» — в конце текста, после всех пунктов и политики (без навязывания выбора). c4 (Soniox, удаление ≤ 30 мин) — окончательно после DPA Soniox и ЕС на prod (Мурат). Тексты — через RG.',
+  r:(c,x)=>host(c,x,{nav:true,title:c.cTitle,body:`<p class="p">${c.cLead}</p>
+    <div class="grp"><div class="rowi"><span class="t">${c.c1t}<small>${c.c1}</small></span></div><div class="rowi"><span class="t">${c.c2t}<small>${c.c2}</small></span></div><div class="rowi"><span class="t">${c.c3t}<small>${c.c3}</small></span></div></div>
+    <p class="small">${c.c4} ${c.c5}</p><span class="small lnk">${c.cPolicy}</span><div class="eqbtn">${btn(c.cLater,'eq')}${btn(c.cAllow,'eq')}</div><span class="small" style="text-align:center">${c.cNext.replace('iOS','Android')}</span>`})});
+add({id:'A-V1g', g:'and', os:'and', t:'Системный запрос микрофона', cap:'Системный диалог Android 11+ (текст системный, наш — только имя «Parrlo»). «Не разрешать» дважды → A-V1c ведёт в настройки Android.',
+  r:(c,x)=>host(c,x,{nav:true,title:c.cTitle,body:`<p class="p">${c.cLead}</p>`,overlay:`<div class="sysdim"><div class="sysdlg"><span class="si">${I.mic}</span><b>${c.aMicAsk}</b><span>${c.aMicWhile}</span><span>${c.aMicOnce}</span><span>${c.aMicNo}</span></div></div>`})});
+
+/* ---- A-V2 запись ---- */
+add({id:'A-V2', g:'and', os:'and', t:'Запись', cap:'Панель вместо букв, не выше их — чат не прыгает. Волна — уровень микрофона. Таймер «0:42 из 2:00», полоса — доля лимита.', anim:true,
+  r:(c,x)=>kbScreen(c,x,{},{act:'mic',panel:andRec(c,x)})});
+add({id:'A-V2b', g:'and', os:'and', t:'Запись: осталось 15 с', cap:'С 1:45 — янтарная полоса и строка. В 2:00 запись останавливается сама → A-V4.',
+  r:(c,x)=>kbScreen(c,x,{},{act:'mic',panel:andRec(c,x,{t:'1:45',p:87.5,w:true,msg:ln('warn',I.clock,c.left15),seed:7})})});
+add({id:'A-V2c', g:'and', os:'and', t:'Android не дал микрофон', cap:'AudioRecord не стартовал (звонок, другое приложение, фокус). «Записать в приложении» открывает диктовку в Parrlo, текст вернётся в клавиатуру.',
+  r:(c,x)=>P(c,x,`<div class="mid">${ln('warn',I.micOff,c.aMicBusyT,c.aMicBusyB)}</div>`,`${sp(c.cancel,'s')}${spA(c.recInApp,c.recInAppA11y,'pri')}`)});
+
+/* ---- A-V3 / A-V4 ---- */
+add({id:'A-V3', g:'and', os:'and', t:'Тишина', cap:'Через 5 с без голоса. Запись продолжается; строка уходит, как только появится голос.',
+  r:(c,x)=>kbScreen(c,x,{},{act:'mic',panel:andRec(c,x,{t:'0:06',p:5,flat:true,msg:ln('warn',I.ear,c.aSilence)})})});
+add({id:'A-V4', g:'and', os:'and', t:'Обработка', cap:'Честные этапы «Распознаём → Делаем текст → Переводим» по ответам сервера, без фальшивой полосы. «Переводим» — только если перевод включён.', anim:true,
+  r:(c,x)=>P(c,x,`${andTop(c,c.procT,'')}<div class="mid" style="align-items:stretch">${stages(c,'anim').replace('class="stages"','class="stages" style="--fs:var(--kfs);gap:8px"')}</div>`,sp(c.cancel))});
+
+/* ---- A-V5 результат ---- */
+const prevBox = (c, tr) => `<div class="prev two">${xBtn(c)}<span class="o">${c.lit.text}</span>${tr?`<span class="t"><small>${c.resTr}</small>${c.lit.tr}</span>`:''}</div>`;
+add({id:'A-V5', g:'and', os:'and', t:'Результат диктовки', cap:'Превью: текст — 2 строки, перевод — 3 строки (длиннее — многоточие, полный текст в TalkBack). «Вставить» — перевод, «Без перевода» — исходный текст (в TalkBack — «Вставить без перевода»), ↻ — заново, ✕ — закрыть без вставки.',
+  r:(c,x)=>P(c,x,prevBox(c,true),`<span class="ic1" role="button" aria-label="${A11Y(c.againShort)}">${I.redo}</span>${spA(c.insNoTrS,c.insNoTr)}${spA(c.insert,c.insertTrA11y,'pri')}`)});
+add({id:'A-V5b', g:'and', os:'and', t:'Результат без перевода', cap:'Перевод выключен (или язык речи = язык собеседника): одна кнопка «Вставить».',
+  r:(c,x)=>P(c,x,prevBox(c,false),`${sp(c.againShort,'',I.redo)}${sp(c.insert,'pri')}`)});
+
+/* ---- A-V6 голосовое ---- */
+const gPrev = (c, n, over) => `<div class="prev">${xBtn(c)}<span class="clamp3">${over?c.sumLong:c.lit.tr}</span><span class="pfoot">${over?`<span class="lwarn">${I.alert}${c.gLongT}</span>`:''}<span class="vsel" role="button" aria-haspopup="listbox" aria-label="${A11Y(c.gVoice+': '+c.female)}">${I.voice}${c.female}<i>▾</i></span><span class="cnt${over?' lim':''}">${fmt(c.gCount,{n,max:600})}</span></span></div>`;
+const gSeg = (c, lit) => `<div class="seg sm"><span${lit?' class="on"':''}>${c.gLit}</span><span${lit?'':' class="on"'}>${c.gTr}</span></div>`;
+const gSex = (c) => `<span class="sx" role="radiogroup" aria-label="${A11Y(c.gVoice)}"><span class="on" role="radio" aria-checked="true">${c.female}</span><span role="radio" aria-checked="false">${c.male}</span></span>`;
+add({id:'A-V6a', g:'and', os:'and', t:'Голосовое: текст', cap:'Из поля ввода: «Литературно» (исправленный текст) или «Перевод». Голос — выпадающий выбор «Женский / Мужской» в строке со счётчиком (стандартный голос, не ваш), до 600 знаков. «Озвучить» — на всю ширину: «Crear nota de voz» помещается в одну строку во всех языках и при любом шрифте.',
+  r:(c,x)=>P(c,x,`${gSeg(c)}${gPrev(c,84)}`,sp(c.gSpeak,'pri',I.voice),{act:'voice',m:{field:c.lit.text}})});
+add({id:'A-V6d', g:'and', os:'and', t:'Голосовое: больше 600', cap:'Вкладка «Литературно» (длинный исходный текст). Счётчик красный, на месте выбора голоса — причина «Текст слишком длинный», «Озвучить» неактивна. Текст правят в поле чата — счётчик обновляется сразу.',
+  r:(c,x)=>P(c,x,`${gSeg(c,true)}${gPrev(c,612,true)}`,sp(c.gSpeak,'pri dis',I.voice),{act:'voice',m:{field:c.sumLong}})});
+add({id:'A-V6b', g:'and', os:'and', t:'Голосовое: готовим', cap:'Один этап, без полосы. «Отмена» возвращает к A-V6a.', anim:true,
+  r:(c,x)=>P(c,x,`${andTop(c,c.gPrep,'')}<div class="mid"><div class="wave small" style="max-width:180px">${waveBars(16,2)}</div><span class="small">${c.gPrepSub}</span></div>`,sp(c.cancel),{act:'voice',m:{field:c.lit.text}})});
+add({id:'A-V6c', g:'and', os:'and', t:'Голосовое готово', cap:'Плеер play/pause и длительность. При самом крупном шрифте заголовок прячется (остаётся в TalkBack), ✕ — в строке плеера, чтобы плеер и подсказка стояли без наложения. «Отправить»: аудио в поле чата (commitContent), если чат принимает; иначе системный «Поделиться». Само не отправляется.',
+  r:(c,x)=>P(c,x,`${andTop(c,c.gReady,xBtn(c)).replace('class="top"','class="top gtop"')}<div class="player" aria-label="${A11Y(c.gReady)}"><span class="pp" role="button" aria-label="Play">${I.play}</span><span class="wv">${staticWave(x.small?28:34,10)}</span><span class="tm">0:06</span>${xBtn(c).replace('class="px"','class="px pxin"')}</div>`,`<span class="anote">${c.gReadyNote}</span>${sp(c.reVoice,'',I.redo)}${sp(c.aSend,'pri',I.send)}`,{act:'voice',m:{field:c.lit.text}})});
+add({id:'A-V6e', g:'and', os:'and', t:'Голосовое в поле', cap:'После «Отправить»: аудио в поле ввода чата, отправляет сам человек. Панель закрылась, вернулись буквы.',
+  r:(c,x)=>kbScreen(c,x,{field:`<span class="au0">${I.play}<i></i>0:06</span>`},{chip:'sent2',chipT:c.aVoiceIns,chipS:c.aVoiceInsSub})});
+
+/* ---- A-V7 ошибки ---- */
+[['A-V7a','нет сети',I.wifiOff,'eNetT','eNetB','retry'],
+ ['A-V7b','429 лимит дня',I.clock,'e429T','e429B','type'],
+ ['A-V7c','429 busy',I.clock,'busyT','busyB','retry'],
+ ['A-V7d','503 stt_unavailable',I.alert,'e503T','e503B','retry'],
+ ['A-V7f','422',I.ear,'e422T','e422B','again'],
+ ['A-V7g','короче 1 с',I.clock,'eShortT','eShortB','again'],
+ ['A-V7h','413',I.alert,'e413T','e413B','again'],
+ ['A-V7i','502 / 504',I.wifiOff,'e502T','e502B','retry']].forEach(([id,why,ic,T,B,act])=>
+  add({id, g:'and', os:'and', t:`Ошибка: ${why}`, cap: act==='retry' ? 'Запись сохранена — «Повторить» шлёт её же.' : act==='type' ? 'Время сброса — местное. Буквы — одним тапом.' : 'Запись не сохраняем: нужна новая.',
+    r:(c,x)=>P(c,x,`<div class="mid">${ln('warn',ic,c[T],fmt(c[B],{time:'18:40',left:LEFT[x.lang]}))}</div>`,
+      act==='retry'?`${sp(c.cancel)}${sp(c.retry,'pri')}`:act==='type'?sp(c.typeInstead,'pri'):`${sp(c.cancel)}${sp(c.againShort,'pri',I.mic)}`)}));
+add({id:'A-V7j', g:'and', os:'and', t:'Ошибка: 429 лимит голосовых', cap:'Отдельный дневной лимит озвучки (A-V6). Текст уже набран — его можно просто отправить: кнопка закрывает панель, текст остаётся в поле чата. Время сброса — местное.',
+  r:(c,x)=>P(c,x,`<div class="mid">${ln('warn',I.clock,c.aGE429T,fmt(c.aGE429B,{time:'18:40',left:LEFT[x.lang]}))}</div>`,sp(c.done,'pri'),{act:'voice',m:{field:c.lit.text}})});
+add({id:'A-V7e', g:'and', os:'and', t:'Ошибка: 503 voice_disabled / no_credit', cap:'Кнопки 🎤 и 🔊 скрыты, строка — один раз за сессию. Причину (кредиты, выключатель) не раскрываем.',
+  r:(c,x)=>kbScreen(c,x,{},{noVoice:true,banner:c.eVoiceOffB,banT:c.eVoiceOffT,bannerBtn:false})});
+
+/* ---- A-V8 прерывание ---- */
+add({id:'A-V8', g:'and', os:'and', t:'Прерывание', cap:'Звонок, потеря аудиофокуса или клавиатуру скрыли — запись остановлена и сохранена. В той же панели: «Удалить», «Продолжить», «Готово» (→ A-V4).',
+  r:(c,x)=>P(c,x,`<div class="mid">${ln('info',I.phone,c.intT,c.intCall+' '+fmt(c.intSaved,{sec:'0:37'}))}</div>`,`<span class="ic1" role="button" aria-label="${A11Y(c.del2)}">${I.trash}</span>${spA(c.contS,c.cont,'',I.mic)}${sp(c.done,'pri')}`)});
+
+/* ---- A-K2 настройки ---- */
+const AR = (t, v, cls='') => `<div class="rowi ar ${cls}"><span class="t">${t}</span>${v}</div>`;
+const tg = (on) => `<span class="tog${on?'':' off'}"></span>`;
+const k2 = (c, x, o={}) => `${sb(c,x)}<div class="nv k2nv"><span class="bk">${I.chevL.replace('<svg','<svg style="width:24px;height:24px"')}</span><span class="tt">${c.aSettings}</span></div>
+  <div class="body">${o.body}</div>${hm()}`;
+const k2Status = (c, ok) => `<div class="grp">${AR(`${c.k2Status}<small>${ok?`${c.k2On} · ${c.k2Sel}`:c.k2OnNo}</small>`, ok?`<span class="v" style="color:var(--pri)">${I.check.replace('<svg','<svg style="width:20px;height:20px"')}</span>`:`<span class="btn pri k2b">${c.k2Turn}</span>`, ok?'tg':'st')}</div>`;
+const k2Head = (t) => `<span class="small b6" style="padding:0 4px;text-transform:uppercase;letter-spacing:.04em">${t}</span>`;
+const V = (t) => `<span class="v">${t}<span class="chv"> ›</span></span>`;
+add({id:'A-K2', g:'and-k', os:'and', t:'Настройки клавиатуры', cap:'Activity. Статус «включена / выбрана», язык собеседника, «О вас» (форма в переводе, решение 30), согласия текст/голос, 16+, политика, «Удалить данные» (→ подтверждение). При крупном шрифте значение — под заголовком (как в Material). Длинный экран прокручивается: см. A-K2b.',
+  r:(c,x)=>k2(c,x,{body:`${k2Status(c,true)}
+    <div class="grp">${AR(c.sPartner, V(LANGS[x.lang]))}</div>
+    ${k2Head(c.k2About)}<div class="grp">${AR(`${c.k2Form}<small>${c.k2FormSub}</small>`, V(c.k2FormN))}</div>
+    ${k2Head(c.k2Cons)}<div class="grp">${AR(`${c.k2ConsText}<small>${c.k2ConsTextSub}</small>`, tg(true),'tg')}${AR(`${c.k2ConsVoice}<small>${c.k2ConsVoiceSub}</small>`, tg(true),'tg')}</div>`})});
+add({id:'A-K2b', g:'and-k', os:'and', t:'Настройки: низ и «не включена»', cap:'Если клавиатура не включена или не выбрана — кнопка ведёт в системные настройки ввода. Внизу: возраст, политика, удаление данных (красным).',
+  r:(c,x)=>k2(c,x,{body:`${k2Status(c,false)}
+    <div class="grp">${AR(c.k2Age, `<span class="v">${c.k2AgeV}</span>`)}${AR(`<span class="lnk">${c.sPolicy}</span>`, V(''),'tg')}</div>
+    <div class="grp">${AR(`<span style="color:var(--err)">${c.k2Del}</span><small>${c.k2DelSub}</small>`, `<span class="v" style="color:var(--err)">${I.trash.replace('<svg','<svg style="width:20px;height:20px"')}</span>`,'tg')}</div>`})});
 
 window.SCREENS = S;
 window.UTIL = {fmt, MARK};

@@ -324,12 +324,12 @@ add({id:'A-V5b', g:'and', os:'and', t:'Результат без перевод�
 
 /* ---- A-V6 голосовое ---- */
 const gPrev = (c, n, over) => `<div class="prev">${xBtn(c)}<span class="clamp3">${over?c.sumLong:c.lit.tr}</span><span class="pfoot">${over?`<span class="lwarn">${I.alert}${c.gLongT}</span>`:''}<span class="vsel" role="button" aria-haspopup="listbox" aria-label="${A11Y(c.gVoice+': '+c.female)}">${I.voice}${c.female}<i>▾</i></span><span class="cnt${over?' lim':''}">${fmt(c.gCount,{n,max:600})}</span></span></div>`;
-const gSeg = (c) => `<div class="seg sm"><span>${c.gLit}</span><span class="on">${c.gTr}</span></div>`;
+const gSeg = (c, lit) => `<div class="seg sm"><span${lit?' class="on"':''}>${c.gLit}</span><span${lit?'':' class="on"'}>${c.gTr}</span></div>`;
 const gSex = (c) => `<span class="sx" role="radiogroup" aria-label="${A11Y(c.gVoice)}"><span class="on" role="radio" aria-checked="true">${c.female}</span><span role="radio" aria-checked="false">${c.male}</span></span>`;
 add({id:'A-V6a', g:'and', os:'and', t:'Голосовое: текст', cap:'Из поля ввода: «Литературно» (исправленный текст) или «Перевод». Голос — выпадающий выбор «Женский / Мужской» в строке со счётчиком (стандартный голос, не ваш), до 600 знаков. «Озвучить» — на всю ширину: «Crear nota de voz» помещается в одну строку во всех языках и при любом шрифте.',
   r:(c,x)=>P(c,x,`${gSeg(c)}${gPrev(c,84)}`,sp(c.gSpeak,'pri',I.voice),{act:'voice',m:{field:c.lit.text}})});
-add({id:'A-V6d', g:'and', os:'and', t:'Голосовое: больше 600', cap:'Счётчик красный, на месте выбора голоса — причина «Текст слишком длинный», «Озвучить» неактивна. Текст правят в поле чата — счётчик обновляется сразу.',
-  r:(c,x)=>P(c,x,`${gSeg(c)}${gPrev(c,612,true)}`,sp(c.gSpeak,'pri dis',I.voice),{act:'voice',m:{field:c.sumLong}})});
+add({id:'A-V6d', g:'and', os:'and', t:'Голосовое: больше 600', cap:'Вкладка «Литературно» (длинный исходный текст). Счётчик красный, на месте выбора голоса — причина «Текст слишком длинный», «Озвучить» неактивна. Текст правят в поле чата — счётчик обновляется сразу.',
+  r:(c,x)=>P(c,x,`${gSeg(c,true)}${gPrev(c,612,true)}`,sp(c.gSpeak,'pri dis',I.voice),{act:'voice',m:{field:c.sumLong}})});
 add({id:'A-V6b', g:'and', os:'and', t:'Голосовое: готовим', cap:'Один этап, без полосы. «Отмена» возвращает к A-V6a.', anim:true,
   r:(c,x)=>P(c,x,`${andTop(c,c.gPrep,'')}<div class="mid"><div class="wave small" style="max-width:180px">${waveBars(16,2)}</div><span class="small">${c.gPrepSub}</span></div>`,sp(c.cancel),{act:'voice',m:{field:c.lit.text}})});
 add({id:'A-V6c', g:'and', os:'and', t:'Голосовое готово', cap:'Плеер play/pause и длительность. При самом крупном шрифте заголовок прячется (остаётся в TalkBack), ✕ — в строке плеера, чтобы плеер и подсказка стояли без наложения. «Отправить»: аудио в поле чата (commitContent), если чат принимает; иначе системный «Поделиться». Само не отправляется.',

@@ -1,5 +1,5 @@
 /* Parrlo Translate · Android · «Данные и приватность» — тексты ru/es/en.
-   Основа — iOS (prototype/js/app-c.js, «Data & privacy»), сверено RG с кодом Android (PR 605). Удаление: сейчас B (только телефон); A (с сервером, /v1/me/erase) — после решения Мурата. Тексты A — из parrlo-app docs/legal-drafts/erase-ui-text.md §7 (черновик RG 28.10), адаптация для Android: «Google Play» вместо «настроек Apple»; «журнал» и «отметки «Неточно»» убраны (на Android их нет) — формулировку решает RG; [срок] — плейсхолдер, не заполнять. Результат собирается из ответа POST /v1/me/erase (erased/kept).
+   Основа — iOS (prototype/js/app-c.js, «Data & privacy»), сверено RG с кодом Android (PR 605). Удаление: сейчас B (только телефон); A (с сервером, /v1/me/erase) — после решения Мурата. Тексты A — из parrlo-app docs/legal-drafts/erase-ui-text.md §7 (черновик RG 28.10), адаптация для Android: «Google Play» вместо «настроек Apple»; «журнал» и «отметки «Неточно»» убраны (на Android их нет) — формулировку решает RG; delBA — если «Мой голос» создан, иначе delBAnv. Результат собирается из ответа POST /v1/me/erase (erased/kept).
    delFoot — тот же текст и для iOS (сейчас там «Звук никогда не сохраняется» / в прототипе «Parrlo не сохраняет запись вашего голоса…») — заменить. Проверяет RG. */
 window.DP = {
 ru: {
@@ -15,11 +15,11 @@ ru: {
   cleared: 'История очищена', delBtn: 'Удалить',
   deleting: 'Удаляем данные…',
   doneT: 'Данные удалены',
-  errT: 'Серверные данные не удалены', errB: 'На этом телефоне данные удалены, а на сервере — нет. Повторите позже.',
+  errT: 'Данные на сервере не удалены', errB: 'На этом телефоне данные удалены, а на сервере — нет. Повторите позже.',
   daysT: 'Срок хранения',
   delRowA: 'Удалить мои данные',
   delTA: 'Удалить мои данные?',
-  delBA: 'Сотрём историю и файлы на этом телефоне, технические данные этой установки, привязку к подписке и ваш голос. Не сотрутся сразу: счётчики лимитов (до 15 суток, месячный счётчик голосовых — до 40 суток) и записи подписки (для споров и возвратов, [срок]). Подписка не отменится — отмена в Google Play.',
+  delBA: 'Сотрём историю и файлы на этом телефоне, технические данные этой установки, привязку к подписке и ваш «Мой голос». Не сотрутся сразу: счётчики лимитов (до 15 суток, месячный счётчик голосовых — до 40 суток) и записи подписки — для споров и возвратов, до конца подписки и ещё 12 месяцев. Возраст и согласие сохранятся. Подписка не отменится — отменить её можно в Google Play.',
   delRowB: 'Удалить данные на телефоне',
   delTB: 'Удалить данные на телефоне?',
   delBB: 'История, звук для «Отправить голосом» и полученный файл на этом телефоне будут удалены. Отменить это нельзя.',
@@ -39,7 +39,7 @@ ru: {
   keptH: 'Осталось по закону и для защиты',
   erPhone: 'история и файлы на этом телефоне',
   erServer: 'технические данные этой установки и привязка к подписке',
-  erVoice: 'ваш голос',
+  erVoice: 'ваш «Мой голос»',
   kpLimits: 'счётчики лимитов — до {date}',
   kpMonthly: 'месячный счётчик голосовых — до {date}',
   kpSub: 'записи подписки — до конца подписки и ещё 12 месяцев',
@@ -49,6 +49,7 @@ ru: {
   e429T: 'Слишком много запросов',
   e429B: 'Попробуйте через {n}.',
   n2min: '2 мин',
+  delBAnv: 'Сотрём историю и файлы на этом телефоне, технические данные этой установки и привязку к подписке. Не сотрутся сразу: счётчики лимитов (до 15 суток, месячный счётчик голосовых — до 40 суток) и записи подписки — для споров и возвратов, до конца подписки и ещё 12 месяцев. Возраст и согласие сохранятся. Подписка не отменится — отменить её можно в Google Play.',
 },
 es: {
   title: 'Datos y privacidad', back: 'Atrás', settings: 'Ajustes',
@@ -67,7 +68,7 @@ es: {
   daysT: 'Conservar',
   delRowA: 'Eliminar mis datos',
   delTA: '¿Eliminar mis datos?',
-  delBA: 'Borraremos el historial y los archivos de este teléfono, los datos técnicos de esta instalación, la vinculación a la suscripción y tu voz. No se borrarán de inmediato: contadores de límites (hasta 15 días; el contador mensual de voz, hasta 40 días) y registros de suscripción (para disputas y devoluciones, [plazo]). La suscripción no se cancela: se cancela en Google Play.',
+  delBA: 'Borraremos el historial y los archivos de este teléfono, los datos técnicos de esta instalación, la vinculación a la suscripción y tu «Mi voz». No se borrarán de inmediato: contadores de límites (hasta 15 días; el contador mensual de voz, hasta 40 días) y registros de suscripción, para disputas y devoluciones, hasta 12 meses después de que termine la suscripción. La edad y el consentimiento se conservarán. La suscripción no se cancela: puedes cancelarla en Google Play.',
   delRowB: 'Eliminar los datos del teléfono',
   delTB: '¿Eliminar los datos del teléfono?',
   delBB: 'Se eliminarán el historial, el audio de «Enviar con voz» y el archivo recibido en este teléfono. No se puede deshacer.',
@@ -87,7 +88,7 @@ es: {
   keptH: 'Se conserva por ley y para protegerte',
   erPhone: 'el historial y los archivos de este teléfono',
   erServer: 'los datos técnicos de esta instalación y la vinculación a la suscripción',
-  erVoice: 'tu voz',
+  erVoice: 'tu «Mi voz»',
   kpLimits: 'contadores de límites: hasta el {date}',
   kpMonthly: 'contador mensual de voz: hasta el {date}',
   kpSub: 'registros de suscripción: hasta 12 meses después de que termine la suscripción',
@@ -97,6 +98,7 @@ es: {
   e429T: 'Demasiadas solicitudes',
   e429B: 'Inténtalo dentro de {n}.',
   n2min: '2 min',
+  delBAnv: 'Borraremos el historial y los archivos de este teléfono, los datos técnicos de esta instalación y la vinculación a la suscripción. No se borrarán de inmediato: contadores de límites (hasta 15 días; el contador mensual de voz, hasta 40 días) y registros de suscripción, para disputas y devoluciones, hasta 12 meses después de que termine la suscripción. La edad y el consentimiento se conservarán. La suscripción no se cancela: puedes cancelarla en Google Play.',
 },
 en: {
   title: 'Data & privacy', back: 'Back', settings: 'Settings',
@@ -111,11 +113,11 @@ en: {
   cleared: 'History cleared', delBtn: 'Delete',
   deleting: 'Deleting your data…',
   doneT: 'Data deleted',
-  errT: 'Server data wasn’t deleted', errB: 'The data on this phone has been deleted, but not on the server. Try again later.',
+  errT: 'Data on the server wasn’t deleted', errB: 'The data on this phone has been deleted, but not on the server. Try again later.',
   daysT: 'Keep for',
   delRowA: 'Delete my data',
   delTA: 'Delete my data?',
-  delBA: 'We’ll erase the history and files on this phone, this installation’s technical data, the link to your subscription and your voice. Not erased right away: limit counters (up to 15 days; the monthly voice counter, up to 40 days) and subscription records (for disputes and refunds, [period]). Your subscription isn’t cancelled — cancel it in Google Play.',
+  delBA: 'We’ll erase the history and files on this phone, this installation’s technical data, the link to your subscription and your “My Voice”. Not erased right away: limit counters (up to 15 days; the monthly voice counter, up to 40 days) and subscription records, for disputes and refunds, until 12 months after your subscription ends. Your age and consent are kept. Your subscription isn’t cancelled — you can cancel it in Google Play.',
   delRowB: 'Delete data on this phone',
   delTB: 'Delete data on this phone?',
   delBB: 'History, the audio for “Send as voice” and the received file on this phone will be deleted. This can’t be undone.',
@@ -135,7 +137,7 @@ en: {
   keptH: 'Kept by law and for protection',
   erPhone: 'history and files on this phone',
   erServer: 'this installation’s technical data and the link to your subscription',
-  erVoice: 'your voice',
+  erVoice: 'your “My Voice”',
   kpLimits: 'limit counters — until {date}',
   kpMonthly: 'monthly voice counter — until {date}',
   kpSub: 'subscription records — until 12 months after your subscription ends',
@@ -145,6 +147,7 @@ en: {
   e429T: 'Too many requests',
   e429B: 'Try again in {n}.',
   n2min: '2 min',
+  delBAnv: 'We’ll erase the history and files on this phone, this installation’s technical data and the link to your subscription. Not erased right away: limit counters (up to 15 days; the monthly voice counter, up to 40 days) and subscription records, for disputes and refunds, until 12 months after your subscription ends. Your age and consent are kept. Your subscription isn’t cancelled — you can cancel it in Google Play.',
 },
 };
 /* типографика: как в kb-voice — неразрывные пробелы в ru, перед «—», между двумя последними словами фразы */

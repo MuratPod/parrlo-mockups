@@ -9,13 +9,17 @@
 | `swapA11y` | Поменять языки местами | Intercambiar idiomas | Swap languages |
 | `partnerA11y` | Язык собеседника: {lang}. Изменить | Idioma de la otra persona: {lang}. Cambiar | Other person’s language: {lang}. Change |
 | `closeA11y` | Закрыть | Cerrar | Close |
-| `againShort` | Заново | Otra vez | Again |
+| `againShort` | Заново | Otra vez | Record again |
+| `insNoTrS` | Без перевода | Sin traducir | Original |
+| `insertTrA11y` (TalkBack) | Вставить перевод | Insertar la traducción | Insert the translation |
+| `contS` | Продолжить | Seguir | Continue |
+| `recInAppA11y` (TalkBack) | Записать в приложении Parrlo | Grabar en la app Parrlo | Record in the Parrlo app |
 | `insNoTr` | Вставить без перевода | Insertar sin traducir | Insert without translation |
 | `del2` | Удалить | Eliminar | Delete |
 | `openParrlo` | Открыть Parrlo | Abrir Parrlo | Open Parrlo |
 | `voiceOffLine` | Голос недоступен — нажмите, чтобы узнать почему | La voz no está disponible: toca para ver por qué | Voice isn’t available — tap to see why |
 | `r16T` | Голос — с 16 лет | La voz es para mayores de 16 | Voice is for 16+ |
-| `r16B` | Подтвердите возраст в Parrlo, и голос заработает. | Confirma tu edad en Parrlo y la voz funcionará. | Confirm your age in Parrlo and voice will work. |
+| `r16B` | Если вам уже есть 16 — подтвердите возраст в Parrlo. | Si ya tienes 16 años, confirma tu edad en Parrlo. | If you’re 16 or older, confirm your age in Parrlo. |
 | `rConsT` | Нужно ваше согласие | Necesitamos tu consentimiento | We need your consent |
 | `rConsB` | Один раз разрешите обработку голоса в Parrlo. | Permite una vez el tratamiento de la voz en Parrlo. | Allow voice processing once in Parrlo. |
 | `rMicT` | Нет доступа к микрофону | Sin acceso al micrófono | No microphone access |
@@ -28,7 +32,7 @@
 | `aMicWhile` | При использовании приложения | Mientras se usa la aplicación | While using the app |
 | `aMicOnce` | Только в этот раз | Solo esta vez | Only this time |
 | `aMicNo` | Не разрешать | No permitir | Don’t allow |
-| `aMicBusyT` | Android не дал микрофон | Android no ha dado el micrófono | Android didn’t give us the microphone |
+| `aMicBusyT` | Микрофон занят | El micrófono está ocupado | The microphone is busy |
 | `aMicBusyB` | Возможно, его занимает звонок или другое приложение. Запишите в Parrlo — текст вернётся сюда. | Puede que lo esté usando una llamada u otra app. Graba en Parrlo y el texto volverá aquí. | A call or another app may be using it. Record in Parrlo — the text will come back here. |
 | `recInApp` | Записать в приложении | Grabar en la app | Record in the app |
 | `aSilence` | Не слышим вас — проверьте микрофон | No te oímos: revisa el micrófono | We can’t hear you — check the microphone |
@@ -41,7 +45,7 @@
 | `eVoiceOffB` | Кнопки голоса скрыты, пока он не заработает. Набирать текстом можно как обычно. | Ocultamos los botones de voz hasta que vuelva. Puedes escribir como siempre. | Voice buttons are hidden until it’s back. You can type as usual. |
 | `e422T` | Не получилось обработать запись | No se ha podido procesar la grabación | Couldn’t process the recording |
 | `e422B` | Запишите ещё раз — ближе к микрофону. | Graba otra vez, más cerca del micrófono. | Record again, closer to the microphone. |
-| `e413T` | Запись слишком большая | La grabación es demasiado grande | The recording is too large |
+| `e413T` | Запись слишком длинная | La grabación es demasiado larga | The recording is too long |
 | `e413B` | Запишите короче — до 2 минут. | Graba algo más corto: hasta 2 minutos. | Record something shorter — up to 2 minutes. |
 | `e502T` | Сервер не ответил | El servidor no ha respondido | The server didn’t respond |
 | `e502B` | Запись сохранена. Нажмите «Повторить». | La grabación está guardada. Toca «Reintentar». | The recording is saved. Tap “Retry”. |
@@ -112,7 +116,7 @@
 | `eNetT` | Нет интернета | Sin internet | No internet |
 | `eNetB` | Запись сохранена. Подключитесь к сети и нажмите «Повторить». | La grabación está guardada. Conéctate y toca «Reintentar». | Your recording is saved. Connect and tap “Try again”. |
 | `e429T` | Лимит голоса на сегодня исчерпан | Has usado la voz de hoy | You’ve used today’s voice limit |
-| `e429B` | Снова будет доступно в {time} (через {left}). Набрать текст можно и сейчас. | Volverá a estar disponible a las {time} (dentro de {left}). Puedes escribir el texto ya. | Available again at {time} (in {left}). You can type your text right now. |
+| `e429B` | Голос снова будет доступен в {time} (через {left}). Набрать текст можно и сейчас. | La voz volverá a estar disponible a las {time} (dentro de {left}). Puedes escribir el texto ya. | Voice will be available again at {time} (in {left}). You can type your text right now. |
 | `busyT` | Сейчас много запросов | Ahora hay muchas solicitudes | Lots of requests right now |
 | `busyB` | Попробуйте чуть позже. Запись сохранена. | Inténtalo un poco más tarde. La grabación está guardada. | Please try again a little later. Your recording is saved. |
 | `e503T` | Распознавание временно недоступно | El reconocimiento no está disponible | Speech recognition is unavailable |
@@ -141,7 +145,7 @@
 | `c1t` | Запись голоса | Grabación de voz | Voice recording |
 | `c1` | сервер Parrlo → Soniox, распознавание речи. Серверы в ЕС. | servidor de Parrlo → Soniox, reconocimiento de voz. Servidores en la UE. | Parrlo server → Soniox for speech recognition. Servers in the EU. |
 | `c2t` | Распознанный текст | Texto reconocido | Recognised text |
-| `c2` | Anthropic — делаем текст грамотным и переводим. | Anthropic: lo corregimos y lo traducimos. | Anthropic — we tidy it up and translate it. |
+| `c2` | Anthropic — делаем текст грамотным и переводим. Серверы в США, передача по стандартным договорным условиям ЕС. | Anthropic: lo corregimos y lo traducimos. Servidores en EE. UU., con las cláusulas contractuales tipo de la UE. | Anthropic — we tidy it up and translate it. Servers in the US, under the EU Standard Contractual Clauses. |
 | `c3t` | Текст голосового | Texto de la nota de voz | Voice note text |
 | `c3` | ElevenLabs — озвучка стандартным голосом, не вашим. Серверы в США, передача по стандартным договорным условиям ЕС. | ElevenLabs: se lee con una voz estándar, no la tuya. Servidores en EE. UU., con las cláusulas contractuales tipo de la UE. | ElevenLabs — read in a standard voice, not yours. Servers in the US, under the EU Standard Contractual Clauses. |
 | `c4` | Запись не хранится на сервере Parrlo: удаляем сразу после распознавания. | La grabación no se guarda en el servidor de Parrlo: la borramos justo después de reconocerla. | Recordings aren’t stored on the Parrlo server: we delete them right after recognition. |
@@ -153,5 +157,9 @@
 | `aSettings` | Клавиатура Parrlo | Teclado Parrlo | Parrlo Keyboard |
 | `sPartner` | Язык собеседника | Idioma de la otra persona | Other person’s language |
 | `sPolicy` | Политика конфиденциальности | Política de privacidad | Privacy Policy |
+
+Перенос строк: в Android — `breakStrategy=balanced`, `lineBreakWordStyle=phrase` (API 33+); в ru — неразрывный пробел после коротких предлогов и союзов, перед «—», внутри «2 ч 15 мин» и между двумя последними словами фразы. Кнопки панели — в одну строку: короткая подпись, полный текст — в TalkBack.
+
+Согласие на голос: две равные кнопки «Не сейчас» / «Разрешить» в конце текста, после всех пунктов и ссылки на политику.
 
 Плейсхолдеры: {time} — местное время сброса, {left} — сколько осталось («5 ч»), {n}/{max} — знаки, {sec} — длительность записи, {lang} — язык.

@@ -40,7 +40,7 @@ window.ICONS = I;
 const MARK = (theme) => `<img src="../brandbook/assets/logo/${theme==='dark'?'mark-color-dark':'mark-color'}.svg" alt="" width="30" height="30" class="bm">`;
 const MASCOT = (pose, theme) => `<img src="../brandbook/assets/mascot/mascot-${pose}-${theme}.svg" alt="" style="width:calc(132px*min(var(--fs),1.2));height:auto">`;
 const fmt = (s, o={}) => s.replace(/\{(\w+)\}/g, (_,k) => o[k] ?? `{${k}}`);
-const LEFT = {ru:'2 ч 15 мин', es:'2 h 15 min', en:'2 h 15 min'};
+const LEFT = {ru:'2\u00A0ч\u00A015\u00A0мин', es:'2\u00A0h\u00A015\u00A0min', en:'2\u00A0h\u00A015\u00A0min'};
 const A11Y = (s) => s.replace(/"/g,'&quot;');
 
 /* ---------- общие куски ---------- */
@@ -112,7 +112,7 @@ function kb(c, x, o={}) {
   if (o.chip === 'ready') top = `<div class="chiprow"><span class="chip" role="button" aria-label="${A11Y(c.insertA11y)}">${I.mic}<span class="ct"><b>${c.insert}:</b>«${c.lit.first}»</span><span class="cx" role="button" aria-label="${A11Y(c.dismiss)}">${I.x.replace('<svg','<svg style="width:18px;height:18px;color:var(--sec)"')}</span></span></div>`;
   if (o.chip === 'inserted') top = `<div class="chiprow"><span class="chip done">${I.check.replace('<svg','<svg style="color:var(--pri)"')}<span class="ct"><b>${c.inserted}</b></span><span class="undo"><svg class="ring" viewBox="0 0 18 18"><circle class="bg" cx="9" cy="9" r="7"/><circle class="fg" cx="9" cy="9" r="7"/></svg>${c.undo}</span></span></div>`;
   if (o.chip === 'sent') top = `<div class="chiprow"><span class="chip done">${I.check.replace('<svg','<svg style="color:var(--pri)"')}<span class="ct"><b>${c.voiceSent}</b> <span class="muted">${c.voiceSentSub}</span></span></span></div>`;
-  if (o.chip === 'sent2') top = `<div class="chiprow"><span class="chip done">${I.check.replace('<svg','<svg style="color:var(--pri)"')}<span class="ct"><b>${o.chipT}</b> <span class="muted">${o.chipS}</span></span></span></div>`;
+  if (o.chip === 'sent2') top = `<div class="chiprow"><span class="chip done two">${I.check.replace('<svg','<svg style="color:var(--pri)"')}<span class="ct"><b>${o.chipT}</b> <span class="muted">${o.chipS}</span></span></span></div>`;
   if (o.tip) top = `<div style="position:relative;height:0"><div style="position:absolute;left:6px;bottom:-4px;z-index:4;background:var(--tx);color:var(--bg);border-radius:12px;padding:8px 12px;font-size:calc(14px*var(--kfs));line-height:1.35;box-shadow:0 8px 24px rgba(0,0,0,.25);max-width:calc(100% - 12px)"><div style="display:flex;gap:6px;align-items:center"><span style="width:18px;height:18px;display:inline-flex">${I.mic}</span><b>${c.dict}</b></div><div style="display:flex;gap:6px;align-items:center"><span style="width:18px;height:18px;display:inline-flex">${I.voice}</span><b>${c.voice}</b></div><span style="position:absolute;left:24px;bottom:-6px;width:12px;height:12px;background:var(--tx);transform:rotate(45deg)"></span></div></div>`;
   const body = o.panel ? `<div class="andpanel">${o.panel}</div>` : keys(c, x);
   const glob = x.os==='ios' && !x.small ? `<div class="glob">${I.globe}<span></span></div>` : '';
@@ -178,15 +178,14 @@ add({id:'K-V5', g:'ios-kb', os:'ios', t:'Голосовое отправлено
   r:(c,x)=>kbScreen(c,x,{sentAudio:true},{chip:'sent'})});
 
 /* ===== iOS: хост, диктовка ===== */
-add({id:'H-D0', g:'ios-d', os:'ios', t:'Согласие на голос', cap:'Один раз, до первого запроса микрофона. ElevenLabs — США (SCC), решение 13.11; формулировки проверит юрист.',
-  r:(c,x)=>host(c,x,{title:'',close:c.cLater,body:`<h1 class="h1">${c.cTitle}</h1><p class="p">${c.cLead}</p>
+add({id:'H-D0', g:'ios-d', os:'ios', t:'Согласие на голос', cap:'Один раз, до первого запроса микрофона. Две равные кнопки в конце текста. Anthropic и ElevenLabs — США (SCC); формулировки — через RG.',
+  r:(c,x)=>host(c,x,{title:'',body:`<h1 class="h1">${c.cTitle}</h1><p class="p">${c.cLead}</p>
     <ul class="list"><li><span class="dot">${I.mic}</span><div><b>${c.c1t}</b><span>${c.c1}</span></div></li>
     <li><span class="dot">${I.text}</span><div><b>${c.c2t}</b><span>${c.c2}</span></div></li>
     <li><span class="dot">${I.voice}</span><div><b>${c.c3t}</b><span>${c.c3}</span></div></li>
     <li><span class="dot">${I.shield}</span><div><span style="color:var(--tx)">${c.c4}</span></div></li>
     <li><span class="dot">${I.gear}</span><div><span>${c.c5}</span></div></li></ul>
-    <span class="lnk">${c.cPolicy} ›</span>`,
-    foot:`${btn(c.cAllow)}<span class="small" style="text-align:center">${c.cNext}</span>`})});
+    <span class="lnk">${c.cPolicy} ›</span><div class="eqbtn">${btn(c.cLater,'eq')}${btn(c.cAllow,'eq')}</div><span class="small" style="text-align:center">${c.cNext}</span>`})});
 add({id:'H-D0b', g:'ios-d', os:'ios', t:'Системный запрос микрофона', cap:'Сразу после «Разрешить». Текст — строка NSMicrophoneUsageDescription.',
   r:(c,x)=>host(c,x,{title:c.dTitle,close:c.cancel,body:settingsGroup(c,x),foot:`<div style="display:flex;justify-content:center"><span class="recbtn">${I.mic}</span></div>`,
     overlay:`<div class="scrim"></div><div class="alert"><div class="at"><b>${c.micT}</b><p>${c.micB}</p></div><div class="ab"><span>${c.micDeny}</span><span>${c.micAllow}</span></div></div>`})});
@@ -272,8 +271,9 @@ add({id:'H-G5e', g:'ios-g', os:'ios', t:'Занято (.busy)', cap:'Общий 
    Панель голоса занимает место букв и не выше их (--kbody). Ряд действий с чипом «ES ⇄» виден всегда.
    При самом крупном шрифте содержимое панели прокручивается, кнопки закреплены внизу. */
 const xBtn = (c) => `<span class="px" role="button" aria-label="${A11Y(c.closeA11y)}">${I.x}</span>`;
-const pan = (body, acts) => `<div class="sc">${body}</div>${acts?`<div class="acts">${acts}</div>`:''}`;
+const pan = (body, acts) => { let note=''; acts=(acts||'').replace(/<span class="anote">[\s\S]*?<\/span>/,m=>{note=m;return ''}); return `<div class="sc">${body}</div>${note}${acts?`<div class="acts">${acts}</div>`:''}`; };
 const sp = (t, cls='', ic='') => `<span class="${cls}" role="button">${ic}${t}</span>`;
+const spA = (t, a, cls='', ic='') => `<span class="${cls}" role="button" aria-label="${A11Y(a)}">${ic}${t}</span>`;
 const andRec = (c,x,o={}) => pan(`${andTop(c,`<span class="rdot"></span>${c.recording}`,`<span class="b7" style="color:var(--tx);font-variant-numeric:tabular-nums">${o.t||'0:42'}</span> ${c.of} 2:00`)}
   <div class="mid">${o.msg?'':`<div class="wave${o.flat?' flat':''}">${waveBars(x.small?24:30,o.seed||3)}</div>`}${o.msg||''}<div class="pbar${o.w?' w':''}"><i style="width:${o.p||35}%"></i></div></div>`,
   `${sp(c.cancel)}${sp(c.stop,'err','<span style="width:12px;height:12px;border-radius:3px;background:currentColor;display:block"></span>')}`);
@@ -294,10 +294,10 @@ add({id:'A-V1', g:'and', os:'and', t:'Голос недоступен: приг�
  ['A-V1d','503 keyboard_unavailable',I.alert,'rKbT','rKbB',0],['A-V1e','повторный 401',I.lock,'r401T','r401B',1]].forEach(([id,why,ic,T,B,open])=>
   add({id, g:'and', os:'and', t:`Недоступен: ${why}`, cap: open ? '«Открыть Parrlo» → нужный экран Parrlo (возраст / согласие A-V1f / вход). После него — обратно в чат, голос включён.' : 'Без кнопки «Открыть»: чинить пользователю нечего. Строка скрывается крестиком или при наборе.',
     r:(c,x)=>kbScreen(c,x,{},{off:true,banner:c[B],banT:c[T],bannerBtn:open?c.openParrlo:false})}));
-add({id:'A-V1f', g:'and', os:'and', t:'Раскрытие и согласие (Parrlo)', cap:'Экран Parrlo (Activity), вход из A-V1b/c. Тексты согласия — через RG; здесь черновик, как iOS H-D0.',
-  r:(c,x)=>host(c,x,{nav:true,title:c.cTitle,close:c.cLater,body:`<p class="p">${c.cLead}</p>
+add({id:'A-V1f', g:'and', os:'and', t:'Раскрытие и согласие (Parrlo)', cap:'Экран Parrlo (Activity), вход из A-V1b/c. Две равные кнопки «Не сейчас» / «Разрешить» — в конце текста, после всех пунктов и политики (без навязывания выбора). Тексты — через RG.',
+  r:(c,x)=>host(c,x,{nav:true,title:c.cTitle,body:`<p class="p">${c.cLead}</p>
     <div class="grp"><div class="rowi"><span class="t">${c.c1t}<small>${c.c1}</small></span></div><div class="rowi"><span class="t">${c.c2t}<small>${c.c2}</small></span></div><div class="rowi"><span class="t">${c.c3t}<small>${c.c3}</small></span></div></div>
-    <p class="small">${c.c4} ${c.c5}</p><span class="small lnk">${c.cPolicy}</span>`, foot:btn(c.cAllow,'pri')+`<span class="small" style="text-align:center">${c.cNext.replace('iOS','Android')}</span>`})});
+    <p class="small">${c.c4} ${c.c5}</p><span class="small lnk">${c.cPolicy}</span><div class="eqbtn">${btn(c.cLater,'eq')}${btn(c.cAllow,'eq')}</div><span class="small" style="text-align:center">${c.cNext.replace('iOS','Android')}</span>`})});
 add({id:'A-V1g', g:'and', os:'and', t:'Системный запрос микрофона', cap:'Системный диалог Android 11+ (текст системный, наш — только имя «Parrlo»). «Не разрешать» дважды → A-V1c ведёт в настройки Android.',
   r:(c,x)=>host(c,x,{nav:true,title:c.cTitle,body:`<p class="p">${c.cLead}</p>`,overlay:`<div class="sysdim"><div class="sysdlg"><span class="si">${I.mic}</span><b>${c.aMicAsk}</b><span>${c.aMicWhile}</span><span>${c.aMicOnce}</span><span>${c.aMicNo}</span></div></div>`})});
 
@@ -307,7 +307,7 @@ add({id:'A-V2', g:'and', os:'and', t:'Запись', cap:'Панель вмес�
 add({id:'A-V2b', g:'and', os:'and', t:'Запись: осталось 15 с', cap:'С 1:45 — янтарная полоса и строка. В 2:00 запись останавливается сама → A-V4.',
   r:(c,x)=>kbScreen(c,x,{},{act:'mic',panel:andRec(c,x,{t:'1:45',p:87.5,w:true,msg:ln('warn',I.clock,c.left15),seed:7})})});
 add({id:'A-V2c', g:'and', os:'and', t:'Android не дал микрофон', cap:'AudioRecord не стартовал (звонок, другое приложение, фокус). «Записать в приложении» открывает диктовку в Parrlo, текст вернётся в клавиатуру.',
-  r:(c,x)=>P(c,x,`<div class="mid">${ln('warn',I.micOff,c.aMicBusyT,c.aMicBusyB)}</div>`,`${sp(c.cancel)}${sp(c.recInApp,'pri')}`)});
+  r:(c,x)=>P(c,x,`<div class="mid">${ln('warn',I.micOff,c.aMicBusyT,c.aMicBusyB)}</div>`,`${sp(c.cancel,'s')}${spA(c.recInApp,c.recInAppA11y,'pri')}`)});
 
 /* ---- A-V3 / A-V4 ---- */
 add({id:'A-V3', g:'and', os:'and', t:'Тишина', cap:'Через 5 с без голоса. Запись продолжается; строка уходит, как только появится голос.',
@@ -317,8 +317,8 @@ add({id:'A-V4', g:'and', os:'and', t:'Обработка', cap:'Честные �
 
 /* ---- A-V5 результат ---- */
 const prevBox = (c, tr) => `<div class="prev two">${xBtn(c)}<span class="o">${c.lit.text}</span>${tr?`<span class="t"><small>${c.resTr}</small>${c.lit.tr}</span>`:''}</div>`;
-add({id:'A-V5', g:'and', os:'and', t:'Результат диктовки', cap:'Превью: текст — 2 строки, перевод — 3 строки (длиннее — многоточие, полный текст в TalkBack). «Вставить» — перевод, «Вставить без перевода» — текст, ↻ — заново, ✕ — закрыть без вставки.',
-  r:(c,x)=>P(c,x,prevBox(c,true),`<span class="ic1" role="button" aria-label="${A11Y(c.againShort)}">${I.redo}</span>${sp(c.insNoTr)}${sp(c.insert,'pri')}`)});
+add({id:'A-V5', g:'and', os:'and', t:'Результат диктовки', cap:'Превью: текст — 2 строки, перевод — 3 строки (длиннее — многоточие, полный текст в TalkBack). «Вставить» — перевод, «Без перевода» — исходный текст (в TalkBack — «Вставить без перевода»), ↻ — заново, ✕ — закрыть без вставки.',
+  r:(c,x)=>P(c,x,prevBox(c,true),`<span class="ic1" role="button" aria-label="${A11Y(c.againShort)}">${I.redo}</span>${spA(c.insNoTrS,c.insNoTr)}${spA(c.insert,c.insertTrA11y,'pri')}`)});
 add({id:'A-V5b', g:'and', os:'and', t:'Результат без перевода', cap:'Перевод выключен (или язык речи = язык собеседника): одна кнопка «Вставить».',
   r:(c,x)=>P(c,x,prevBox(c,false),`${sp(c.againShort,'',I.redo)}${sp(c.insert,'pri')}`)});
 
@@ -333,7 +333,7 @@ add({id:'A-V6d', g:'and', os:'and', t:'Голосовое: больше 600', ca
 add({id:'A-V6b', g:'and', os:'and', t:'Голосовое: готовим', cap:'Один этап, без полосы. «Отмена» возвращает к A-V6a.', anim:true,
   r:(c,x)=>P(c,x,`${andTop(c,c.gPrep,'')}<div class="mid"><div class="wave small" style="max-width:180px">${waveBars(16,2)}</div><span class="small">${c.gPrepSub}</span></div>`,sp(c.cancel),{act:'voice',m:{field:c.lit.text}})});
 add({id:'A-V6c', g:'and', os:'and', t:'Голосовое готово', cap:'Плеер play/pause и длительность. «Отправить»: аудио в поле чата (commitContent), если чат принимает; иначе системный «Поделиться». Само не отправляется.',
-  r:(c,x)=>P(c,x,`${andTop(c,c.gReady,xBtn(c))}<div class="player"><span class="pp" role="button" aria-label="Play">${I.play}</span><span class="wv">${staticWave(x.small?28:34,10)}</span><span class="tm">0:06</span></div><span class="small">${c.gReadyNote}</span>`,`${sp(c.reVoice,'',I.redo)}${sp(c.aSend,'pri',I.send)}`,{act:'voice',m:{field:c.lit.text}})});
+  r:(c,x)=>P(c,x,`${andTop(c,c.gReady,xBtn(c))}<div class="player"><span class="pp" role="button" aria-label="Play">${I.play}</span><span class="wv">${staticWave(x.small?28:34,10)}</span><span class="tm">0:06</span></div>`,`<span class="anote">${c.gReadyNote}</span>${sp(c.reVoice,'',I.redo)}${sp(c.aSend,'pri',I.send)}`,{act:'voice',m:{field:c.lit.text}})});
 add({id:'A-V6e', g:'and', os:'and', t:'Голосовое в поле', cap:'После «Отправить»: аудио в поле ввода чата, отправляет сам человек. Панель закрылась, вернулись буквы.',
   r:(c,x)=>kbScreen(c,x,{field:`<span class="au0">${I.play}<i></i>0:06</span>`},{chip:'sent2',chipT:c.aVoiceIns,chipS:c.aVoiceInsSub})});
 
@@ -354,23 +354,25 @@ add({id:'A-V7e', g:'and', os:'and', t:'Ошибка: 503 voice_disabled / no_cre
 
 /* ---- A-V8 прерывание ---- */
 add({id:'A-V8', g:'and', os:'and', t:'Прерывание', cap:'Звонок, потеря аудиофокуса или клавиатуру скрыли — запись остановлена и сохранена. В той же панели: «Удалить», «Продолжить», «Готово» (→ A-V4).',
-  r:(c,x)=>P(c,x,`<div class="mid">${ln('info',I.phone,c.intT,c.intCall+' '+fmt(c.intSaved,{sec:'0:37'}))}</div>`,`<span class="ic1" role="button" aria-label="${A11Y(c.del2)}">${I.trash}</span>${sp(c.cont,'',I.mic)}${sp(c.done,'pri')}`)});
+  r:(c,x)=>P(c,x,`<div class="mid">${ln('info',I.phone,c.intT,c.intCall+' '+fmt(c.intSaved,{sec:'0:37'}))}</div>`,`<span class="ic1" role="button" aria-label="${A11Y(c.del2)}">${I.trash}</span>${spA(c.contS,c.cont,'',I.mic)}${sp(c.done,'pri')}`)});
 
 /* ---- A-K2 настройки ---- */
+const AR = (t, v, cls='') => `<div class="rowi ar ${cls}"><span class="t">${t}</span>${v}</div>`;
 const tg = (on) => `<span class="tog${on?'':' off'}"></span>`;
-const k2 = (c, x, o={}) => `${sb(c,x)}<div class="nv"><span class="bk">${I.chevL.replace('<svg','<svg style="width:24px;height:24px"')}</span><span class="tt" style="text-align:left;left:56px">${c.aSettings}</span></div>
+const k2 = (c, x, o={}) => `${sb(c,x)}<div class="nv k2nv"><span class="bk">${I.chevL.replace('<svg','<svg style="width:24px;height:24px"')}</span><span class="tt">${c.aSettings}</span></div>
   <div class="body">${o.body}</div>${hm()}`;
-const k2Status = (c, ok) => `<div class="grp"><div class="rowi"><span class="t">${c.k2Status}<small>${ok?`${c.k2On} · ${c.k2Sel}`:c.k2OnNo}</small></span>${ok?`<span class="v" style="color:var(--pri)">${I.check.replace('<svg','<svg style="width:20px;height:20px"')}</span>`:`<span class="btn pri" style="min-height:40px;padding:0 14px;width:auto">${c.k2Turn}</span>`}</div></div>`;
+const k2Status = (c, ok) => `<div class="grp">${AR(`${c.k2Status}<small>${ok?`${c.k2On} · ${c.k2Sel}`:c.k2OnNo}</small>`, ok?`<span class="v" style="color:var(--pri)">${I.check.replace('<svg','<svg style="width:20px;height:20px"')}</span>`:`<span class="btn pri k2b">${c.k2Turn}</span>`, ok?'tg':'st')}</div>`;
 const k2Head = (t) => `<span class="small b6" style="padding:0 4px;text-transform:uppercase;letter-spacing:.04em">${t}</span>`;
-add({id:'A-K2', g:'and-k', os:'and', t:'Настройки клавиатуры', cap:'Activity. Статус «включена / выбрана», язык собеседника, «О вас» (форма в переводе, решение 30), согласия текст/голос, 16+, политика, «Удалить данные» (→ подтверждение). Длинный экран прокручивается: см. A-K2b.',
+const V = (t) => `<span class="v">${t}<span class="chv"> ›</span></span>`;
+add({id:'A-K2', g:'and-k', os:'and', t:'Настройки клавиатуры', cap:'Activity. Статус «включена / выбрана», язык собеседника, «О вас» (форма в переводе, решение 30), согласия текст/голос, 16+, политика, «Удалить данные» (→ подтверждение). При крупном шрифте значение — под заголовком (как в Material). Длинный экран прокручивается: см. A-K2b.',
   r:(c,x)=>k2(c,x,{body:`${k2Status(c,true)}
-    <div class="grp"><div class="rowi"><span class="t">${c.sPartner}</span><span class="v">${LANGS[x.lang]} ›</span></div></div>
-    ${k2Head(c.k2About)}<div class="grp"><div class="rowi"><span class="t">${c.k2Form}<small>${c.k2FormSub}</small></span><span class="v">${c.k2FormN} ›</span></div></div>
-    ${k2Head(c.k2Cons)}<div class="grp"><div class="rowi"><span class="t">${c.k2ConsText}<small>${c.k2ConsTextSub}</small></span>${tg(true)}</div><div class="rowi"><span class="t">${c.k2ConsVoice}<small>${c.k2ConsVoiceSub}</small></span>${tg(true)}</div></div>`})});
+    <div class="grp">${AR(c.sPartner, V(LANGS[x.lang]))}</div>
+    ${k2Head(c.k2About)}<div class="grp">${AR(`${c.k2Form}<small>${c.k2FormSub}</small>`, V(c.k2FormN))}</div>
+    ${k2Head(c.k2Cons)}<div class="grp">${AR(`${c.k2ConsText}<small>${c.k2ConsTextSub}</small>`, tg(true),'tg')}${AR(`${c.k2ConsVoice}<small>${c.k2ConsVoiceSub}</small>`, tg(true),'tg')}</div>`})});
 add({id:'A-K2b', g:'and-k', os:'and', t:'Настройки: низ и «не включена»', cap:'Если клавиатура не включена или не выбрана — кнопка ведёт в системные настройки ввода. Внизу: возраст, политика, удаление данных (красным).',
   r:(c,x)=>k2(c,x,{body:`${k2Status(c,false)}
-    <div class="grp"><div class="rowi"><span class="t">${c.k2Age}</span><span class="v">${c.k2AgeV}</span></div><div class="rowi"><span class="t lnk">${c.sPolicy}</span><span class="v">›</span></div></div>
-    <div class="grp"><div class="rowi"><span class="t" style="color:var(--err)">${c.k2Del}<small>${c.k2DelSub}</small></span><span class="v" style="color:var(--err)">${I.trash.replace('<svg','<svg style="width:20px;height:20px"')}</span></div></div>`})});
+    <div class="grp">${AR(c.k2Age, `<span class="v">${c.k2AgeV}</span>`)}${AR(`<span class="lnk">${c.sPolicy}</span>`, V(''),'tg')}</div>
+    <div class="grp">${AR(`<span style="color:var(--err)">${c.k2Del}</span><small>${c.k2DelSub}</small>`, `<span class="v" style="color:var(--err)">${I.trash.replace('<svg','<svg style="width:20px;height:20px"')}</span>`,'tg')}</div>`})});
 
 window.SCREENS = S;
 window.UTIL = {fmt, MARK};

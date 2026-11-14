@@ -349,6 +349,8 @@ add({id:'A-V6e', g:'and', os:'and', t:'Голосовое в поле', cap:'П�
   add({id, g:'and', os:'and', t:`Ошибка: ${why}`, cap: act==='retry' ? 'Запись сохранена — «Повторить» шлёт её же.' : act==='type' ? 'Время сброса — местное. Буквы — одним тапом.' : 'Запись не сохраняем: нужна новая.',
     r:(c,x)=>P(c,x,`<div class="mid">${ln('warn',ic,c[T],fmt(c[B],{time:'18:40',left:LEFT[x.lang]}))}</div>`,
       act==='retry'?`${sp(c.cancel)}${sp(c.retry,'pri')}`:act==='type'?sp(c.typeInstead,'pri'):`${sp(c.cancel)}${sp(c.againShort,'pri',I.mic)}`)}));
+add({id:'A-V7j', g:'and', os:'and', t:'Ошибка: 429 лимит голосовых', cap:'Отдельный дневной лимит озвучки (A-V6). Текст уже набран — его можно просто отправить: кнопка закрывает панель, текст остаётся в поле чата. Время сброса — местное.',
+  r:(c,x)=>P(c,x,`<div class="mid">${ln('warn',I.clock,c.aGE429T,fmt(c.aGE429B,{time:'18:40',left:LEFT[x.lang]}))}</div>`,sp(c.done,'pri'),{act:'voice',m:{field:c.lit.text}})});
 add({id:'A-V7e', g:'and', os:'and', t:'Ошибка: 503 voice_disabled / no_credit', cap:'Кнопки 🎤 и 🔊 скрыты, строка — один раз за сессию. Причину (кредиты, выключатель) не раскрываем.',
   r:(c,x)=>kbScreen(c,x,{},{noVoice:true,banner:c.eVoiceOffB,banT:c.eVoiceOffT,bannerBtn:false})});
 

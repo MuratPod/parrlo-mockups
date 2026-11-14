@@ -34,6 +34,8 @@
 | `aMicNo` | Не разрешать | No permitir | Don’t allow |
 | `aMicBusyT` | Микрофон занят | El micrófono está ocupado | The microphone is busy |
 | `aMicBusyB` | Возможно, его занимает звонок или другое приложение. Запишите в Parrlo — текст вернётся сюда. | Puede que lo esté usando una llamada u otra app. Graba en Parrlo y el texto volverá aquí. | A call or another app may be using it. Record in Parrlo — the text will come back here. |
+| `aGE429T` | Лимит голосовых на сегодня исчерпан | Has usado las notas de voz de hoy | You’ve used today’s voice note limit |
+| `aGE429B` | Голосовые снова будут доступны в {time} (через {left}). Отправить текстом можно и сейчас. | Las notas de voz volverán a estar disponibles a las {time} (dentro de {left}). Puedes enviarlo como texto ya. | Voice notes will be available again at {time} (in {left}). You can send it as text right now. |
 | `recInApp` | Записать в приложении | Grabar en la app | Record in the app |
 | `aSilence` | Не слышим вас — проверьте микрофон | No te oímos: revisa el micrófono | We can’t hear you — check the microphone |
 | `gLit` | Литературно | Literario | Polished |

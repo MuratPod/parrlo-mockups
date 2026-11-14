@@ -202,6 +202,7 @@ en: {
 const A = {
 ru: {
   recInAppA11y: 'Записать в приложении Parrlo', insNoTrS: 'Без перевода', insertTrA11y: 'Вставить перевод', contS: 'Продолжить',
+  aGE429T: 'Лимит голосовых на сегодня исчерпан', aGE429B: 'Голосовые снова будут доступны в {time} (через {left}). Отправить текстом можно и сейчас.',
   swapA11y: 'Поменять языки местами', partnerA11y: 'Язык собеседника: {lang}. Изменить',
   closeA11y: 'Закрыть', againShort: 'Заново', insNoTr: 'Вставить без перевода', del2: 'Удалить',
   openParrlo: 'Открыть Parrlo', voiceOffLine: 'Голос недоступен — нажмите, чтобы узнать почему',
@@ -227,6 +228,7 @@ ru: {
 },
 es: {
   recInAppA11y: 'Grabar en la app Parrlo', insNoTrS: 'Sin traducir', insertTrA11y: 'Insertar la traducción', contS: 'Seguir',
+  aGE429T: 'Has usado las notas de voz de hoy', aGE429B: 'Las notas de voz volverán a estar disponibles a las {time} (dentro de {left}). Puedes enviarlo como texto ya.',
   swapA11y: 'Intercambiar idiomas', partnerA11y: 'Idioma de la otra persona: {lang}. Cambiar',
   closeA11y: 'Cerrar', againShort: 'Otra vez', insNoTr: 'Insertar sin traducir', del2: 'Eliminar',
   openParrlo: 'Abrir Parrlo', voiceOffLine: 'La voz no está disponible: toca para ver por qué',
@@ -252,6 +254,7 @@ es: {
 },
 en: {
   recInAppA11y: 'Record in the Parrlo app', insNoTrS: 'Original', insertTrA11y: 'Insert the translation', contS: 'Continue',
+  aGE429T: 'You’ve used today’s voice note limit', aGE429B: 'Voice notes will be available again at {time} (in {left}). You can send it as text right now.',
   swapA11y: 'Swap languages', partnerA11y: 'Other person’s language: {lang}. Change',
   closeA11y: 'Close', againShort: 'Record again', insNoTr: 'Insert without translation', del2: 'Delete',
   openParrlo: 'Open Parrlo', voiceOffLine: 'Voice isn’t available — tap to see why',

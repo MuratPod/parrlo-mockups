@@ -1,6 +1,7 @@
 /* Parrlo Translate · Android · «Данные и приватность» — тексты ru/es/en.
    Основа — iOS (prototype/js/app-c.js, «Data & privacy»), сверено RG с кодом Android (PR 605). Удаление: сейчас B (только телефон); A (с сервером, /v1/me/erase) — после решения Мурата. Тексты A — из parrlo-app docs/legal-drafts/erase-ui-text.md §7 (черновик RG 28.10), адаптация для Android: «Google Play» вместо «настроек Apple»; «журнал» и «отметки «Неточно»» убраны (на Android их нет) — формулировку решает RG; delBA — если «Мой голос» создан, иначе delBAnv. Результат собирается из ответа POST /v1/me/erase (erased/kept).
    delFoot — тот же текст и для iOS (сейчас там «Звук никогда не сохраняется» / в прототипе «Parrlo не сохраняет запись вашего голоса…») — заменить. Проверяет RG. */
+/* errBnc — DP-8/IR-3 без кода (нет сети: кода нет, он только из http-ответа). rejB — 400/403: сервер отказал, «Повторить» не поможет; раскладка DP-8/IR-3, код + одна кнопка «Понятно». */
 window.DP = {
 ru: {
   title: 'Данные и приватность', back: 'Назад', settings: 'Настройки',
@@ -56,6 +57,8 @@ ru: {
   copied: 'Скопировано',
   offT: 'Удалено на этом телефоне',
   offB: 'Удалить данные на сервере пока можно только по запросу — напишите нам, контакт в Политике конфиденциальности.',
+  errBnc: 'На этом телефоне данные удалены, а на сервере — нет. Проверьте интернет и нажмите «Повторить». Если не получится, напишите нам.',
+  rejB: 'Данные на телефоне удалены, а на сервере — нет. Напишите нам — контакт в Политике конфиденциальности, — и мы удалим их вручную.',
 },
 es: {
   title: 'Datos y privacidad', back: 'Atrás', settings: 'Ajustes',
@@ -111,6 +114,8 @@ es: {
   copied: 'Copiado',
   offT: 'Eliminado en este teléfono',
   offB: 'Por ahora, los datos del servidor solo se pueden eliminar a petición: escríbenos; el contacto está en la Política de privacidad.',
+  errBnc: 'Los datos de este teléfono se han eliminado, pero los del servidor no. Comprueba la conexión y toca «Reintentar». Si no funciona, escríbenos.',
+  rejB: 'Los datos del teléfono se han eliminado, pero los del servidor no. Escríbenos —el contacto está en la Política de privacidad— y los eliminaremos manualmente.',
 },
 en: {
   title: 'Data & privacy', back: 'Back', settings: 'Settings',
@@ -166,6 +171,8 @@ en: {
   copied: 'Copied',
   offT: 'Deleted on this phone',
   offB: 'For now, data on the server can only be deleted on request — write to us; the contact is in the Privacy Policy.',
+  errBnc: 'The data on this phone has been deleted, but not on the server. Check your connection and tap “Try again”. If that doesn’t work, write to us.',
+  rejB: 'The data on your phone has been deleted, but not on the server. Write to us — the contact is in the Privacy Policy — and we’ll delete it manually.',
 },
 };
 /* типографика: как в kb-voice — неразрывные пробелы в ru, перед «—», между двумя последними словами фразы */

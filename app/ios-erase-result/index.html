@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>iOS · Результат удаления</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 @font-face{font-family:Inter;font-weight:100 900;src:url(../../webdemo-mock/fonts/Inter-Variable.woff2) format("woff2")}
 :root{--p-bg:#F2F5F4;--p-card:#FFFFFF;--p-line:#D5E9DF;--p-tx:#0E1116;--p-sec:#5B6472}
@@ -18,62 +20,68 @@ figcaption{font-size:13px;color:var(--p-sec);line-height:1.4}figcaption b{color:
 table{border-collapse:collapse;font-size:13px;margin-top:10px}td,th{border:1px solid var(--p-line);padding:6px 8px;text-align:left;vertical-align:top}th{color:var(--p-sec)}
 h2.s{font-size:19px;margin:28px 0 8px}
 
-/* ===== iPhone, тёмная тема бренда (Translate — только тёмная) ===== */
-.ph{--fs:1;--bg:#12161C;--sf:#1C2026;--sf2:#242B34;--tx:#E8ECF1;--sec:#9AA4B2;--ter:#7F8996;--line:#2F3742;--pri:#2BC48A;--onpri:#0E1116;--okbg:#1E3734;--warn:#FFC247;--warnbg:#3C372B;--err:#FF6B5E;--errbg:#3C2A2E;--link:#2BC48A;
-  position:relative;width:var(--w);height:var(--h);border-radius:var(--rad,44px);overflow:hidden;background:#000;color:var(--tx);font-family:Inter,-apple-system,sans-serif;display:flex;flex-direction:column;box-shadow:0 0 0 1px #2F3742,0 18px 48px rgba(14,17,22,.2);text-wrap:pretty;line-height:1.35;-webkit-font-smoothing:antialiased}
+/* ===== iPhone · handoff-v2 «Ночь фиесты» (Translate — только тёмная, решение 13.11) ===== */
+.ph{--fs:1;--bg:#03071B;--ink:#FFF1EA;--sec:#B4B8C2;--ter:#9EA3AE;--line:rgba(255,241,234,.10);--nav:#F2F5FF;--acc:#FF6F6C;--onAcc:#24123A;
+  --group:#0D1739;--card:#0D1739;--sheet:#03071B;--dim:rgba(2,4,14,.55);--fill:rgba(255,241,234,.08);--chip:rgba(255,94,91,.20);--chipInk:#FF9A97;
+  --danger:#FF6B6B;--dangerBg:rgba(255,107,107,.16);--warnBg:rgba(255,166,43,.16);--warnInk:#FFC98A;--ok:#3DDBB0;--okBg:rgba(61,219,176,.16);
+  position:relative;width:var(--w);height:var(--h);border-radius:var(--rad,44px);overflow:hidden;background:#000;color:var(--ink);font-family:'Golos Text',Inter,-apple-system,sans-serif;display:flex;flex-direction:column;box-shadow:0 0 0 1px #1B2347,0 18px 48px rgba(14,17,22,.2);text-wrap:pretty;line-height:1.34;-webkit-font-smoothing:antialiased}
 .ph.se{--rad:22px}
-.ph.big{--fs:1.6}
-.sb{flex:none;height:var(--sbh,54px);display:flex;align-items:center;justify-content:space-between;padding:0 30px;font-size:16px;font-weight:600;color:var(--tx)}
+.ph.big{--fs:1.35}
+.glow{position:absolute;inset:0;background:radial-gradient(120% 55% at 0% 0%,rgba(255,166,43,.20),transparent 62%),radial-gradient(100% 50% at 100% 100%,rgba(255,94,91,.16),transparent 62%),var(--bg)}
+.grain{position:absolute;inset:0;opacity:.07;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E")}
+.sb{position:relative;z-index:2;flex:none;height:var(--sbh,54px);display:flex;align-items:center;justify-content:space-between;padding:0 30px;font-size:16px;font-weight:600;color:var(--ink)}
 .ph.se .sb{--sbh:20px;font-size:12px;padding:0 8px;justify-content:center}
-/* экран под листом — приглушён и уменьшен, как у iOS-листа */
-.under{position:absolute;left:0;right:0;top:var(--sbh,54px);bottom:0;background:var(--bg);border-radius:12px 12px 0 0;transform:scale(.92);transform-origin:top center;top:calc(var(--sbh,54px) + 0px);opacity:.55;padding:12px 16px}
+/* экран «Данные и приватность» под листом */
+.under{position:absolute;left:0;right:0;top:var(--sbh,54px);bottom:0;overflow:hidden;border-radius:20px 20px 0 0;transform:scale(.93);transform-origin:top center;padding:8px 16px}
 .ph.se .under{--sbh:20px}
-.under .nv{display:flex;align-items:center;gap:6px;color:var(--link);font-size:17px;height:44px}.under h1{font-size:34px;font-weight:700;margin:4px 0 12px}
-.under .grp{background:var(--sf);border-radius:12px;height:44px;margin-bottom:10px}
+.under .nv{display:flex;align-items:center;justify-content:space-between;color:var(--nav);font-size:17px;font-weight:600;height:44px}
+.under h1{font-size:30px;font-weight:800;letter-spacing:-.02em;margin:2px 0 12px}
+.under .grp{background:var(--group);border-radius:20px;height:52px;margin-bottom:10px}
+.dimmer{position:absolute;inset:0;background:var(--dim);z-index:2}
 /* лист */
-.sheet{position:absolute;left:0;right:0;bottom:0;top:calc(var(--sbh,54px) + 10px);background:var(--sf);border-radius:12px 12px 0 0;display:flex;flex-direction:column;z-index:3;box-shadow:0 -6px 24px rgba(0,0,0,.35)}
+.sheet{position:absolute;left:0;right:0;bottom:0;top:calc(var(--sbh,54px) + 10px);background:var(--sheet);border-radius:20px 20px 0 0;display:flex;flex-direction:column;z-index:3;box-shadow:0 14px 40px rgba(0,0,0,.45);overflow:hidden;border-top:1px solid var(--line)}
 .ph.se .sheet{--sbh:20px}
+.sheet>.glow{z-index:0}.sheet>.grain{z-index:0}
+.sheet>*:not(.glow):not(.grain){position:relative;z-index:1}
 .grab{flex:none;height:18px;display:flex;justify-content:center;align-items:center}.grab i{width:36px;height:5px;border-radius:3px;background:var(--ter);opacity:.6}
 .shead{flex:none;display:flex;justify-content:flex-end;padding:0 16px;min-height:36px}
-.shead .x{width:30px;height:30px;border-radius:50%;background:var(--sf2);display:flex;align-items:center;justify-content:center;color:var(--sec)}
+.shead .x{width:30px;height:30px;border-radius:50%;background:var(--fill);display:flex;align-items:center;justify-content:center;color:var(--sec)}
 .shead .x svg{width:14px;height:14px}
-.cont{flex:1;min-height:0;overflow-y:auto;scrollbar-width:none;padding:0 16px 8px;display:flex;flex-direction:column;gap:14px}
-.ph.big .cont{gap:12px}
-.hero{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;padding:2px 8px 4px}
-.hero .ic{width:calc(56px*min(var(--fs),1.3));height:calc(56px*min(var(--fs),1.3));border-radius:50%;display:flex;align-items:center;justify-content:center}
-.hero .ic svg{width:55%;height:55%}
-.hero .ic.ok{background:var(--okbg);color:var(--pri)}.hero .ic.wait{background:var(--warnbg);color:var(--warn)}.hero .ic.err{background:var(--errbg);color:var(--err)}
-.hero h2{font-size:calc(22px*var(--fs));font-weight:700;line-height:1.2;text-wrap:balance}
+.cont{flex:1;min-height:0;overflow-y:auto;scrollbar-width:none;padding:0 16px 8px;display:flex;flex-direction:column;gap:16px}
+.hero{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;padding:0 8px 2px}
+.hero .ic{width:calc(56px*min(var(--fs),1.2));height:calc(56px*min(var(--fs),1.2));border-radius:50%;display:flex;align-items:center;justify-content:center}
+.hero .ic svg{width:52%;height:52%}
+.hero .ic.ok{background:var(--okBg);color:var(--ok)}.hero .ic.wait{background:var(--warnBg);color:var(--warnInk)}.hero .ic.err{background:var(--dangerBg);color:var(--danger)}
+.hero h2{font-size:calc(28px*var(--fs));font-weight:800;line-height:1.2;letter-spacing:-.01em;text-wrap:balance}
 .hero p{font-size:calc(15px*var(--fs));color:var(--sec);line-height:1.4}
-.sh{font-size:calc(13px*var(--fs));color:var(--sec);text-transform:uppercase;letter-spacing:.03em;padding:0 16px 6px}
-.grp{background:var(--sf2);border-radius:12px;overflow:hidden}
-.row{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;min-height:calc(44px*min(var(--fs),1.3));font-size:calc(16px*var(--fs));line-height:1.3;position:relative}
+.sh{font-size:calc(12px*var(--fs));font-weight:600;color:var(--sec);text-transform:uppercase;letter-spacing:.05em;padding:0 16px 6px}
+.grp{background:var(--group);border-radius:20px;overflow:hidden}
+.row{display:flex;align-items:flex-start;gap:12px;padding:15px 16px;min-height:52px;font-size:calc(17px*var(--fs));font-weight:500;line-height:1.34;position:relative}
 .row+.row:before{content:"";position:absolute;left:48px;right:0;top:0;height:1px;background:var(--line)}
-.row .ri{flex:none;width:20px;height:20px;margin-top:1px}
-.row .ri.ok{color:var(--pri)}.row .ri.keep{color:var(--sec)}.row .ri.wait{color:var(--warn)}
+.row .ri{flex:none;width:20px;height:20px;margin-top:2px}
+.row .ri.ok{color:var(--ok)}.row .ri.keep{color:var(--ter)}.row .ri.wait{color:var(--warnInk)}
 .row>span:last-child{min-width:0;overflow-wrap:anywhere}
-.row.lnk{color:var(--link);align-items:center}.row.lnk .chev{margin-left:auto;color:var(--ter)}
-.note{font-size:calc(13px*var(--fs));color:var(--sec);padding:0 16px;line-height:1.4}
-.code{display:flex;align-items:center;gap:12px;padding:10px 12px 10px 16px}
-.code .cv{flex:1;min-width:0;font:600 calc(17px*var(--fs))/1.3 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;user-select:all;-webkit-user-select:all;overflow-wrap:anywhere}
-.code .cl{display:block;font:400 calc(13px*var(--fs))/1.3 Inter,sans-serif;color:var(--sec);letter-spacing:0;margin-bottom:2px}
-.code .cp{flex:none;display:flex;align-items:center;gap:6px;min-height:36px;padding:0 12px;border-radius:18px;background:var(--okbg);color:var(--pri);font-weight:600;font-size:calc(15px*min(var(--fs),1.3))}
+.row.lnk{color:var(--nav);align-items:center}.row.lnk .chev{margin-left:auto;color:var(--ter)}
+.note{font-size:calc(12px*var(--fs));color:var(--sec);padding:0 16px;line-height:1.4}
+.code{display:flex;align-items:center;gap:12px;padding:12px 12px 12px 16px;flex-wrap:wrap}
+.code .cv{flex:1;min-width:0;font:600 calc(17px*var(--fs))/1.3 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;user-select:all;-webkit-user-select:all;overflow-wrap:anywhere;color:var(--ink)}
+.code .cl{display:block;font:400 calc(12px*var(--fs))/1.3 'Golos Text',sans-serif;color:var(--sec);letter-spacing:0;margin-bottom:2px}
+.code .cp{flex:none;display:flex;align-items:center;gap:6px;min-height:44px;padding:0 14px;border-radius:18px;background:var(--chip);color:var(--chipInk);font-weight:600;font-size:calc(15px*var(--fs))}
 .code .cp svg{width:16px;height:16px}
-.foot{flex:none;padding:10px 16px calc(var(--hi,34px) + 4px);display:flex;flex-direction:column;gap:8px;background:var(--sf);position:relative}
-.foot:before{content:"";position:absolute;left:0;right:0;top:-20px;height:20px;background:linear-gradient(transparent,var(--sf));pointer-events:none}
+.foot{flex:none;padding:10px 16px calc(var(--hi,34px) + 4px);display:flex;flex-direction:column;gap:8px;position:relative}
+.foot:before{content:"";position:absolute;left:0;right:0;top:-20px;height:20px;background:linear-gradient(rgba(3,7,27,0),rgba(3,7,27,.9));pointer-events:none}
 .ph.se .foot{--hi:12px}
-.btn{min-height:calc(50px*min(var(--fs),1.3));border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:calc(17px*var(--fs));text-align:center;line-height:1.2;padding:8px 16px}
-.btn.pri{background:var(--pri);color:var(--onpri)}.btn.pl{color:var(--link)}
-.hi{position:absolute;left:0;right:0;bottom:8px;display:flex;justify-content:center;z-index:5}.hi i{width:140px;height:5px;border-radius:3px;background:var(--tx);opacity:.8}
+.btn{min-height:56px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:calc(17px*var(--fs));text-align:center;line-height:1.2;padding:8px 16px;white-space:nowrap}
+.btn.pri{background:var(--acc);color:var(--onAcc)}.btn.pl{color:var(--nav);font-weight:600}
+.hi{position:absolute;left:0;right:0;bottom:8px;display:flex;justify-content:center;z-index:5}.hi i{width:140px;height:5px;border-radius:3px;background:var(--ink);opacity:.8}
 .ph.se .hi{display:none}
-.ph.big .cont{overflow-y:auto;scrollbar-width:none}
 </style></head>
 <body><div class="page">
 <h1>iOS Translate · «Удалить мои данные» — результат</h1>
-<p>Вариант A (удаление и на сервере), для PR 618 parrlo-translator. Лист поверх «Данные и приватность», тема только тёмная. Тексты — <code>copy.js</code>, основа — erase-ui-text.md §7 и Android PR 11 (RG PASS). Отличие iOS: стирается согласие клавиатуры на облако; согласие на перевод в облаке в приложении, возраст и согласие «Мой голос» на телефоне остаются. В результате сроков нет: они по ссылке «Что именно хранится». Проверяет RG.</p>
+<p>Вариант A (удаление и на сервере), для PR 618 parrlo-translator. Стиль handoff-v2, «Ночь фиесты» (Translate — только тёмная, решение 13.11): лист #03071B со свечениями и зерном, группы radius 20, главная кнопка — коралл acc/onAcc, Golos Text. XL = xxxLarge. Подтверждение перед удалением — системный confirmationDialog (здесь не рисуем). Тексты — <code>copy.js</code>, основа — erase-ui-text.md §7 и Android PR 11 (RG PASS). Отличие iOS: стирается согласие клавиатуры на облако; согласие на перевод в облаке в приложении, возраст и согласие «Мой голос» на телефоне остаются. В результате сроков нет: они по ссылке «Что именно хранится». Проверяет RG.</p>
 <div id="ctl">
   <div class="g" data-k="lang"><span>Язык</span><button data-v="ru">RU</button><button data-v="es">ES</button><button data-v="en">EN</button></div>
-  <div class="g" data-k="font"><span>Шрифт</span><button data-v="n">Обычный</button><button data-v="b">Самый крупный</button></div>
+  <div class="g" data-k="font"><span>Шрифт</span><button data-v="n">Обычный</button><button data-v="b">XL (xxxLarge)</button></div>
   <div class="g" data-k="size"><span>Экран</span><button data-v="s">SE</button><button data-v="l">Pro Max</button></div>
 </div>
 <div class="grid" id="grid"></div>
@@ -104,9 +112,9 @@ const row=(ic,cls,t)=>`<div class="row"><span class="ri ${cls}">${ic}</span><spa
 const sec=(h,rows)=>`<div><div class="sh" role="heading" aria-level="3">${h}</div><div class="grp">${rows}</div></div>`;
 const kept=c=>sec(c.keptH,[c.kpAge,c.kpVoiceLog,c.kpLimits,c.kpSub].map(t=>row(I.keep,'keep',t)).join(''));
 const link=c=>`<div class="grp"><div class="row lnk" role="link"><span>${c.keepLink}</span><span class="chev">${I.chev}</span></div></div>`;
-const frame=(c,x,body,foot)=>`<div class="sb">${x.size==='s'?'9:41':'<span>9:41</span><span></span>'}</div>
-  <div class="under"><div class="nv">‹ ${c.settings}</div><h1>${c.title}</h1><div class="grp"></div><div class="grp"></div></div>
-  <div class="sheet" role="dialog" aria-modal="true"><div class="grab"><i></i></div><div class="shead"><span class="x" role="button" aria-label="${c.close}">${I.x}</span></div>
+const frame=(c,x,body,foot)=>`<div class="glow"></div><div class="grain"></div><div class="sb">${x.size==='s'?'9:41':'<span>9:41</span><span></span>'}</div>
+  <div class="under"><div class="nv"><span>‹ ${c.settings}</span></div><h1>${c.title}</h1><div class="grp"></div><div class="grp"></div><div class="grp"></div></div><div class="dimmer"></div>
+  <div class="sheet" role="dialog" aria-modal="true"><div class="glow"></div><div class="grain"></div><div class="grab"><i></i></div><div class="shead"><span class="x" role="button" aria-label="${c.close}">${I.x}</span></div>
   <div class="cont">${body}</div><div class="foot">${foot}</div></div><div class="hi"><i></i></div>`;
 const S=[
  {id:'IR-1',t:'Готово',cap:'Ответ 200. «Удалено» — что стёрли (голос — только при voice = deleted; «Согласие клавиатуры на облако» — PR 618 его сбрасывает; если RG выберет не стирать — пункт уходит), «Осталось» — из kept ответа /v1/me/erase; «Журнал согласий на «Мой голос»» — только если голос был; счётчики — с верхней границей 40 дней, остальные сроки по ссылке «Что именно хранится» (Политика, раздел «Сроки»). Под списком — про подписку.',

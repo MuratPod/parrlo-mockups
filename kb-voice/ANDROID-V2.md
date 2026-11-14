@@ -48,7 +48,7 @@
 | `e413T` | Запись слишком длинная | La grabación es demasiado larga | The recording is too long |
 | `e413B` | Запишите короче — до 2 минут. | Graba algo más corto: hasta 2 minutos. | Record something shorter — up to 2 minutes. |
 | `e502T` | Сервер не ответил | El servidor no ha respondido | The server didn’t respond |
-| `e502B` | Запись сохранена. Нажмите «Повторить». | La grabación está guardada. Toca «Reintentar». | The recording is saved. Tap “Retry”. |
+| `e502B` | Запись сохранена. Нажмите «Повторить». | La grabación está guardada. Toca «Reintentar». | The recording is saved. Tap “Try again”. |
 | `intKb` | Клавиатуру скрыли — запись остановлена. | Se ha ocultado el teclado: la grabación se ha detenido. | The keyboard was hidden — recording stopped. |
 | `k2Status` | Клавиатура Parrlo | Teclado Parrlo | Parrlo keyboard |
 | `k2On` | Включена | Activado | Enabled |
@@ -148,7 +148,7 @@
 | `c2` | Anthropic — делаем текст грамотным и переводим. Серверы в США, передача по стандартным договорным условиям ЕС. | Anthropic: lo corregimos y lo traducimos. Servidores en EE. UU., con las cláusulas contractuales tipo de la UE. | Anthropic — we tidy it up and translate it. Servers in the US, under the EU Standard Contractual Clauses. |
 | `c3t` | Текст голосового | Texto de la nota de voz | Voice note text |
 | `c3` | ElevenLabs — озвучка стандартным голосом, не вашим. Серверы в США, передача по стандартным договорным условиям ЕС. | ElevenLabs: se lee con una voz estándar, no la tuya. Servidores en EE. UU., con las cláusulas contractuales tipo de la UE. | ElevenLabs — read in a standard voice, not yours. Servers in the US, under the EU Standard Contractual Clauses. |
-| `c4` | Запись не хранится на сервере Parrlo: удаляем сразу после распознавания. | La grabación no se guarda en el servidor de Parrlo: la borramos justo después de reconocerla. | Recordings aren’t stored on the Parrlo server: we delete them right after recognition. |
+| `c4` (окончательно после DPA Soniox — Мурат) | Soniox получает запись только для распознавания и не обучает на ней модели. Мы удаляем запись у Soniox сразу после распознавания, не позднее чем через 30 минут. | Soniox recibe la grabación solo para reconocerla y no la usa para entrenar modelos. La borramos de Soniox justo después del reconocimiento, como máximo en 30 minutos. | Soniox receives the recording only to transcribe it and doesn’t use it to train models. We delete it from Soniox right after transcription, within 30 minutes at most. |
 | `c5` | Выключить голос можно в любой момент: Настройки → Голос. | Puedes desactivar la voz cuando quieras: Ajustes → Voz. | You can turn voice off at any time: Settings → Voice. |
 | `cPolicy` | Политика конфиденциальности | Política de privacidad | Privacy Policy |
 | `cAllow` | Разрешить | Permitir | Allow |

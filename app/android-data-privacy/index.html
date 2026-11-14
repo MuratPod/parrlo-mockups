@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Android · Данные и приватность</title>
+<style>
+@font-face{font-family:Inter;font-weight:100 900;src:url(../../webdemo-mock/fonts/Inter-Variable.woff2) format("woff2")}
+:root{--p-bg:#F2F5F4;--p-card:#FFFFFF;--p-line:#D5E9DF;--p-tx:#0E1116;--p-sec:#5B6472}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--p-bg:#0B0E12;--p-card:#12161C;--p-line:#2F3742;--p-tx:#E8ECF1;--p-sec:#9AA4B2}}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--p-bg);color:var(--p-tx);font:400 15px/1.45 Inter,system-ui,sans-serif;padding:20px 16px 48px}
+.page h1{font-size:24px;font-weight:800;margin-bottom:6px}.page>p{color:var(--p-sec);max-width:80ch;margin-bottom:14px}
+#ctl{position:sticky;top:0;z-index:20;background:var(--p-bg);display:flex;flex-wrap:wrap;gap:8px 16px;padding:8px 0 12px;border-bottom:1px solid var(--p-line);margin-bottom:16px}
+#ctl .g{display:flex;align-items:center;gap:6px}#ctl .g>span{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--p-sec)}
+#ctl button{font:600 14px Inter,sans-serif;padding:8px 14px;border-radius:999px;border:1px solid var(--p-line);background:var(--p-card);color:var(--p-tx);cursor:pointer;min-height:40px}
+#ctl button[aria-pressed=true]{border-color:#00875C;box-shadow:inset 0 0 0 1px #00875C;color:#00875C}
+.grid{display:flex;flex-wrap:wrap;gap:22px;align-items:flex-start}
+figure{display:flex;flex-direction:column;gap:8px}
+figcaption{font-size:13px;color:var(--p-sec);line-height:1.4}figcaption b{color:var(--p-tx)}figcaption .id{font:700 12px ui-monospace,monospace;background:#00875C;color:#fff;border-radius:6px;padding:2px 6px;margin-right:6px}
+table{border-collapse:collapse;font-size:13px;margin-top:10px}td,th{border:1px solid var(--p-line);padding:6px 8px;text-align:left;vertical-align:top}th{color:var(--p-sec)}
+.scrollx{overflow-x:auto;max-width:100%}
+h2.s{font-size:19px;margin:28px 0 8px}
+
+/* ===== телефон, Material 3, тёмная тема бренда ===== */
+.ph{--fs:1;--bg:#12161C;--sf:#1C2026;--sf2:#242B34;--sf3:#2C333D;--tx:#E8ECF1;--sec:#9AA4B2;--line:#2F3742;--pri:#2BC48A;--onpri:#0E1116;--prictr:#1E3734;--err:#FF6B5E;--inv:#E8ECF1;--oninv:#12161C;
+  position:relative;width:var(--w);height:var(--h);border-radius:28px;overflow:hidden;background:var(--bg);color:var(--tx);font-family:Inter,Roboto,sans-serif;display:flex;flex-direction:column;box-shadow:0 0 0 1px #2F3742,0 18px 48px rgba(14,17,22,.2);text-wrap:pretty;line-height:1.35;-webkit-font-smoothing:antialiased}
+.ph.big{--fs:1.6}
+.sb{flex:none;height:32px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-size:13px;font-weight:600}
+.sb .ic{display:flex;gap:6px}.sb .ic i{display:block;width:16px;height:10px;border-radius:2px;background:var(--tx);opacity:.9}
+.tab{flex:none;display:flex;align-items:center;gap:4px;min-height:64px;padding:0 8px 0 4px}
+.tab .bk{width:48px;height:48px;display:flex;align-items:center;justify-content:center;border-radius:50%}
+.tab .bk svg{width:24px;height:24px}
+.tab h1{font-size:calc(22px*min(var(--fs),1.3));font-weight:400;line-height:1.2;text-wrap:balance}
+.body{flex:1;min-height:0;overflow:hidden;padding:0 0 16px}
+.sh{font-size:calc(14px*var(--fs));font-weight:600;color:var(--pri);padding:16px 16px 4px;letter-spacing:.01em}
+.li{display:flex;align-items:center;gap:16px;min-height:calc(56px*min(var(--fs),1.3));padding:8px 24px 8px 16px}
+.li .tx{flex:1;min-width:0}
+.li .hl{display:block;font-size:calc(16px*var(--fs));line-height:1.4}
+.li .su{display:block;font-size:calc(14px*var(--fs));color:var(--sec);line-height:1.35}
+.li .su.pri{color:var(--pri)}
+.li.dng .hl{color:var(--err)}
+.sw{flex:none;width:52px;height:32px;border-radius:16px;background:var(--pri);position:relative}
+.sw:after{content:"";position:absolute;right:4px;top:4px;width:24px;height:24px;border-radius:50%;background:var(--onpri)}
+.sw.off{background:var(--sf3);box-shadow:inset 0 0 0 2px #7F8996}.sw.off:after{right:auto;left:8px;top:8px;width:16px;height:16px;background:#7F8996}
+.ft{font-size:calc(14px*var(--fs));color:var(--sec);padding:4px 16px 8px;line-height:1.4}
+.dv{height:1px;background:var(--line);margin:8px 16px}
+.gh{flex:none;height:24px;display:flex;justify-content:center;align-items:center}.gh i{width:100px;height:4px;border-radius:2px;background:var(--tx);opacity:.5}
+/* диалог M3 */
+.scrim{position:absolute;inset:0;background:rgba(0,0,0,.55);z-index:5;display:flex;align-items:center;justify-content:center;padding:24px}
+.dlg{width:100%;max-width:min(calc(100% - 0px),560px);min-width:280px;background:var(--sf2);border-radius:28px;padding:24px;display:flex;flex-direction:column;gap:16px;max-height:calc(100% - 48px)}
+.dlg h2{font-size:calc(24px*min(var(--fs),1.3));font-weight:400;line-height:1.3;text-wrap:balance}
+.dlg p{font-size:calc(14px*var(--fs));color:var(--sec);line-height:1.45}
+.dlg .sc{overflow-y:auto;display:flex;flex-direction:column;gap:12px;min-height:0;flex:1 1 auto}
+.dlg .sc.scr{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:8px 0}
+.dlg>*{flex:none}
+.acts{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:8px;margin-top:8px}
+.tb{min-height:40px;padding:10px 12px;border-radius:20px;font-weight:600;font-size:calc(14px*min(var(--fs),1.3));color:var(--pri);line-height:1.2;text-align:center}
+.tb.dng{color:var(--err)}
+.big .acts{flex-direction:column-reverse;align-items:stretch}
+.radio{display:flex;flex-direction:column}
+.radio .r{display:flex;align-items:center;gap:16px;min-height:calc(48px*min(var(--fs),1.3));font-size:calc(16px*var(--fs))}
+.radio .r i{flex:none;width:20px;height:20px;border-radius:50%;box-shadow:inset 0 0 0 2px var(--sec)}
+.radio .r.on i{box-shadow:inset 0 0 0 2px var(--pri),inset 0 0 0 5px var(--sf2),inset 0 0 0 10px var(--pri)}
+.prog{display:flex;align-items:center;gap:16px;font-size:calc(16px*var(--fs))}
+.spin{flex:none;width:40px;height:40px;border-radius:50%;border:4px solid var(--prictr);border-top-color:var(--pri);animation:sp 1s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation:none}}
+.lst{display:flex;flex-direction:column;gap:4px;font-size:calc(14px*var(--fs))}.lst b{font-weight:600;color:var(--tx)}.lst ul{margin:0;padding-left:18px;color:var(--sec);display:flex;flex-direction:column;gap:2px}
+.lnk2{color:var(--pri);font-weight:600;font-size:calc(14px*var(--fs))}
+.code{display:flex;align-items:center;gap:12px;background:var(--sf3);border-radius:12px;padding:10px 12px;flex-wrap:wrap}.code .cv{flex:1;min-width:0;font:600 calc(16px*var(--fs))/1.3 ui-monospace,monospace;letter-spacing:.04em;user-select:all;white-space:nowrap}.code .cl{display:block;font:400 calc(12px*var(--fs)) Inter,sans-serif;color:var(--sec);letter-spacing:0}.code .cp{flex:none;min-height:40px;padding:0 12px;border-radius:20px;display:flex;align-items:center;color:var(--pri);font-weight:600;font-size:calc(14px*min(var(--fs),1.3))}
+.snack{position:absolute;left:16px;right:16px;bottom:40px;z-index:6;background:var(--inv);color:var(--oninv);border-radius:4px;min-height:48px;padding:14px 16px;font-size:calc(14px*var(--fs));display:flex;align-items:center;box-shadow:0 4px 12px rgba(0,0,0,.35)}
+.ic{display:inline-flex}
+</style></head>
+<body><div class="page">
+<h1>Android Translate · «Данные и приватность»</h1>
+<p>По образцу iOS (прототип: Настройки → Данные и приватность), но только то, что есть в Android (RG сверил с кодом PR 605): без отчётов о сбоях и отметок «Неточно». Material 3 на токенах бренда, тема только тёмная (решение 13.11). Удаление — <b>сейчас вариант B</b>: только телефон, без обещаний про сервер. <b>Вариант A</b> (данные установки на сервере, /v1/me/erase) — кадры-варианты, «после решения Мурата». Тексты — <code>copy.js</code>, проверяет RG.</p>
+<div id="ctl">
+  <div class="g" data-k="v"><span>Удаление</span><button data-v="B">B · только телефон (сейчас)</button><button data-v="A">A · с сервером — после решения Мурата</button></div>
+  <div class="g" data-k="lang"><span>Язык</span><button data-v="ru">RU</button><button data-v="es">ES</button><button data-v="en">EN</button></div>
+  <div class="g" data-k="font"><span>Шрифт</span><button data-v="n">Обычный</button><button data-v="b">Самый крупный</button></div>
+  <div class="g" data-k="size"><span>Экран</span><button data-v="s">360 dp</button><button data-v="l">412 dp</button></div>
+</div>
+<div class="grid" id="grid"></div>
+
+<h2 class="s">Поведение</h2>
+<div class="scrollx"><table>
+<tr><th>Действие</th><th>Что происходит</th></tr>
+<tr><td>«Очистить историю»</td><td>Диалог DP-3 → «Очистить» → история на телефоне удалена сразу → снекбар DP-4 (4 с). Сеть не нужна.</td></tr>
+<tr><td>A · «Удалить мои данные»</td><td>По erase-ui-text.md §7 и контракту POST /v1/me/erase: DP-5 → «Удалить» → DP-6 → очистка телефона и вызов сервера. 200 → DP-7 «Готово» со списками erased/kept; voice = pending_upstream → DP-7a «Принято»; 429 → DP-8b: телефон уже очищен, сервер — при повторе через N; нет сети → DP-8 без кода (errBnc), 5xx → DP-8 с кодом (errB); 400/403 → DP-8 с кодом, rejB, одна кнопка «Понятно»; 404 → DP-8c. Пока сервер не очищен — на экране строка DP-1r с «Повторить». Лимит — 10 раз в сутки.</td></tr>
+<tr><td>Какой вариант показывать (RG)</td><td>Не выбор дизайна, а флаг сервера: перед диалогом клиент смотрит /v1/config → features.erase. true → вариант A, false / неизвестно / нет сети → вариант B. Ответ 404 при A (флаг сменился) → как B: телефон очищен, сервер — по письму.</td></tr>
+<tr><td>B · «Удалить данные на телефоне»</td><td>DP-5 → «Удалить» → DP-6: стираем на телефоне историю, звук «Отправить голосом» и полученный файл → DP-7. Если что-то не удалилось → DP-7p (что осталось, «Повторить» — только остаток). Сеть не нужна. Данные на сервере — по запросу пользователя (контакт в Политике).</td></tr>
+<tr><td>Перевод в облаке</td><td>Одно согласие (VOICE_TEXT / NONE). Включён: статус «Включён» и «Выключить перевод в облаке» (подтверждение — как на экране согласия). Выключен: статус «Выключен», тап → экран согласия → после включения — обратно сюда, не в Настройки.</td></tr>
+<tr><td>История выключена</td><td>«Срок хранения» скрыт; при включении появляется со значением по умолчанию (30 дней).</td></tr>
+<tr><td>Кнопки диалогов</td><td>Справа: «Отмена» (основной цвет) и действие (цвет ошибки). При самом крупном шрифте — столбиком, действие сверху. Назад / тап по фону = «Отмена» (кроме DP-6).</td></tr>
+<tr><td>TalkBack</td><td>Заголовки разделов — heading; диалог объявляет заголовок и текст; снекбар — liveRegion polite.</td></tr>
+</table></div>
+</div>
+<script src="copy.js"></script>
+<script>
+(function(){
+const DEV={s:{w:360,h:760},l:{w:412,h:915}};
+const st={v:'B',lang:'ru',font:'n',size:'s'};
+try{const q=new URLSearchParams(location.search);for(const k in st)if(q.get(k))st[k]=q.get(k);}catch(e){}
+const back='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H5M11 5l-7 7 7 7"/></svg>';
+const top=(c)=>`<div class="sb"><span>9:41</span><span class="ic"><i></i></span></div><div class="tab"><span class="bk" role="button" aria-label="${c.back}">${back}</span><h1>${c.title}</h1></div>`;
+const li=(h,o={})=>`<div class="li${o.dng?' dng':''}" role="${o.sw!==undefined?'switch':'button'}"${o.sw!==undefined?` aria-checked="${o.sw}"`:''}><span class="tx"><span class="hl">${h}</span>${o.su?`<span class="su${o.suPri?' pri':''}">${o.su}</span>`:''}</span>${o.sw!==undefined?`<span class="sw${o.sw?'':' off'}" aria-hidden="true"></span>`:''}</div>`;
+const sh=(t)=>`<div class="sh" role="heading" aria-level="2">${t}</div>`;
+const ft=(t)=>`<p class="ft">${t}</p>`;
+const mainTop=(c,o={})=>`${sh(c.hCloud)}${li(c.cloudRow,{su:o.off?c.cloudOff:c.cloudOn,suPri:!o.off})}${o.off?'':li(c.revokeRow,{dng:true})}${ft(c.cloudFoot)}
+  ${sh(c.hHist)}${li(c.keepRow,{sw:!o.histOff})}${o.histOff?'':li(c.daysRow,{su:c.d30,suPri:true})}${ft(c.histFoot)}`;
+const mainBot=(c,v)=>`<div class="dv"></div>${li(c.clearRow,{dng:true})}${li(c['delRow'+v],{dng:true})}${v==='B'?ft(c.srvFootB):''}${ft(c.delFoot)}`;
+const full=(c,v,o={})=>`${mainTop(c,o)}${mainBot(c,v)}`;
+const screen=(c,body,over='')=>`${top(c)}<div class="body">${body}</div><div class="gh"><i></i></div>${over}`;
+const dlg=(t,b,acts,extra='')=>`<div class="scrim"><div class="dlg" role="alertdialog" aria-label="${t}"><h2>${t}</h2><div class="sc">${b?`<p>${b}</p>`:''}${extra}</div>${acts?`<div class="acts">${acts}</div>`:''}</div></div>`;
+const lst=(h,items)=>`<div class="lst"><b>${h}</b><ul>${items.map(i=>`<li>${i}</li>`).join('')}</ul></div>`;
+const kept=(c)=>lst(c.keptH,[c.kpLimits.replace('{date}','29.11'),c.kpMonthly.replace('{date}','24.12'),c.kpSub]);
+const tb=(t,cls='')=>`<span class="tb ${cls}" role="button">${t}</span>`;
+const S=[
+ {id:'DP-1',t:'Экран',cap:'Одно согласие на облако (Android: VOICE_TEXT / NONE): строка со статусом и «Выключить перевод в облаке». История и удаление. При самом крупном шрифте экран прокручивается (DP-2 — низ).',r:(c,v)=>screen(c,full(c,v))},
+ {id:'DP-1r',t:'Сервер ещё не очищен (только A)',cap:'После DP-8 / DP-8b, пока сервер не подтвердил удаление: карточка вверху экрана (фон ошибки) с текстовой кнопкой «Повторить» — видна сразу, в том числе при самом крупном шрифте. Исчезает после ответа 200 или 404 (тогда — DP-8c).',only:'A',r:(c,v)=>screen(c,`<div class="li" style="margin:4px 16px 4px;background:#3C2A2E;border-radius:16px;padding:12px 8px 12px 16px" role="status"><span class="tx"><span class="hl" style="color:var(--err)">${c.errT}</span><span class="su">${c.pendRowSub}</span></span><span class="tb" role="button">${c.retry}</span></div>${full(c,v)}`)},
+ {id:'DP-1b',t:'Облако и история выключены',cap:'Перевод в облаке выключен: статус «Выключен», тап по строке → экран согласия → после включения возвращаемся сюда. История выключена: «Срок хранения» скрыт (как на iOS).',r:(c,v)=>screen(c,full(c,v,{off:true,histOff:true}))},
+ {id:'DP-2',t:'Экран: низ',cap:'После прокрутки (нужна при крупном шрифте): «Очистить историю» и удаление цветом ошибки. B: подпись, как удалить данные на сервере.',r:(c,v)=>screen(c,mainBot(c,v))},
+ {id:'DP-2b',t:'Срок хранения',cap:'Диалог с переключателями, выбор применяется сразу, без «ОК».',r:(c,v)=>screen(c,full(c,v),dlg(c.daysT,'',tb(c.cancel),`<div class="radio" role="radiogroup">${[c.d7,c.d30,c.d90,c.dAll].map((d,i)=>`<span class="r${i===1?' on':''}" role="radio" aria-checked="${i===1}"><i></i>${d}</span>`).join('')}</div>`))},
+ {id:'DP-3',t:'Очистить историю?',cap:'Подтверждение. «Очистить» — цвет ошибки, «Отмена» — основной.',r:(c,v)=>screen(c,full(c,v),dlg(c.clearT,c.clearB,tb(c.cancel)+tb(c.clearBtn,'dng')))},
+ {id:'DP-4',t:'История очищена',cap:'Снекбар 4 с, без «Отменить»: удаление сразу.',r:(c,v)=>screen(c,full(c,v),`<div class="snack" role="status">${c.cleared}</div>`)},
+ {id:'DP-5',t:'Удалить данные?',cap:'A: «Удалить мои данные» (не «все» — часть остаётся), текст из erase-ui-text.md §7, Android: «Google Play», без «журнала» и «Неточно». Фраза про «Мой голос» — только если он создан (иначе текст delBAnv); ссылка «Что именно хранится» → Политика, раздел «Сроки». B: только телефон — история, звук «Отправить голосом», полученный файл.',r:(c,v)=>screen(c,full(c,v),dlg(c['delT'+v],c['delB'+v],tb(c.cancel)+tb(c.delBtn,'dng'),v==='A'?`<span class="lnk2" role="link">${c.keepLink}</span>`:''))},
+ {id:'DP-6',t:'Удаляем',cap:'Неотменяемый шаг: без кнопок, «Назад» не закрывает. Показываем, если дольше 300 мс.',r:(c,v)=>screen(c,full(c,v),`<div class="scrim"><div class="dlg" role="alertdialog" aria-busy="true"><div class="prog"><span class="spin" aria-hidden="true"></span>${c.deleting}</div></div></div>`)},
+ {id:'DP-7',t:'Данные удалены',cap:'Результат. A: «Готово» только при ответе 200; списки «Удалено» / «Осталось» собираются из erased/kept ответа сервера, даты — местные. «Мой голос» в «Удалено» — только при voice = deleted (при none пункта нет, при pending_upstream — DP-7a). После «Понятно» — на DP-1.',r:(c,v)=>screen(c,full(c,v),v==='A'?dlg(c.doneTA,'',tb(c.ok),lst(c.erasedH,[c.erPhone,c.erServer,c.erVoice])+kept(c)+`<p>${c.morePolicy}</p>`):dlg(c.doneT,c.doneBB,tb(c.ok)))},
+ {id:'DP-7p',t:'Удалилось не всё',cap:'Часть файлов не удалилась (файл занят, ошибка диска). Перечисляем, что осталось; «Повторить» удаляет только остаток. Удалённое не восстанавливается.',r:(c,v)=>screen(c,full(c,v),dlg(c.partT,c.partB.replace('{items}',c.itFile),tb(c.cancel)+tb(c.retry)))},
+ {id:'DP-7a',t:'Принято: голос ещё удаляется (только A)',cap:'Ответ 200 с voice = pending_upstream. Не «Голос удалён» и не «Готово».',only:'A',r:(c,v)=>screen(c,full(c,v),dlg(c.pendT,'',tb(c.ok),lst(c.erasedH,[c.erPhone,c.erServer])+lst(c.pendT,[c.pendVoice])+kept(c)))},
+ {id:'DP-8b',t:'429: слишком много запросов (только A)',cap:'Ответ 429 (minute/day) с retry_after_s → «через N». Телефон уже очищен, запрос на сервер ждёт повтора. Лимит — 10 раз в сутки.',only:'A',r:(c,v)=>screen(c,full(c,v),dlg(c.e429T,c.e429B.replace('{n}',c.n2min),tb(c.ok)))},
+ {id:'DP-8',t:'Ошибка сервера (только A)',cap:'Нет сети или 5xx: телефон очищен, сервер — нет, «Готово» не показываем. Код запроса выделяется; «Скопировать» → «Скопировано» на 2 с + тактильный отклик. «Повторить» повторяет запрос на сервер.',only:'A',r:(c,v)=>screen(c,full(c,v),dlg(c.errT,c.errB,tb(c.cancel)+tb(c.retry),`<div class="code"><span class="cv"><span class="cl">${c.codeL}</span>${c.code}</span><span class="cp" role="button">${c.copy}</span></div>`))},
+ {id:'DP-8c',t:'404: удаление на сервере выключено (только A)',cap:'Флаг сменился между /v1/config и вызовом. Телефон очищен, сервер — только по письму.',only:'A',r:(c,v)=>screen(c,full(c,v),dlg(c.offT,c.offB,tb(c.ok)))},
+];
+window.DPS=S;
+function phone(s,o){const d=DEV[o.size];return `<div class="ph${o.font==='b'?' big':''}" style="--w:${d.w}px;--h:${d.h}px" lang="${o.lang}">${s.r(window.DP[o.lang],o.v||'A')}</div>`;}
+window.DPphone=phone;
+function render(){
+  document.querySelectorAll('#ctl .g').forEach(g=>g.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(st[g.dataset.k]===b.dataset.v))));
+  const z=.75,d=DEV[st.size];
+  document.getElementById('grid').innerHTML=S.filter(s=>!s.only||s.only===st.v).map(s=>`<figure style="width:${Math.max(d.w*z,240)}px"><div style="width:${d.w*z}px;height:${d.h*z}px"><div style="transform:scale(${z});transform-origin:0 0;width:${d.w}px">${phone(s,st)}</div></div><figcaption><span class="id">${s.id}${st.v==='A'?'·A':''}</span>${st.v==='A'?'<b style="color:#B26B00">Вариант A — после решения Мурата.</b> ':''}<b>${s.t}</b> · ${s.cap}</figcaption></figure>`).join('');
+  document.querySelectorAll('.dlg .sc').forEach(e=>{if(e.scrollHeight>e.clientHeight+1)e.classList.add('scr')});
+  try{history.replaceState(null,'','?'+new URLSearchParams(st));}catch(e){}
+}
+document.getElementById('ctl').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;st[b.parentNode.dataset.k]=b.dataset.v;render();});
+render();
+})();
+</script>
+</body></html>

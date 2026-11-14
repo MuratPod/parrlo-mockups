@@ -30,11 +30,26 @@
 <div class="grid" data-g="ios-g"></div>
 
 <h2 id="and">4. Android · голос в клавиатуре</h2>
-<p class="s">На Android клавиатура пишет сама: все шаги — в панели клавиатуры поверх букв, без перехода в приложение. Экран раскрытия перед разрешением микрофона уже сделан (PR 486).</p>
+<p class="s">v2 по заказу parrlo-keyboard (14.11). Клавиатура пишет голос сама: всё — в панели на месте букв, кроме A-V1 (вход в Parrlo). Панель не выше буквенной клавиатуры (212 dp на 360 и 412 dp); при самом крупном шрифте содержимое прокручивается, кнопки закреплены внизу. Ряд с чипом «ES ⇄» виден во всех состояниях. Тема — по телефону. Тексты согласия на голос — черновик, финал через RG. Ядро: A-K1, A-V2, A-V5, A-V6.</p>
 <div class="grid" data-g="and"></div>
 
 <h2 id="and-k">5. Android · клавиатура целиком и настройки</h2>
 <div class="grid" data-g="and-k"></div>
+
+<h2 id="anim">5a. Android · анимации</h2>
+<p class="s">Кривые — Material 3. При «Убрать анимацию» в системе (ANIMATOR_DURATION_SCALE = 0) всё статично: волна — столбики по уровню без движения, этапы меняются без перехода.</p>
+<div class="scrollx"><table class="tx"><tr><th>Что</th><th>Длительность</th><th>Кривая</th><th>Как</th></tr>
+<tr><td>Панель появляется вместо букв</td><td>200 мс</td><td>emphasized decelerate (0.05, 0.7, 0.1, 1)</td><td>буквы — fade out 100 мс, панель — fade in + сдвиг 8 dp снизу; высота не меняется</td></tr>
+<tr><td>Панель уходит, буквы возвращаются</td><td>150 мс</td><td>emphasized accelerate (0.3, 0, 0.8, 0.15)</td><td>обратно; после «Вставить» — сразу, текст появляется в поле</td></tr>
+<tr><td>Волна записи</td><td>кадр 16 мс, сглаживание 100 мс</td><td>linear (уровень), столбик — ease-out 80 мс</td><td>высота = RMS микрофона, 24 столбика (360 dp) / 30 (412 dp), сдвиг справа налево</td></tr>
+<tr><td>Красная точка «Идёт запись»</td><td>1200 мс, цикл</td><td>standard (0.2, 0, 0, 1)</td><td>непрозрачность 1 → 0.35 → 1</td></tr>
+<tr><td>Полоса лимита</td><td>реальное время, 2:00</td><td>linear</td><td>с 1:45 цвет → Warn за 200 мс (standard), строка «Осталось 15 секунд» — fade in 150 мс</td></tr>
+<tr><td>Строка тишины</td><td>появление 150 мс / уход 150 мс</td><td>standard</td><td>через 5 с без голоса; волна гаснет до 45%</td></tr>
+<tr><td>Этапы обработки</td><td>по ответу сервера</td><td>галочка: scale 0.6 → 1, 150 мс, emphasized decelerate</td><td>текущий этап — кольцо, оборот 1000 мс linear; без полосы и процентов</td></tr>
+<tr><td>«Готовим голосовое…»</td><td>900 мс, цикл</td><td>ease-in-out</td><td>малая волна 16 столбиков, по очереди со сдвигом 60 мс</td></tr>
+<tr><td>Плеер</td><td>реальное время</td><td>linear</td><td>закрашивание волны; play ↔ pause — crossfade 100 мс</td></tr>
+<tr><td>Чип «Голосовое в поле ввода»</td><td>появление 200 мс, держится 4 с, уход 150 мс</td><td>emphasized decelerate / accelerate</td><td>fade + сдвиг 4 dp</td></tr>
+</table></div>
 
 <h2 id="texts">6. Тексты ru / es / en</h2>
 <p class="s">Черновик. Согласие на голос проверит юрист. ElevenLabs — США, по стандартным договорным условиям ЕС (решение Мурата 13.11). Ключи совпадают с файлом <code>kb-voice/copy.js</code>.</p>
@@ -122,6 +137,9 @@ const KEYS = [
  ['Прерывание',['intT','intCall','intSiri','intBg','intSaved','cont','done']],
  ['Голосовое',['gTitle','gFrom','gFromSub','gNext','gEmptyT','gEmptyB','gDictate','gWhich','gMine','gTr','gVoice','male','female','gVoiceNote','gSpeak','gEditHint','gPrep','gPrepSub','gReady','reVoice','share','gShareT','gShareB','gShareSheet']],
  ['Android',['aSend','aSendNote','aPermT','aPermB','aPermGo','aSettings','sMyLang','sPartner','sGender','sGenderSub','sVoice','sConsent','sVoiceOf','sAbout','sPolicy']],
+ ['Android v2 · клавиатура и недоступность',['swapA11y','partnerA11y','closeA11y','againShort','insNoTr','del2','openParrlo','r16T','r16B','rConsT','rConsB','rMicT','rMicB','rKbT','rKbB','r401T','r401B','aMicAsk','aMicWhile','aMicOnce','aMicNo']],
+ ['Android v2 · запись, голосовое, ошибки',['aMicBusyT','aMicBusyB','recInApp','aSilence','gLit','gCount','gReadyNote','aVoiceIns','aVoiceInsSub','eVoiceOffT','eVoiceOffB','e422T','e422B','e413T','e413B','e502T','e502B','intKb']],
+ ['Android v2 · настройки',['k2Status','k2On','k2Sel','k2OnNo','k2Turn','k2Pick','k2About','k2Form','k2FormSub','k2FormN','k2Cons','k2ConsText','k2ConsTextSub','k2ConsVoice','k2ConsVoiceSub','k2Age','k2AgeV','k2Del','k2DelSub']],
 ];
 const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
 document.getElementById('tx').innerHTML = `<thead><tr><th>Ключ</th><th>RU</th><th>ES</th><th>EN</th></tr></thead><tbody>` + KEYS.map(([g,ks])=>`<tr><th colspan="4" style="background:var(--p-bg)">${g}</th></tr>`+ks.map(k=>`<tr><td class="k">${k}</td>${['ru','es','en'].map(l=>`<td>${esc(window.COPY[l][k]??'—')}</td>`).join('')}</tr>`).join('')).join('') + `</tbody>`;

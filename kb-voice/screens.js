@@ -326,10 +326,10 @@ add({id:'A-V5b', g:'and', os:'and', t:'Результат без перевод�
 const gPrev = (c, n, over) => `<div class="prev">${xBtn(c)}<span class="clamp3">${over?c.sumLong:c.lit.tr}</span><span class="cnt${over?' lim':''}">${over?c.gLongT+' · ':''}${fmt(c.gCount,{n,max:600})}</span></div>`;
 const gSeg = (c) => `<div class="seg sm"><span>${c.gLit}</span><span class="on">${c.gTr}</span></div>`;
 const gSex = (c) => `<span class="sx" role="radiogroup" aria-label="${A11Y(c.gVoice)}"><span class="on" role="radio" aria-checked="true">${c.female}</span><span role="radio" aria-checked="false">${c.male}</span></span>`;
-add({id:'A-V6a', g:'and', os:'and', t:'Голосовое: текст', cap:'Из поля ввода: «Литературно» (исправленный текст) или «Перевод». Голос «Женский / Мужской» (стандартный, не ваш). Счётчик до 600 знаков.',
-  r:(c,x)=>P(c,x,`${gSeg(c)}${gPrev(c,84)}`,`${gSex(c)}${sp(c.gSpeak,'pri',I.voice)}`,{act:'voice',m:{field:c.lit.text}})});
+add({id:'A-V6a', g:'and', os:'and', t:'Голосовое: текст', cap:'Из поля ввода: «Литературно» (исправленный текст) или «Перевод». Голос «Женский / Мужской» (стандартный, не ваш). Счётчик до 600 знаков. При самом крупном шрифте выбор голоса уходит в прокручиваемую часть, «Озвучить» — на всю ширину.',
+  r:(c,x)=>P(c,x,`${gSeg(c)}${gPrev(c,84)}<div class="sxrow">${gSex(c)}</div>`,`${gSex(c)}${sp(c.gSpeak,'pri',I.voice)}`,{act:'voice',m:{field:c.lit.text}})});
 add({id:'A-V6d', g:'and', os:'and', t:'Голосовое: больше 600', cap:'Счётчик красный с причиной, «Озвучить» неактивна. Текст правят в поле чата — счётчик обновляется сразу.',
-  r:(c,x)=>P(c,x,`${gSeg(c)}${gPrev(c,612,true)}`,`${gSex(c)}${sp(c.gSpeak,'pri dis',I.voice)}`,{act:'voice',m:{field:c.sumLong}})});
+  r:(c,x)=>P(c,x,`${gSeg(c)}${gPrev(c,612,true)}<div class="sxrow">${gSex(c)}</div>`,`${gSex(c)}${sp(c.gSpeak,'pri dis',I.voice)}`,{act:'voice',m:{field:c.sumLong}})});
 add({id:'A-V6b', g:'and', os:'and', t:'Голосовое: готовим', cap:'Один этап, без полосы. «Отмена» возвращает к A-V6a.', anim:true,
   r:(c,x)=>P(c,x,`${andTop(c,c.gPrep,'')}<div class="mid"><div class="wave small" style="max-width:180px">${waveBars(16,2)}</div><span class="small">${c.gPrepSub}</span></div>`,sp(c.cancel),{act:'voice',m:{field:c.lit.text}})});
 add({id:'A-V6c', g:'and', os:'and', t:'Голосовое готово', cap:'Плеер play/pause и длительность. «Отправить»: аудио в поле чата (commitContent), если чат принимает; иначе системный «Поделиться». Само не отправляется.',

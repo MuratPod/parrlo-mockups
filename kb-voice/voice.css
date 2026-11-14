@@ -369,3 +369,8 @@ table.tx td.k{font:600 12px ui-monospace,Menlo,monospace;color:var(--p-sec);whit
 .ph.big .andpanel .clamp3{-webkit-line-clamp:2}
 .ph.big .andpanel .acts>*{font-size:calc(13px*var(--kfs));line-height:1.1}
 .ph.and .nv .tt{text-align:left;left:56px;right:120px}
+.andpanel .sxrow{display:none}
+.ph.big .andpanel .sxrow{display:flex}
+.ph.big .andpanel .sxrow .sx{display:flex;gap:2px;padding:3px;background:var(--key);border-radius:23px;width:100%}
+.ph.big .andpanel .sxrow .sx span{flex:1;justify-content:center;min-height:calc(38px*var(--kfs))}
+.ph.big .andpanel .acts>.sx{display:none}

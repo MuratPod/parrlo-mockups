@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>iOS · Результат удаления</title>
+<style>
+@font-face{font-family:Inter;font-weight:100 900;src:url(../../webdemo-mock/fonts/Inter-Variable.woff2) format("woff2")}
+:root{--p-bg:#F2F5F4;--p-card:#FFFFFF;--p-line:#D5E9DF;--p-tx:#0E1116;--p-sec:#5B6472}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--p-bg:#0B0E12;--p-card:#12161C;--p-line:#2F3742;--p-tx:#E8ECF1;--p-sec:#9AA4B2}}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--p-bg);color:var(--p-tx);font:400 15px/1.45 Inter,system-ui,sans-serif;padding:20px 16px 48px}
+.page h1{font-size:24px;font-weight:800;margin-bottom:6px}.page>p{color:var(--p-sec);max-width:80ch;margin-bottom:14px}
+#ctl{position:sticky;top:0;z-index:20;background:var(--p-bg);display:flex;flex-wrap:wrap;gap:8px 16px;padding:8px 0 12px;border-bottom:1px solid var(--p-line);margin-bottom:16px}
+#ctl .g{display:flex;align-items:center;gap:6px}#ctl .g>span{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--p-sec)}
+#ctl button{font:600 14px Inter,sans-serif;padding:8px 14px;border-radius:999px;border:1px solid var(--p-line);background:var(--p-card);color:var(--p-tx);cursor:pointer;min-height:40px}
+#ctl button[aria-pressed=true]{border-color:#00875C;box-shadow:inset 0 0 0 1px #00875C;color:#00875C}
+.grid{display:flex;flex-wrap:wrap;gap:22px;align-items:flex-start}
+figure{display:flex;flex-direction:column;gap:8px}
+figcaption{font-size:13px;color:var(--p-sec);line-height:1.4}figcaption b{color:var(--p-tx)}figcaption .id{font:700 12px ui-monospace,monospace;background:#00875C;color:#fff;border-radius:6px;padding:2px 6px;margin-right:6px}
+table{border-collapse:collapse;font-size:13px;margin-top:10px}td,th{border:1px solid var(--p-line);padding:6px 8px;text-align:left;vertical-align:top}th{color:var(--p-sec)}
+h2.s{font-size:19px;margin:28px 0 8px}
+
+/* ===== iPhone, тёмная тема бренда (Translate — только тёмная) ===== */
+.ph{--fs:1;--bg:#12161C;--sf:#1C2026;--sf2:#242B34;--tx:#E8ECF1;--sec:#9AA4B2;--ter:#7F8996;--line:#2F3742;--pri:#2BC48A;--onpri:#0E1116;--okbg:#1E3734;--warn:#FFC247;--warnbg:#3C372B;--err:#FF6B5E;--errbg:#3C2A2E;--link:#2BC48A;
+  position:relative;width:var(--w);height:var(--h);border-radius:var(--rad,44px);overflow:hidden;background:#000;color:var(--tx);font-family:Inter,-apple-system,sans-serif;display:flex;flex-direction:column;box-shadow:0 0 0 1px #2F3742,0 18px 48px rgba(14,17,22,.2);text-wrap:pretty;line-height:1.35;-webkit-font-smoothing:antialiased}
+.ph.se{--rad:22px}
+.ph.big{--fs:1.6}
+.sb{flex:none;height:var(--sbh,54px);display:flex;align-items:center;justify-content:space-between;padding:0 30px;font-size:16px;font-weight:600;color:var(--tx)}
+.ph.se .sb{--sbh:20px;font-size:12px;padding:0 8px;justify-content:center}
+/* экран под листом — приглушён и уменьшен, как у iOS-листа */
+.under{position:absolute;left:0;right:0;top:var(--sbh,54px);bottom:0;background:var(--bg);border-radius:12px 12px 0 0;transform:scale(.92);transform-origin:top center;top:calc(var(--sbh,54px) + 0px);opacity:.55;padding:12px 16px}
+.ph.se .under{--sbh:20px}
+.under .nv{display:flex;align-items:center;gap:6px;color:var(--link);font-size:17px;height:44px}.under h1{font-size:34px;font-weight:700;margin:4px 0 12px}
+.under .grp{background:var(--sf);border-radius:12px;height:44px;margin-bottom:10px}
+/* лист */
+.sheet{position:absolute;left:0;right:0;bottom:0;top:calc(var(--sbh,54px) + 10px);background:var(--sf);border-radius:12px 12px 0 0;display:flex;flex-direction:column;z-index:3;box-shadow:0 -6px 24px rgba(0,0,0,.35)}
+.ph.se .sheet{--sbh:20px}
+.grab{flex:none;height:18px;display:flex;justify-content:center;align-items:center}.grab i{width:36px;height:5px;border-radius:3px;background:var(--ter);opacity:.6}
+.shead{flex:none;display:flex;justify-content:flex-end;padding:0 16px;min-height:36px}
+.shead .x{width:30px;height:30px;border-radius:50%;background:var(--sf2);display:flex;align-items:center;justify-content:center;color:var(--sec)}
+.shead .x svg{width:14px;height:14px}
+.cont{flex:1;min-height:0;overflow-y:auto;scrollbar-width:none;padding:0 16px 8px;display:flex;flex-direction:column;gap:14px}
+.ph.big .cont{gap:12px}
+.hero{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;padding:2px 8px 4px}
+.hero .ic{width:calc(56px*min(var(--fs),1.3));height:calc(56px*min(var(--fs),1.3));border-radius:50%;display:flex;align-items:center;justify-content:center}
+.hero .ic svg{width:55%;height:55%}
+.hero .ic.ok{background:var(--okbg);color:var(--pri)}.hero .ic.wait{background:var(--warnbg);color:var(--warn)}.hero .ic.err{background:var(--errbg);color:var(--err)}
+.hero h2{font-size:calc(22px*var(--fs));font-weight:700;line-height:1.2;text-wrap:balance}
+.hero p{font-size:calc(15px*var(--fs));color:var(--sec);line-height:1.4}
+.sh{font-size:calc(13px*var(--fs));color:var(--sec);text-transform:uppercase;letter-spacing:.03em;padding:0 16px 6px}
+.grp{background:var(--sf2);border-radius:12px;overflow:hidden}
+.row{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;min-height:calc(44px*min(var(--fs),1.3));font-size:calc(16px*var(--fs));line-height:1.3;position:relative}
+.row+.row:before{content:"";position:absolute;left:48px;right:0;top:0;height:1px;background:var(--line)}
+.row .ri{flex:none;width:20px;height:20px;margin-top:1px}
+.row .ri.ok{color:var(--pri)}.row .ri.keep{color:var(--sec)}.row .ri.wait{color:var(--warn)}
+.row.lnk{color:var(--link);align-items:center}.row.lnk .chev{margin-left:auto;color:var(--ter)}
+.note{font-size:calc(13px*var(--fs));color:var(--sec);padding:0 16px;line-height:1.4}
+.code{display:flex;align-items:center;gap:12px;padding:10px 12px 10px 16px}
+.code .cv{flex:1;min-width:0;font:600 calc(17px*var(--fs))/1.3 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;user-select:all;-webkit-user-select:all;overflow-wrap:anywhere}
+.code .cl{display:block;font:400 calc(13px*var(--fs))/1.3 Inter,sans-serif;color:var(--sec);letter-spacing:0;margin-bottom:2px}
+.code .cp{flex:none;display:flex;align-items:center;gap:6px;min-height:36px;padding:0 12px;border-radius:18px;background:var(--okbg);color:var(--pri);font-weight:600;font-size:calc(15px*min(var(--fs),1.3))}
+.code .cp svg{width:16px;height:16px}
+.foot{flex:none;padding:10px 16px calc(var(--hi,34px) + 4px);display:flex;flex-direction:column;gap:8px;background:var(--sf);position:relative}
+.foot:before{content:"";position:absolute;left:0;right:0;top:-20px;height:20px;background:linear-gradient(transparent,var(--sf));pointer-events:none}
+.ph.se .foot{--hi:12px}
+.btn{min-height:calc(50px*min(var(--fs),1.3));border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:calc(17px*var(--fs));text-align:center;line-height:1.2;padding:8px 16px}
+.btn.pri{background:var(--pri);color:var(--onpri)}.btn.pl{color:var(--link)}
+.hi{position:absolute;left:0;right:0;bottom:8px;display:flex;justify-content:center;z-index:5}.hi i{width:140px;height:5px;border-radius:3px;background:var(--tx);opacity:.8}
+.ph.se .hi{display:none}
+.ph.big .cont{overflow-y:auto;scrollbar-width:none}
+</style></head>
+<body><div class="page">
+<h1>iOS Translate · «Удалить мои данные» — результат</h1>
+<p>Вариант A (удаление и на сервере), для PR 618 parrlo-translator. Лист поверх «Данные и приватность», тема только тёмная. Тексты — <code>copy.js</code>, основа — erase-ui-text.md §7 и Android PR 11 (RG PASS). Отличие iOS: стирается и согласие клавиатуры — остаётся только возраст. В результате сроков нет: они по ссылке «Что именно хранится». Проверяет RG.</p>
+<div id="ctl">
+  <div class="g" data-k="lang"><span>Язык</span><button data-v="ru">RU</button><button data-v="es">ES</button><button data-v="en">EN</button></div>
+  <div class="g" data-k="font"><span>Шрифт</span><button data-v="n">Обычный</button><button data-v="b">Самый крупный</button></div>
+  <div class="g" data-k="size"><span>Экран</span><button data-v="s">SE</button><button data-v="l">Pro Max</button></div>
+</div>
+<div class="grid" id="grid"></div>
+<h2 class="s">Поведение</h2>
+<table>
+<tr><th>Ответ сервера</th><th>Окно</th></tr>
+<tr><td>200, voice = deleted / none</td><td>IR-1 «Готово». «Удалено» и «Осталось» — из erased / kept. «Ваш «Мой голос»» — только при voice = deleted. «Понятно» закрывает лист, экран показывает пустую историю.</td></tr>
+<tr><td>200, voice = pending_upstream</td><td>IR-2 «Принято». Голос — в разделе «Ещё удаляется»; не пишем «Голос удалён» и не показываем «Готово».</td></tr>
+<tr><td>Нет сети, 5xx (erase_failed, upstream_complaints)</td><td>IR-3. Телефон уже очищен (по §7). «Повторить» шлёт запрос на сервер ещё раз. Код — выделяемый (долгое нажатие → «Скопировать»), есть кнопка «Скопировать» с подтверждением «Скопировано». Код = id запроса, чтобы найти его в логах.</td></tr>
+<tr><td>VoiceOver</td><td>Лист объявляет заголовок; разделы — заголовки; код читается по символам.</td></tr>
+</table>
+</div>
+<script src="copy.js"></script>
+<script>
+(function(){
+const DEV={s:{w:375,h:667,cls:'se'},l:{w:440,h:956,cls:''}};
+const st={lang:'ru',font:'n',size:'s'};
+try{const q=new URLSearchParams(location.search);for(const k in st)if(q.get(k))st[k]=q.get(k);}catch(e){}
+const SW='fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"';
+const I={check:`<svg viewBox="0 0 24 24" ${SW} stroke-width="2.6"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>`,
+ clock:`<svg viewBox="0 0 24 24" ${SW}><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>`,
+ alert:`<svg viewBox="0 0 24 24" ${SW}><path d="M12 3.5l9.5 16.5h-19z"/><path d="M12 10v4.5"/><path d="M12 17.5v.01"/></svg>`,
+ keep:`<svg viewBox="0 0 24 24" ${SW}><rect x="4" y="5" width="16" height="15" rx="2.5"/><path d="M4 10h16"/><path d="M10 14h4"/></svg>`,
+ x:`<svg viewBox="0 0 24 24" ${SW} stroke-width="2.6"><path d="M6 6l12 12M18 6L6 18"/></svg>`,
+ copy:`<svg viewBox="0 0 24 24" ${SW}><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/></svg>`,
+ chev:`<svg viewBox="0 0 24 24" ${SW} style="width:14px;height:14px"><path d="M9 5l7 7-7 7"/></svg>`};
+const row=(ic,cls,t)=>`<div class="row"><span class="ri ${cls}">${ic}</span><span>${t}</span></div>`;
+const sec=(h,rows)=>`<div><div class="sh" role="heading" aria-level="3">${h}</div><div class="grp">${rows}</div></div>`;
+const kept=c=>sec(c.keptH,[c.kpAge,c.kpLimits,c.kpSub].map(t=>row(I.keep,'keep',t)).join(''));
+const link=c=>`<div class="grp"><div class="row lnk" role="link"><span>${c.keepLink}</span><span class="chev">${I.chev}</span></div></div>`;
+const frame=(c,x,body,foot)=>`<div class="sb">${x.size==='s'?'9:41':'<span>9:41</span><span></span>'}</div>
+  <div class="under"><div class="nv">‹ ${c.settings}</div><h1>${c.title}</h1><div class="grp"></div><div class="grp"></div></div>
+  <div class="sheet" role="dialog" aria-modal="true"><div class="grab"><i></i></div><div class="shead"><span class="x" role="button" aria-label="${c.close}">${I.x}</span></div>
+  <div class="cont">${body}</div><div class="foot">${foot}</div></div><div class="hi"><i></i></div>`;
+const S=[
+ {id:'IR-1',t:'Готово',cap:'Ответ 200. «Удалено» — что стёрли (голос — только при voice = deleted), «Осталось» — без сроков, сроки по ссылке «Что именно хранится» (Политика, раздел «Сроки»). Под списком — про подписку.',
+  r:(c,x)=>frame(c,x,`<div class="hero"><span class="ic ok">${I.check}</span><h2>${c.doneT}</h2></div>
+   ${sec(c.erasedH,[c.erPhone,c.erServer,c.erConsent,c.erVoice].map(t=>row(I.check,'ok',t)).join(''))}${kept(c)}${link(c)}<p class="note">${c.subNote}</p>`,`<span class="btn pri" role="button">${c.ok}</span>`)},
+ {id:'IR-2',t:'Принято: голос ещё удаляется',cap:'Ответ 200 с voice = pending_upstream. Заголовок «Принято», голос — в «Ещё удаляется», пояснение: делать ничего не нужно.',
+  r:(c,x)=>frame(c,x,`<div class="hero"><span class="ic wait">${I.clock}</span><h2>${c.pendT}</h2><p>${c.pendNote}</p></div>
+   ${sec(c.pendH,row(I.clock,'wait',c.pendVoice))}${sec(c.erasedH,[c.erPhone,c.erServer,c.erConsent].map(t=>row(I.check,'ok',t)).join(''))}${kept(c)}${link(c)}`,`<span class="btn pri" role="button">${c.ok}</span>`)},
+ {id:'IR-3',t:'Данные на сервере не удалены',cap:'Нет сети или 5xx. Телефон уже очищен, «Готово» не показываем. «Повторить» — главная кнопка; код для письма выделяется и копируется.',
+  r:(c,x)=>frame(c,x,`<div class="hero"><span class="ic err">${I.alert}</span><h2>${c.errT}</h2><p>${c.errB}</p></div>
+   <div class="grp"><div class="code"><span class="cv" aria-label="${c.codeL}: ${c.code.split('').join(' ')}"><span class="cl">${c.codeL}</span>${c.code}</span><span class="cp" role="button">${I.copy}${c.copy}</span></div></div>`,
+   `<span class="btn pri" role="button">${c.retry}</span><span class="btn pl" role="button">${c.close}</span>`)},
+];
+window.IRS=S;
+function phone(s,o){const d=DEV[o.size];return `<div class="ph ${d.cls}${o.font==='b'?' big':''}" style="--w:${d.w}px;--h:${d.h}px" lang="${o.lang}">${s.r(window.ER[o.lang],o)}</div>`;}
+window.IRphone=phone;
+function render(){
+  document.querySelectorAll('#ctl .g').forEach(g=>g.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(st[g.dataset.k]===b.dataset.v))));
+  const d=DEV[st.size],z=st.size==='s'?.8:.62;
+  document.getElementById('grid').innerHTML=S.map(s=>`<figure style="width:${Math.max(d.w*z,240)}px"><div style="width:${d.w*z}px;height:${d.h*z}px"><div style="transform:scale(${z});transform-origin:0 0;width:${d.w}px">${phone(s,st)}</div></div><figcaption><span class="id">${s.id}</span><b>${s.t}</b> · ${s.cap}</figcaption></figure>`).join('');
+  try{history.replaceState(null,'','?'+new URLSearchParams(st));}catch(e){}
+}
+document.getElementById('ctl').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;st[b.parentNode.dataset.k]=b.dataset.v;render();});
+render();
+})();
+</script>
+</body></html>

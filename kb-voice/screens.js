@@ -271,7 +271,7 @@ add({id:'H-G5e', g:'ios-g', os:'ios', t:'Занято (.busy)', cap:'Общий 
    Панель голоса занимает место букв и не выше их (--kbody). Ряд действий с чипом «ES ⇄» виден всегда.
    При самом крупном шрифте содержимое панели прокручивается, кнопки закреплены внизу. */
 const xBtn = (c) => `<span class="px" role="button" aria-label="${A11Y(c.closeA11y)}">${I.x}</span>`;
-const pan = (body, acts) => { let note=''; acts=(acts||'').replace(/<span class="anote">[\s\S]*?<\/span>/,m=>{note=m;return ''}); return `<div class="sc">${body}</div>${note}${acts?`<div class="acts">${acts}</div>`:''}`; };
+const pan = (body, acts) => { let note=''; acts=(acts||'').replace(/<span class="anote[^"]*">[\s\S]*?<\/span>/,m=>{note=m;return ''}); return `<div class="sc">${body}</div>${note}${acts?`<div class="acts">${acts}</div>`:''}`; };
 const sp = (t, cls='', ic='') => `<span class="${cls}" role="button">${ic}${t}</span>`;
 const spA = (t, a, cls='', ic='') => `<span class="${cls}" role="button" aria-label="${A11Y(a)}">${ic}${t}</span>`;
 const andRec = (c,x,o={}) => pan(`${andTop(c,`<span class="rdot"></span>${c.recording}`,`<span class="b7" style="color:var(--tx);font-variant-numeric:tabular-nums">${o.t||'0:42'}</span> ${c.of} 2:00`)}
@@ -323,17 +323,17 @@ add({id:'A-V5b', g:'and', os:'and', t:'Результат без перевод�
   r:(c,x)=>P(c,x,prevBox(c,false),`${sp(c.againShort,'',I.redo)}${sp(c.insert,'pri')}`)});
 
 /* ---- A-V6 голосовое ---- */
-const gPrev = (c, n, over) => `<div class="prev">${xBtn(c)}<span class="clamp3">${over?c.sumLong:c.lit.tr}</span><span class="cnt${over?' lim':''}">${over?c.gLongT+' · ':''}${fmt(c.gCount,{n,max:600})}</span></div>`;
+const gPrev = (c, n, over) => `<div class="prev">${xBtn(c)}<span class="clamp3">${over?c.sumLong:c.lit.tr}</span><span class="pfoot">${over?`<span class="lwarn">${I.alert}${c.gLongT}</span>`:''}<span class="vsel" role="button" aria-haspopup="listbox" aria-label="${A11Y(c.gVoice+': '+c.female)}">${I.voice}${c.female}<i>▾</i></span><span class="cnt${over?' lim':''}">${fmt(c.gCount,{n,max:600})}</span></span></div>`;
 const gSeg = (c) => `<div class="seg sm"><span>${c.gLit}</span><span class="on">${c.gTr}</span></div>`;
 const gSex = (c) => `<span class="sx" role="radiogroup" aria-label="${A11Y(c.gVoice)}"><span class="on" role="radio" aria-checked="true">${c.female}</span><span role="radio" aria-checked="false">${c.male}</span></span>`;
-add({id:'A-V6a', g:'and', os:'and', t:'Голосовое: текст', cap:'Из поля ввода: «Литературно» (исправленный текст) или «Перевод». Голос «Женский / Мужской» (стандартный, не ваш). Счётчик до 600 знаков. При самом крупном шрифте выбор голоса уходит в прокручиваемую часть, «Озвучить» — на всю ширину.',
-  r:(c,x)=>P(c,x,`${gSeg(c)}${gPrev(c,84)}<div class="sxrow">${gSex(c)}</div>`,`${gSex(c)}${sp(c.gSpeak,'pri',I.voice)}`,{act:'voice',m:{field:c.lit.text}})});
-add({id:'A-V6d', g:'and', os:'and', t:'Голосовое: больше 600', cap:'Счётчик красный с причиной, «Озвучить» неактивна. Текст правят в поле чата — счётчик обновляется сразу.',
-  r:(c,x)=>P(c,x,`${gSeg(c)}${gPrev(c,612,true)}<div class="sxrow">${gSex(c)}</div>`,`${gSex(c)}${sp(c.gSpeak,'pri dis',I.voice)}`,{act:'voice',m:{field:c.sumLong}})});
+add({id:'A-V6a', g:'and', os:'and', t:'Голосовое: текст', cap:'Из поля ввода: «Литературно» (исправленный текст) или «Перевод». Голос — выпадающий выбор «Женский / Мужской» в строке со счётчиком (стандартный голос, не ваш), до 600 знаков. «Озвучить» — на всю ширину: «Crear nota de voz» помещается в одну строку во всех языках и при любом шрифте.',
+  r:(c,x)=>P(c,x,`${gSeg(c)}${gPrev(c,84)}`,sp(c.gSpeak,'pri',I.voice),{act:'voice',m:{field:c.lit.text}})});
+add({id:'A-V6d', g:'and', os:'and', t:'Голосовое: больше 600', cap:'Счётчик красный, на месте выбора голоса — причина «Текст слишком длинный», «Озвучить» неактивна. Текст правят в поле чата — счётчик обновляется сразу.',
+  r:(c,x)=>P(c,x,`${gSeg(c)}${gPrev(c,612,true)}`,sp(c.gSpeak,'pri dis',I.voice),{act:'voice',m:{field:c.sumLong}})});
 add({id:'A-V6b', g:'and', os:'and', t:'Голосовое: готовим', cap:'Один этап, без полосы. «Отмена» возвращает к A-V6a.', anim:true,
   r:(c,x)=>P(c,x,`${andTop(c,c.gPrep,'')}<div class="mid"><div class="wave small" style="max-width:180px">${waveBars(16,2)}</div><span class="small">${c.gPrepSub}</span></div>`,sp(c.cancel),{act:'voice',m:{field:c.lit.text}})});
-add({id:'A-V6c', g:'and', os:'and', t:'Голосовое готово', cap:'Плеер play/pause и длительность. «Отправить»: аудио в поле чата (commitContent), если чат принимает; иначе системный «Поделиться». Само не отправляется.',
-  r:(c,x)=>P(c,x,`${andTop(c,c.gReady,xBtn(c))}<div class="player"><span class="pp" role="button" aria-label="Play">${I.play}</span><span class="wv">${staticWave(x.small?28:34,10)}</span><span class="tm">0:06</span></div>`,`<span class="anote">${c.gReadyNote}</span>${sp(c.reVoice,'',I.redo)}${sp(c.aSend,'pri',I.send)}`,{act:'voice',m:{field:c.lit.text}})});
+add({id:'A-V6c', g:'and', os:'and', t:'Голосовое готово', cap:'Плеер play/pause и длительность. При самом крупном шрифте заголовок прячется (остаётся в TalkBack), ✕ — в строке плеера, чтобы плеер и подсказка стояли без наложения. «Отправить»: аудио в поле чата (commitContent), если чат принимает; иначе системный «Поделиться». Само не отправляется.',
+  r:(c,x)=>P(c,x,`${andTop(c,c.gReady,xBtn(c)).replace('class="top"','class="top gtop"')}<div class="player" aria-label="${A11Y(c.gReady)}"><span class="pp" role="button" aria-label="Play">${I.play}</span><span class="wv">${staticWave(x.small?28:34,10)}</span><span class="tm">0:06</span>${xBtn(c).replace('class="px"','class="px pxin"')}</div>`,`<span class="anote">${c.gReadyNote}</span>${sp(c.reVoice,'',I.redo)}${sp(c.aSend,'pri',I.send)}`,{act:'voice',m:{field:c.lit.text}})});
 add({id:'A-V6e', g:'and', os:'and', t:'Голосовое в поле', cap:'После «Отправить»: аудио в поле ввода чата, отправляет сам человек. Панель закрылась, вернулись буквы.',
   r:(c,x)=>kbScreen(c,x,{field:`<span class="au0">${I.play}<i></i>0:06</span>`},{chip:'sent2',chipT:c.aVoiceIns,chipS:c.aVoiceInsSub})});
 

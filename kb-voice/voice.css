@@ -409,3 +409,41 @@ table.tx td.k{font:600 12px ui-monospace,Menlo,monospace;color:var(--p-sec);whit
 .ph.and .rowi.ar:not(.tg):not(.st){flex-direction:column;align-items:flex-start;gap:2px}
 .ph.and .rowi.ar:not(.tg):not(.st) .v{text-align:left;white-space:normal;color:var(--link);font-size:calc(15px*var(--fs))}
 .ph.and .rowi.ar:not(.tg):not(.st) .chv{display:none}
+/* RG 14.11 (2): es — «Crear nota de voz» не помещается рядом с выбором голоса → выбор строкой выше, кнопка на всю ширину */
+.ph.and[lang=es] .andpanel .sxrow{display:flex}
+.ph.and[lang=es] .andpanel .sxrow .sx{display:flex;gap:2px;padding:3px;background:var(--key);border-radius:23px;width:100%}
+.ph.and[lang=es] .andpanel .sxrow .sx span{flex:1;justify-content:center;min-height:calc(34px*var(--kfs))}
+.ph.and[lang=es] .andpanel .acts>.sx{display:none}
+/* заголовок без кнопки «назад» — отступ 16 */
+.ph.and .nv:not(:has(.bk)) .tt{left:16px;text-align:left}
+/* выбор голоса строкой над «Озвучить» (es и крупный шрифт) — в закреплённой зоне кнопок, не в прокрутке */
+.andpanel .sxrow{display:none!important}
+.ph.and[lang=es] .andpanel .acts:has(>.sx),.ph.big .andpanel .acts:has(>.sx){flex-wrap:wrap;row-gap:6px}
+.ph.and[lang=es] .andpanel .acts>.sx,.ph.big .andpanel .acts>.sx{display:flex!important;flex:1 1 100%;min-height:calc(40px*var(--kfs))}
+.ph.and[lang=es] .andpanel .acts>.sx span,.ph.big .andpanel .acts>.sx span{flex:1;justify-content:center}
+.ph.and[lang=es] .andpanel .acts>.sx~.pri,.ph.big .andpanel .acts>.sx~.pri{flex:1 1 100%}
+/* A-V6c крупный шрифт */
+.andpanel .pxin{display:none}
+.ph.big .andpanel .top.gtop{display:none}
+.ph.big .andpanel .pxin{display:flex;position:static;flex:none}
+/* A-V6: выбор голоса — выпадающий чип в строке со счётчиком; «Озвучить» на всю ширину */
+.andpanel .pfoot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px}
+.andpanel .pfoot .cnt{margin:0}
+.andpanel .vsel{display:inline-flex;align-items:center;gap:6px;min-height:calc(32px*var(--kfs));padding:0 10px;border-radius:16px;background:var(--okbg);color:var(--tx);font-weight:600;font-size:calc(13.5px*var(--kfs));white-space:nowrap}
+.ph.dark .andpanel .vsel{background:#173A2E}
+.andpanel .vsel svg{width:16px;height:16px;color:var(--pri)}
+.andpanel .vsel i{font-style:normal;color:var(--sec);font-size:.85em}
+.andpanel .clamp3{-webkit-line-clamp:2}
+.ph.big .andpanel .clamp3{-webkit-line-clamp:1}
+.ph.big .andpanel .seg.sm span{min-height:calc(30px*var(--kfs));padding:2px 6px}
+.andpanel .anote.err{color:var(--err);font-weight:600}
+.andpanel .lwarn{display:inline-flex;align-items:center;gap:6px;color:var(--err);font-weight:600;font-size:calc(13.5px*var(--kfs));min-height:calc(32px*var(--kfs))}
+.andpanel .lwarn svg{width:16px;height:16px;flex:none}
+.andpanel .lwarn~.vsel{display:none}
+/* A-V6 при самом крупном шрифте: всё без прокрутки */
+.ph.big .andpanel .prev:has(.pfoot){padding-top:6px;padding-bottom:6px}
+.ph.big .andpanel .pfoot{margin-top:2px;flex-wrap:nowrap}
+.ph.big .andpanel .pfoot .cnt,.ph.big .andpanel .lwarn{font-size:calc(12px*var(--kfs));white-space:nowrap}
+.ph.big .andpanel .lwarn{min-width:0;overflow:hidden;text-overflow:ellipsis;display:block;line-height:calc(32px*var(--kfs))}
+.ph.big .andpanel .lwarn svg{display:none}
+.ph.big .andpanel .sc:has(.pfoot){padding-bottom:0;-webkit-mask-image:none;mask-image:none}

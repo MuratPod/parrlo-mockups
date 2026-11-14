@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Пометка о языке</title>
+<style>
+@font-face{font-family:Inter;font-weight:100 900;src:url(../../webdemo-mock/fonts/Inter-Variable.woff2) format("woff2")}
+@font-face{font-family:Nunito;font-weight:200 1000;src:url(../../webdemo-mock/fonts/Nunito-Variable.woff2) format("woff2")}
+/* Брендбук v2.3, тёмная тема (Translate — только тёмная). */
+:root{--bg:#12161C;--surface:#1C2026;--raised:#242B34;--ink:#E8ECF1;--sec:#9AA4B2;--line:#2F3742;
+ --mint:#2BC48A;--mintDeep:#00875C;--partner:#BFF2DC;--warn:#FFC247;--warnBg:#3C372B;--bubMe:rgba(0,168,107,.16)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0B0E12;color:var(--ink);font:400 14px/1.4 Inter,sans-serif;padding:24px 16px}
+h1{font:800 20px/1.2 Inter,sans-serif;margin-bottom:6px}.lead{color:var(--sec);max-width:72ch;margin-bottom:20px}
+.row{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start}
+figure{display:flex;flex-direction:column;gap:8px}figcaption{font:700 13px/1.3 Inter,sans-serif;color:var(--sec);max-width:360px}
+.ph{width:360px;background:var(--bg);border-radius:28px;box-shadow:0 0 0 1px var(--line);padding:16px 16px 20px;overflow:hidden}
+.turn{display:flex;flex-direction:column;gap:4px;margin-top:16px}.turn.me{align-items:flex-end}.turn.them{align-items:flex-start}
+.src{padding:10px 14px 11px;border-radius:18px;font:500 16px/1.34 Inter,sans-serif;max-width:92%}
+.me .src{background:var(--bubMe);border-bottom-right-radius:6px}.them .src{background:var(--raised);border-bottom-left-radius:6px}
+.tr{padding:12px 16px 13px;border-radius:18px;font:700 20px/1.3 Nunito,sans-serif;max-width:100%}
+.me .tr{background:var(--mintDeep);color:#fff;border-top-right-radius:6px}.them .tr{background:var(--raised);border-top-left-radius:6px;max-width:92%}
+/* Meta = labelSmall 11/16 sp, Sec */
+.meta{padding:0 6px;font:500 11px/16px Inter,sans-serif;color:var(--sec);letter-spacing:.03em}
+/* А: как сейчас — вторая строка Meta */
+.hintA{padding:0 6px;font:500 11px/16px Inter,sans-serif;color:var(--sec);letter-spacing:.03em;max-width:100%;
+ display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+/* Б: предложение — плашка WarnBg, значок Warn 16dp, текст labelMedium 12/16 sp Text */
+.hintB{display:flex;gap:6px;align-items:flex-start;margin:2px 0 0;padding:6px 10px 6px 8px;border-radius:8px;background:var(--warnBg);
+ color:var(--ink);font:500 12px/16px Inter,sans-serif;letter-spacing:.03em;max-width:100%}
+.hintB svg{flex:none;width:16px;height:16px;color:var(--warn);margin-top:0}
+.hintB span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.big .src{font-size:32px}.big .tr{font-size:40px}.big .meta{font-size:22px;line-height:32px}
+.big .hintB{font-size:24px;line-height:32px;padding:10px 14px 10px 12px;gap:10px;border-radius:12px}.big .hintB svg{width:32px;height:32px;margin-top:0}
+.big .hintB span{-webkit-line-clamp:unset;display:block}
+table{border-collapse:collapse;margin-top:24px;font-size:13px}td,th{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}th{color:var(--sec);font-weight:600}
+code{font:500 12px/1 ui-monospace,monospace;color:var(--partner)}
+@media (max-width:420px){.ph{width:100%}}
+</style>
+</head>
+<body>
+<h1>Android Translate · пометка «другой язык»</h1>
+<p class="lead">Тема только тёмная. А — как сейчас (строка Meta, Sec, без значка). Б — предложение: та же позиция под подписью перевода, но плашка WarnBg со значком Warn. Пометка просит действия (проверить кнопку языка), поэтому она не должна сливаться с Meta, но и не красная: это не ошибка.</p>
+<div class="row">
+<figure><div class="ph">
+ <div class="turn them"><div class="src">Je voudrais l’addition, s’il vous plaît</div></div>
+ <div class="turn them" style="margin-top:4px"><div class="tr">Счёт, пожалуйста</div>
+ <div class="meta">Español → Русский · в облаке</div>
+ <div class="hintA">Похоже, речь на другом языке — проверьте кнопку</div></div>
+ <div class="turn me"><div class="src">Можно счёт?</div></div>
+ <div class="turn me" style="margin-top:4px"><div class="tr">Can I have the bill?</div>
+ <div class="meta">Русский → Español · в облаке</div>
+ <div class="hintA">Проверьте: перевод пришёл не на том языке</div></div>
+</div><figcaption>А · сейчас: labelSmall, Sec — теряется рядом с Meta</figcaption></figure>
+
+<figure><div class="ph">
+ <div class="turn them"><div class="src">Je voudrais l’addition, s’il vous plaît</div></div>
+ <div class="turn them" style="margin-top:4px"><div class="tr">Счёт, пожалуйста</div>
+ <div class="meta">Español → Русский · в облаке</div>
+ <div class="hintB" role="status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5"/><path d="M12 16.4v.1"/></svg><span>Похоже, речь на другом языке — проверьте кнопку</span></div></div>
+ <div class="turn me"><div class="src">Можно счёт?</div></div>
+ <div class="turn me" style="margin-top:4px"><div class="tr">Can I have the bill?</div>
+ <div class="meta">Русский → Español · в облаке</div>
+ <div class="hintB" role="status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5"/><path d="M12 16.4v.1"/></svg><span>Проверьте: перевод пришёл не на том языке</span></div></div>
+</div><figcaption>Б · предлагаю: WarnBg + значок Warn 16dp, текст Text, labelMedium</figcaption></figure>
+
+<figure><div class="ph big">
+ <div class="turn them" style="margin-top:4px"><div class="tr">Счёт, пожалуйста</div>
+ <div class="meta">Español → Русский</div>
+ <div class="hintB" role="status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5"/><path d="M12 16.4v.1"/></svg><span>Похоже, речь на другом языке — проверьте кнопку</span></div></div>
+</div><figcaption>Б · шрифт 200%: значок растёт вместе с текстом, ограничение в 2 строки снимается</figcaption></figure>
+</div>
+
+<table>
+<tr><th>Что</th><th>Токен / значение</th></tr>
+<tr><td>Место</td><td>Под строкой Meta, отступ сверху 2dp, ширина не больше ширины облачка перевода</td></tr>
+<tr><td>Фон</td><td><code>WarnBg #3C372B</code>, радиус 8dp, поля 6/10/6/8dp</td></tr>
+<tr><td>Значок</td><td>info-круг, контур 2dp, 16dp (масштабируется со шрифтом), <code>Warn #FFC247</code>, отступ до текста 6dp</td></tr>
+<tr><td>Текст</td><td><code>labelMedium</code> 12/16sp, 500, цвет <code>Text #E8ECF1</code> (контраст на WarnBg ≈ 11:1); до 2 строк, при fontScale ≥ 1,5 без ограничения</td></tr>
+<tr><td>Не делать</td><td>Красный Error, текст цветом Warn на фоне Bg, тост, тряску</td></tr>
+<tr><td>TalkBack</td><td>liveRegion polite, один раз при появлении; значок contentDescription = null</td></tr>
+</table>
+</body>
+</html>

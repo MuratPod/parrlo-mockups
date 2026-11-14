@@ -48,7 +48,9 @@ h2.s{font-size:19px;margin:28px 0 8px}
 .dlg{width:100%;max-width:min(calc(100% - 0px),560px);min-width:280px;background:var(--sf2);border-radius:28px;padding:24px;display:flex;flex-direction:column;gap:16px;max-height:calc(100% - 48px)}
 .dlg h2{font-size:calc(24px*min(var(--fs),1.3));font-weight:400;line-height:1.3;text-wrap:balance}
 .dlg p{font-size:calc(14px*var(--fs));color:var(--sec);line-height:1.45}
-.dlg .sc{overflow:hidden;display:flex;flex-direction:column;gap:12px;min-height:0}
+.dlg .sc{overflow-y:auto;display:flex;flex-direction:column;gap:12px;min-height:0;flex:1 1 auto}
+.dlg .sc.scr{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:8px 0}
+.dlg>*{flex:none}
 .acts{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:8px;margin-top:8px}
 .tb{min-height:40px;padding:10px 12px;border-radius:20px;font-weight:600;font-size:calc(14px*min(var(--fs),1.3));color:var(--pri);line-height:1.2;text-align:center}
 .tb.dng{color:var(--err)}
@@ -61,6 +63,8 @@ h2.s{font-size:19px;margin:28px 0 8px}
 .spin{flex:none;width:40px;height:40px;border-radius:50%;border:4px solid var(--prictr);border-top-color:var(--pri);animation:sp 1s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){.spin{animation:none}}
+.lst{display:flex;flex-direction:column;gap:4px;font-size:calc(14px*var(--fs))}.lst b{font-weight:600;color:var(--tx)}.lst ul{margin:0;padding-left:18px;color:var(--sec);display:flex;flex-direction:column;gap:2px}
+.lnk2{color:var(--pri);font-weight:600;font-size:calc(14px*var(--fs))}
 .snack{position:absolute;left:16px;right:16px;bottom:40px;z-index:6;background:var(--inv);color:var(--oninv);border-radius:4px;min-height:48px;padding:14px 16px;font-size:calc(14px*var(--fs));display:flex;align-items:center;box-shadow:0 4px 12px rgba(0,0,0,.35)}
 .ic{display:inline-flex}
 </style></head>
@@ -79,7 +83,7 @@ h2.s{font-size:19px;margin:28px 0 8px}
 <div class="scrollx"><table>
 <tr><th>Действие</th><th>Что происходит</th></tr>
 <tr><td>«Очистить историю»</td><td>Диалог DP-3 → «Очистить» → история на телефоне удалена сразу → снекбар DP-4 (4 с). Сеть не нужна.</td></tr>
-<tr><td>A · «Удалить мои данные»</td><td>По контракту (server_contract_v1.md:427): DP-5 → «Удалить» → DP-6 → сначала /v1/me/erase на сервере, только после ответа сервера стираем телефон → DP-7 (что удалено, что сохранено и до какого срока). Если голос у ElevenLabs ещё удаляется (pending_upstream) → DP-7a. Нет сети или ошибка сервера → DP-8: на телефоне ничего не стёрто, «Повторить» повторяет всё. Тексты A — из erase-ui-text.md (parrlo-app), ждём.</td></tr>
+<tr><td>A · «Удалить мои данные»</td><td>По erase-ui-text.md §7 и контракту POST /v1/me/erase: DP-5 → «Удалить» → DP-6 → сначала сервер, потом очистка телефона. 200 → DP-7 «Готово» со списками erased/kept; voice = pending_upstream → DP-7a «Принято»; 429 → DP-8b «через N», ничего не стираем; нет сети / 5xx → телефон очищаем, DP-8 «Серверные данные не удалены, повторите позже». Лимит — 10 раз в сутки.</td></tr>
 <tr><td>B · «Удалить данные на телефоне»</td><td>DP-5 → «Удалить» → DP-6: стираем на телефоне историю, звук «Отправить голосом» и полученный файл → DP-7. Если что-то не удалилось → DP-7p (что осталось, «Повторить» — только остаток). Сеть не нужна. Данные на сервере — по запросу пользователя (контакт в Политике).</td></tr>
 <tr><td>Перевод в облаке</td><td>Одно согласие (VOICE_TEXT / NONE). Включён: статус «Включён» и «Выключить перевод в облаке» (подтверждение — как на экране согласия). Выключен: статус «Выключен», тап → экран согласия → после включения — обратно сюда, не в Настройки.</td></tr>
 <tr><td>История выключена</td><td>«Срок хранения» скрыт; при включении появляется со значением по умолчанию (30 дней).</td></tr>
@@ -104,6 +108,8 @@ const mainBot=(c,v)=>`<div class="dv"></div>${li(c.clearRow,{dng:true})}${li(c['
 const full=(c,v,o={})=>`${mainTop(c,o)}${mainBot(c,v)}`;
 const screen=(c,body,over='')=>`${top(c)}<div class="body">${body}</div><div class="gh"><i></i></div>${over}`;
 const dlg=(t,b,acts,extra='')=>`<div class="scrim"><div class="dlg" role="alertdialog" aria-label="${t}"><h2>${t}</h2><div class="sc">${b?`<p>${b}</p>`:''}${extra}</div>${acts?`<div class="acts">${acts}</div>`:''}</div></div>`;
+const lst=(h,items)=>`<div class="lst"><b>${h}</b><ul>${items.map(i=>`<li>${i}</li>`).join('')}</ul></div>`;
+const kept=(c)=>lst(c.keptH,[c.kpLimits.replace('{date}','29.11'),c.kpMonthly.replace('{date}','24.12'),c.kpSub]);
 const tb=(t,cls='')=>`<span class="tb ${cls}" role="button">${t}</span>`;
 const S=[
  {id:'DP-1',t:'Экран',cap:'Одно согласие на облако (Android: VOICE_TEXT / NONE): строка со статусом и «Выключить перевод в облаке». История и удаление. При самом крупном шрифте экран прокручивается (DP-2 — низ).',r:(c,v)=>screen(c,full(c,v))},
@@ -112,12 +118,13 @@ const S=[
  {id:'DP-2b',t:'Срок хранения',cap:'Диалог с переключателями, выбор применяется сразу, без «ОК».',r:(c,v)=>screen(c,full(c,v),dlg(c.daysT,'',tb(c.cancel),`<div class="radio" role="radiogroup">${[c.d7,c.d30,c.d90,c.dAll].map((d,i)=>`<span class="r${i===1?' on':''}" role="radio" aria-checked="${i===1}"><i></i>${d}</span>`).join('')}</div>`))},
  {id:'DP-3',t:'Очистить историю?',cap:'Подтверждение. «Очистить» — цвет ошибки, «Отмена» — основной.',r:(c,v)=>screen(c,full(c,v),dlg(c.clearT,c.clearB,tb(c.cancel)+tb(c.clearBtn,'dng')))},
  {id:'DP-4',t:'История очищена',cap:'Снекбар 4 с, без «Отменить»: удаление сразу.',r:(c,v)=>screen(c,full(c,v),`<div class="snack" role="status">${c.cleared}</div>`)},
- {id:'DP-5',t:'Удалить данные?',cap:'A: телефон и данные установки на сервере, включая «Мой голос»; возраст и согласие остаются. B: только телефон — история, звук «Отправить голосом», полученный файл.',r:(c,v)=>screen(c,full(c,v),dlg(c['delT'+v],c['delB'+v],tb(c.cancel)+tb(c.delBtn,'dng')))},
+ {id:'DP-5',t:'Удалить данные?',cap:'A: «Удалить мои данные» (не «все» — часть остаётся), текст из erase-ui-text.md §7, Android: «Google Play», без «журнала» и «Неточно» (решает RG), [срок] — плейсхолдер; ссылка «Что именно хранится» → Политика, раздел «Сроки». B: только телефон — история, звук «Отправить голосом», полученный файл.',r:(c,v)=>screen(c,full(c,v),dlg(c['delT'+v],c['delB'+v],tb(c.cancel)+tb(c.delBtn,'dng'),v==='A'?`<span class="lnk2" role="link">${c.keepLink}</span>`:''))},
  {id:'DP-6',t:'Удаляем',cap:'Неотменяемый шаг: без кнопок, «Назад» не закрывает. Показываем, если дольше 300 мс.',r:(c,v)=>screen(c,full(c,v),`<div class="scrim"><div class="dlg" role="alertdialog" aria-busy="true"><div class="prog"><span class="spin" aria-hidden="true"></span>${c.deleting}</div></div></div>`)},
- {id:'DP-7',t:'Данные удалены',cap:'Результат. После «Понятно» — на DP-1, история пустая.',r:(c,v)=>screen(c,full(c,v),dlg(c.doneT,c['doneB'+v],tb(c.ok)))},
+ {id:'DP-7',t:'Данные удалены',cap:'Результат. A: «Готово» только при ответе 200; списки «Удалено» / «Осталось» собираются из erased/kept ответа сервера, даты — местные. После «Понятно» — на DP-1.',r:(c,v)=>screen(c,full(c,v),v==='A'?dlg(c.doneTA,'',tb(c.ok),lst(c.erasedH,[c.erPhone,c.erServer,c.erVoice])+kept(c)+`<p>${c.morePolicy}</p>`):dlg(c.doneT,c.doneBB,tb(c.ok)))},
  {id:'DP-7p',t:'Удалилось не всё',cap:'Часть файлов не удалилась (файл занят, ошибка диска). Перечисляем, что осталось; «Повторить» удаляет только остаток. Удалённое не восстанавливается.',r:(c,v)=>screen(c,full(c,v),dlg(c.partT,c.partB.replace('{items}',c.itFile),tb(c.cancel)+tb(c.retry)))},
- {id:'DP-7a',t:'Голос ещё удаляется (только A)',cap:'Ответ сервера pending_upstream: всё удалено, кроме «Моего голоса» у ElevenLabs — удаление идёт. Текст — из erase-ui-text.md.',only:'A',r:(c,v)=>screen(c,full(c,v),dlg(c.doneT,c.pendB,tb(c.ok)))},
- {id:'DP-8',t:'Ошибка сервера (только A)',cap:'Запрос /v1/me/erase не прошёл (нет сети или ошибка сервера) — на телефоне ничего не стёрто. «Повторить» повторяет всё. В варианте B этого состояния нет.',only:'A',r:(c,v)=>screen(c,full(c,v),dlg(c.errT,c.errB,tb(c.cancel)+tb(c.retry)))},
+ {id:'DP-7a',t:'Принято: голос ещё удаляется (только A)',cap:'Ответ 200 с voice = pending_upstream. Не «Голос удалён» и не «Готово».',only:'A',r:(c,v)=>screen(c,full(c,v),dlg(c.pendT,'',tb(c.ok),lst(c.erasedH,[c.erPhone,c.erServer])+lst(c.pendT,[c.pendVoice])+kept(c)))},
+ {id:'DP-8b',t:'429: слишком много запросов (только A)',cap:'Ответ 429 (minute/day) с retry_after_s → «через N». Лимит — 10 раз в сутки. Ничего не стираем.',only:'A',r:(c,v)=>screen(c,full(c,v),dlg(c.e429T,c.e429B.replace('{n}',c.n2min),tb(c.ok)))},
+ {id:'DP-8',t:'Ошибка сервера (только A)',cap:'Нет сети или 5xx (erase_failed, upstream_complaints): телефон очищаем, но честно пишем, что сервер не очищен; «Готово» не показываем. «Повторить» повторяет запрос на сервер. В варианте B этого состояния нет.',only:'A',r:(c,v)=>screen(c,full(c,v),dlg(c.errT,c.errB,tb(c.cancel)+tb(c.retry)))},
 ];
 window.DPS=S;
 function phone(s,o){const d=DEV[o.size];return `<div class="ph${o.font==='b'?' big':''}" style="--w:${d.w}px;--h:${d.h}px" lang="${o.lang}">${s.r(window.DP[o.lang],o.v||'A')}</div>`;}
@@ -126,6 +133,7 @@ function render(){
   document.querySelectorAll('#ctl .g').forEach(g=>g.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(st[g.dataset.k]===b.dataset.v))));
   const z=.75,d=DEV[st.size];
   document.getElementById('grid').innerHTML=S.filter(s=>!s.only||s.only===st.v).map(s=>`<figure style="width:${Math.max(d.w*z,240)}px"><div style="width:${d.w*z}px;height:${d.h*z}px"><div style="transform:scale(${z});transform-origin:0 0;width:${d.w}px">${phone(s,st)}</div></div><figcaption><span class="id">${s.id}${st.v==='A'?'·A':''}</span>${st.v==='A'?'<b style="color:#B26B00">Вариант A — после решения Мурата.</b> ':''}<b>${s.t}</b> · ${s.cap}</figcaption></figure>`).join('');
+  document.querySelectorAll('.dlg .sc').forEach(e=>{if(e.scrollHeight>e.clientHeight+1)e.classList.add('scr')});
   try{history.replaceState(null,'','?'+new URLSearchParams(st));}catch(e){}
 }
 document.getElementById('ctl').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;st[b.parentNode.dataset.k]=b.dataset.v;render();});

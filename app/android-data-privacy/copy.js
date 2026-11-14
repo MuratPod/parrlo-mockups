@@ -2,6 +2,7 @@
    Основа — iOS (prototype/js/app-c.js, «Data & privacy»), сверено RG с кодом Android (PR 605). Удаление: сейчас B (только телефон); A (с сервером, /v1/me/erase) — после решения Мурата. Тексты A — из parrlo-app docs/legal-drafts/erase-ui-text.md §7 (черновик RG 28.10), адаптация для Android: «Google Play» вместо «настроек Apple»; «журнал» и «отметки «Неточно»» убраны (на Android их нет) — формулировку решает RG; delBA — если «Мой голос» создан, иначе delBAnv. Результат собирается из ответа POST /v1/me/erase (erased/kept).
    delFoot — тот же текст и для iOS (сейчас там «Звук никогда не сохраняется» / в прототипе «Parrlo не сохраняет запись вашего голоса…») — заменить. Проверяет RG. */
 /* errBnc — DP-8/IR-3 без кода (нет сети: кода нет, он только из http-ответа). rejB — 400/403: сервер отказал, «Повторить» не поможет; раскладка DP-8/IR-3, код + одна кнопка «Понятно». */
+/* kpLimitsNd/kpMonthlyNd — если в kept нет until. itServer — пункт DP-7p при отказе сервера. kpAbuse (ip_hash_counters, device_link_log) и kpReceipt (erase_receipt) — предложение, решает RG. */
 window.DP = {
 ru: {
   title: 'Данные и приватность', back: 'Назад', settings: 'Настройки',
@@ -59,6 +60,12 @@ ru: {
   offB: 'Удалить данные на сервере пока можно только по запросу — напишите нам, контакт в Политике конфиденциальности.',
   errBnc: 'На этом телефоне данные удалены, а на сервере — нет. Проверьте интернет и нажмите «Повторить». Если не получится, напишите нам.',
   rejB: 'Данные на телефоне удалены, а на сервере — нет. Напишите нам — контакт в Политике конфиденциальности, — и мы удалим их вручную.',
+  pendRowSub: 'На телефоне всё удалено. Нажмите «Повторить», чтобы удалить и на сервере.',
+  kpLimitsNd: 'счётчики лимитов — до 15 суток',
+  kpMonthlyNd: 'месячный счётчик голосовых — до 40 суток',
+  itServer: 'данные на сервере — напишите нам, и мы удалим их вручную',
+  kpAbuse: 'технические записи для защиты от злоупотреблений — до {date}',
+  kpReceipt: 'запись о том, что вы попросили удалить данные',
 },
 es: {
   title: 'Datos y privacidad', back: 'Atrás', settings: 'Ajustes',
@@ -116,6 +123,12 @@ es: {
   offB: 'Por ahora, los datos del servidor solo se pueden eliminar a petición: escríbenos; el contacto está en la Política de privacidad.',
   errBnc: 'Los datos de este teléfono se han eliminado, pero los del servidor no. Comprueba la conexión y toca «Reintentar». Si no funciona, escríbenos.',
   rejB: 'Los datos del teléfono se han eliminado, pero los del servidor no. Escríbenos —el contacto está en la Política de privacidad— y los eliminaremos manualmente.',
+  pendRowSub: 'En el teléfono ya está todo eliminado. Toca «Reintentar» para eliminarlo también del servidor.',
+  kpLimitsNd: 'contadores de límites: hasta 15 días',
+  kpMonthlyNd: 'contador mensual de voz: hasta 40 días',
+  itServer: 'los datos del servidor: escríbenos y los eliminaremos manualmente',
+  kpAbuse: 'registros técnicos para evitar abusos: hasta el {date}',
+  kpReceipt: 'el registro de que pediste eliminar tus datos',
 },
 en: {
   title: 'Data & privacy', back: 'Back', settings: 'Settings',
@@ -173,6 +186,12 @@ en: {
   offB: 'For now, data on the server can only be deleted on request — write to us; the contact is in the Privacy Policy.',
   errBnc: 'The data on this phone has been deleted, but the data on the server hasn’t. Check your connection and tap “Try again”. If that doesn’t work, write to us.',
   rejB: 'The data on your phone has been deleted, but the data on the server hasn’t. Write to us — the contact is in the Privacy Policy — and we’ll delete it manually.',
+  pendRowSub: 'Everything on the phone is deleted. Tap “Try again” to delete it on the server too.',
+  kpLimitsNd: 'limit counters — up to 15 days',
+  kpMonthlyNd: 'monthly voice counter — up to 40 days',
+  itServer: 'data on the server — write to us and we’ll delete it manually',
+  kpAbuse: 'technical records to prevent abuse — until {date}',
+  kpReceipt: 'a record that you asked us to delete your data',
 },
 };
 /* типографика: как в kb-voice — неразрывные пробелы в ru, перед «—», между двумя последними словами фразы */

@@ -130,7 +130,7 @@ en: {
   cleared: 'History cleared', delBtn: 'Delete',
   deleting: 'Deleting your data…',
   doneT: 'Data deleted',
-  errT: 'Data on the server wasn’t deleted', errB: 'The data on this phone has been deleted, but not on the server. Tap “Try again”. If that doesn’t work, write to us and include this code:',
+  errT: 'Data on the server wasn’t deleted', errB: 'The data on this phone has been deleted, but the data on the server hasn’t. Tap “Try again”. If that doesn’t work, write to us and include this code:',
   daysT: 'Keep for',
   delRowA: 'Delete my data',
   delTA: 'Delete my data?',
@@ -171,8 +171,8 @@ en: {
   copied: 'Copied',
   offT: 'Deleted on this phone',
   offB: 'For now, data on the server can only be deleted on request — write to us; the contact is in the Privacy Policy.',
-  errBnc: 'The data on this phone has been deleted, but not on the server. Check your connection and tap “Try again”. If that doesn’t work, write to us.',
-  rejB: 'The data on your phone has been deleted, but not on the server. Write to us — the contact is in the Privacy Policy — and we’ll delete it manually.',
+  errBnc: 'The data on this phone has been deleted, but the data on the server hasn’t. Check your connection and tap “Try again”. If that doesn’t work, write to us.',
+  rejB: 'The data on your phone has been deleted, but the data on the server hasn’t. Write to us — the contact is in the Privacy Policy — and we’ll delete it manually.',
 },
 };
 /* типографика: как в kb-voice — неразрывные пробелы в ru, перед «—», между двумя последними словами фразы */
